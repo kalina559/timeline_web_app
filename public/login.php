@@ -1,5 +1,5 @@
 <?php
-include 'LoginHandler.php';
+include '../src/LoginHandler.php';
 
 $loginHandler = new LoginHandler;
 

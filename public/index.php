@@ -4,7 +4,7 @@
 <h1>My Example</h1>
 
 <?php
-include 'config.php';
+include '../config.php';
 //Get Heroku ClearDB connection information
 //$cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 $cleardb_server = DBHOST;
