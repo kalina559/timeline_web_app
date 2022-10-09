@@ -1,4 +1,7 @@
 <?php
+$_SERVER['DOCUMENT_ROOT'] .= '/public';
+echo $_SERVER['DOCUMENT_ROOT'];
+
 define('DBUSER','b50e6b6adc0e81');
 define('DBPWD','8cc48036');
 define('DBHOST','eu-cdbr-west-03.cleardb.net');

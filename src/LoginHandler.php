@@ -6,6 +6,7 @@ class LoginHandler
     public function tryLogin($login, $password) {
         echo 'Trying to login';
 
+
         $hashedPassword = hash('sha256', $password);
 
         $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
