@@ -1,11 +1,9 @@
 <?php
-include '../config.php';
+include '../../../config.php';
 
-class LoginHandler
+class AccountHandler
 {  
     public function tryLogin($login, $password) {
-        echo 'Trying to login';
-
 
         $hashedPassword = hash('sha256', $password);
 
@@ -14,17 +12,14 @@ class LoginHandler
         $con->query("SET NAMES 'utf8'");
         $query = "SELECT * FROM users WHERE login = '$login' AND password = '$hashedPassword'";
 
-        echo "Query: $query";
 
         $result = $con->query($query);
         if($result->num_rows === 1){
-            echo "USER FOUND";
             return TRUE;
 
         }
         
             $con->close();
-            echo "NO USER FOUND";
 
             return FALSE;
 
@@ -44,4 +39,3 @@ class LoginHandler
         //check if user is logged in in current session
     }
 }
-?>
