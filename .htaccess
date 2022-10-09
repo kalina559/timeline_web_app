@@ -13,3 +13,5 @@
     Order Allow,Deny
     Allow from all
 </Files>
+
+DirectoryIndex public/index.php
