@@ -21,9 +21,9 @@ var appModel = new function () {
         self.showLogin(!self.showLogin())
 
         if (self.showLogin()) {
-            self.loginButtonText('Hide login form')
+            self.loginButtonText('Close')
         } else {
-            self.loginButtonText('Show login form')
+            self.loginButtonText('Login')
         }
     }
 

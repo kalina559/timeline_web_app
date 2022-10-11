@@ -17,10 +17,10 @@
       <p>Login: <input class="input-field" required type="text" id="login" data-bind="value: appModel.login" placeholder = "Type your login"/></p>
       <p>Password: <input class="input-field" required type="text" id="password" data-bind="value: appModel.password" placeholder = "Type your password"/></p>
 
-      <button type="submit">Login</button>
+      <button type="submit">Submit</button>
     </form>
 
-    <button type="button" data-bind="click: appModel.toggleLogin, text: appModel.loginButtonText">Show login form</button>
+    <button type="button" data-bind="click: appModel.toggleLogin, text: appModel.loginButtonText">Login</button>
   </div>
 
   <button type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
