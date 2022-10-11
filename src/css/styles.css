@@ -1,3 +1,6 @@
 html, body {
     font-family: arial, sans-serif;
-  }
+}
+.input-field {
+    z-index: 1;
+}

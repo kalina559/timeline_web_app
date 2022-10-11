@@ -1,6 +1,7 @@
 <?php
 include 'AccountHandler.php';
 
+session_start();
 
 header('Content-Type: application/json');
 $aResult = array();
@@ -9,24 +10,30 @@ if (!isset($_POST['functionname'])) {
     $aResult['error'] = 'No function name!';
 }
 
+$data = $_POST['arguments'];
+
 if (!isset($aResult['error'])) {
 
     switch ($_POST['functionname']) {
         case 'login':
             $accountHandler = new AccountHandler;
-            $login = 'kalj';
-            $pass = 'kalj';
+            $login = $data['Login'];
+            $pass = $data['Password'];
 
             $success = $accountHandler->tryLogin($login, $pass);
             if ($success !== TRUE) {
-                $aResult['result'] = 'login failed';
+                $aResult['result'] = 'failed';
             } else {
-                $aResult['result'] = 'login succeeded';
+                $aResult['result'] = 'success';
             }
             break;
 
+        case 'logout':
+            $aResult['result'] = session_id();
+            
+            break;
         default:
-            $aResult['result'] = 'nope';
+            $aResult['result'] = 'failed';
             break;
     }
 }
