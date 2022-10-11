@@ -29,7 +29,7 @@ if (!isset($aResult['error'])) {
             break;
 
         case 'logout':
-            $aResult['result'] = session_id();
+            $aResult['result'] = 'success';
             
             break;
         default:
