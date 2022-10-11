@@ -9,11 +9,13 @@ class AccountHandler
 
         $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
 
-        $con->query("SET NAMES 'utf8'");
-        $query = "SELECT * FROM users WHERE login = '$login' AND password = '$hashedPassword'";
+        $con->query("SET NAMES 'utf8'");        
+        $smtp = $con->prepare("SELECT * FROM users WHERE login = ? AND password = ?");
+        $smtp->bind_param('ss', $login, $hashedPassword);   // binding params to prevent sql injection
 
+        $smtp->execute();
 
-        $result = $con->query($query);
+        $result = $smtp->get_result();
         if($result->num_rows === 1){
             return TRUE;
 
