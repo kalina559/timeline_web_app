@@ -52,13 +52,28 @@ class AccountHandler
         $session_id = session_id();
 
         $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
+        $con->query("SET NAMES 'utf8'");        
         $smtp = $con->prepare("DELETE FROM users_logged_in WHERE session_id = ?");
         $smtp->bind_param('s', $session_id);
 
         $smtp->execute();
     }
 
-    public function checkIfUserLoggedIn($userId){
-        //check if user is logged in in current session
+    public static function checkIfUserLoggedIn(){
+        $session_id = session_id();
+
+        $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
+        $con->query("SET NAMES 'utf8'");        
+        $smtp = $con->prepare("SELECT * FROM users_logged_in WHERE session_id = ?");
+        $smtp->bind_param('s', $session_id);
+
+        $smtp->execute();
+
+        $result = $smtp->get_result();
+        if($result->num_rows > 0){
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 }

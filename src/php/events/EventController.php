@@ -1,4 +1,5 @@
 <?php
+include '../account/AccountHandler.php';
 include 'EventHandler.php';
 
 session_start();
@@ -16,7 +17,11 @@ if (!isset($aResult['error'])) {
 
     switch ($_POST['functionname']) {
         case 'add':
-            $aResult['result'] = 'success';
+            if(AccountHandler::checkIfUserLoggedIn()){
+                $aResult['result'] = 'success';
+            } else {
+                $aResult['result'] = 'failed';
+            }
             break;
         default:
             $aResult['result'] = 'failed';
