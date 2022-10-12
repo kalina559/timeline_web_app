@@ -43,6 +43,8 @@
   <button type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
 
   <span data-bind="visible: appModel.userLoggedIn()">Amazing feature only visible to logged in users</span>
+  <button type="button" data-bind="click: appModel.tryAddEvent, visible: appModel.userLoggedIn()">Some action available to logged in users</button>
+
 
 
 

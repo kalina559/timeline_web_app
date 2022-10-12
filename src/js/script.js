@@ -72,6 +72,25 @@ var appModel = new function () {
             })
     }
 
+    self.tryAddEvent = function () {
+        var requestArguments = {
+            User: 'something so that arguments are not null'
+        }
+        makeAjaxCall('add', requestArguments,
+            '../src/php/events/EventController.php',
+            function (data) {
+                if (data == 'success') {
+                    alert('Logout succeeded');
+                } else {
+                    // shouldn't really happen, but just in case
+                    alert('Add event failed');
+                }
+            },
+            function (data) {
+                alert('Add event failed');
+            })
+    }
+
     function makeAjaxCall(functionName, args, url, success, error) {
         jQuery.ajax({
             type: 'POST',

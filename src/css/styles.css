@@ -2,5 +2,5 @@ html, body {
     font-family: arial, sans-serif;
 }
 .input-field {
-    z-index: 1;
+    z-index: 5;
 }

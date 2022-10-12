@@ -4,37 +4,39 @@ include 'AccountHandler.php';
 session_start();
 
 header('Content-Type: application/json');
-$aResult = array();
+$output = array();
 
 if (!isset($_POST['functionname'])) {
-    $aResult['error'] = 'No function name!';
+    $output['error'] = 'No function name!';
 }
 
 $data = $_POST['arguments'];
+$accountHandler = new AccountHandler;
 
-if (!isset($aResult['error'])) {
+if (!isset($output['error'])) {
 
     switch ($_POST['functionname']) {
         case 'login':
-            $accountHandler = new AccountHandler;
             $login = $data['Login'];
             $pass = $data['Password'];
 
             $success = $accountHandler->tryLogin($login, $pass);
             if ($success !== TRUE) {
-                $aResult['result'] = 'failed';
+                $output['result'] = 'failed';
             } else {
-                $aResult['result'] = 'success';
+                $output['result'] = 'success';
             }
             break;
 
         case 'logout':
-            $aResult['result'] = 'success';
+
+            $success = $accountHandler->logout();
+            $output['result'] = 'success';
             
             break;
         default:
-            $aResult['result'] = 'failed';
+            $output['result'] = 'failed';
             break;
     }
 }
-echo json_encode($aResult['result']);
+echo json_encode($output['result']);

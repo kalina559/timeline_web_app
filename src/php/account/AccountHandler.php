@@ -17,8 +17,13 @@ class AccountHandler
 
         $result = $smtp->get_result();
         if($result->num_rows === 1){
-            return TRUE;
+            $row = $result->fetch_row();
+            $userId = $row[0] ?? false;
 
+            $this->clearPreviousUserLogins($con, $userId);
+            $this->markUserAsLoggedIn($con, $userId);
+
+            return TRUE;
         }
         
             $con->close();
@@ -27,14 +32,30 @@ class AccountHandler
 
     }
 
-    public function markUserAsLoggedIn($userId) {
-        // Add user to the loggedInUsersTable
-        
-        //Add (userId, sessionId, dateLoggedIn, dateLoggedOut) record to db
+    public function markUserAsLoggedIn($con, $userId) {
+        $session_id = session_id();
+
+        $smtp = $con->prepare("INSERT INTO  users_logged_in (user_id, session_id, date_created) VALUES (?, ?, CURRENT_TIMESTAMP())");
+        $smtp->bind_param('ss', $userId, $session_id);
+
+        $smtp->execute();
     }
 
-    public function logout($userId){
-        //set dateLoggedOut to now
+    public function clearPreviousUserLogins($con, $userId) {
+        $smtp = $con->prepare("DELETE FROM  users_logged_in WHERE user_id = ?");
+        $smtp->bind_param('s', $userId);
+
+        $smtp->execute();
+    }
+
+    public function logout(){
+        $session_id = session_id();
+
+        $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
+        $smtp = $con->prepare("DELETE FROM users_logged_in WHERE session_id = ?");
+        $smtp->bind_param('s', $session_id);
+
+        $smtp->execute();
     }
 
     public function checkIfUserLoggedIn($userId){
