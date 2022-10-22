@@ -1,24 +1,26 @@
 <?php
-include '../../../config.php';
+//include '../../../config.php';
 include '../common/CommonFunctions.php';
 
 class AccountHandler
-{  
-    public function tryLogin($login, $password) {
+{
+    public function tryLogin($login, $password)
+    {
 
-        log_message(LogModes::Info->name, "testing logs");
+        log_message(LogModes::Info->name, "Trying to log in");
         $hashedPassword = hash('sha256', $password);
 
-        $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
+        $con = getDbConnection();
 
-        $con->query("SET NAMES 'utf8'");        
-        $smtp = $con->prepare("SELECT * FROM users WHERE login = ? AND password = ?");
-        $smtp->bind_param('ss', $login, $hashedPassword);   // binding params to prevent sql injection
+        $result = executeQuery(
+            $con,
+            "SELECT * FROM users WHERE login = ? AND password = ?",
+            'ss',
+            $login,
+            $hashedPassword
+        );
 
-        $smtp->execute();
-
-        $result = $smtp->get_result();
-        if($result->num_rows === 1){
+        if ($result->num_rows === 1) {
             $row = $result->fetch_row();
             $userId = $row[0] ?? false;
 
@@ -27,56 +29,68 @@ class AccountHandler
 
             return TRUE;
         }
-        
-            $con->close();
 
-            return FALSE;
+        $con->close();
 
+        return FALSE;
     }
 
-    public function markUserAsLoggedIn($con, $userId) {
+    public function markUserAsLoggedIn($con, $userId)
+    {
         $session_id = session_id();
 
-        $smtp = $con->prepare("INSERT INTO  users_logged_in (user_id, session_id, date_created) VALUES (?, ?, CURRENT_TIMESTAMP())");
-        $smtp->bind_param('ss', $userId, $session_id);
-
-        $smtp->execute();
+        executeQuery(
+            $con,
+            "INSERT INTO  users_logged_in (user_id, session_id, date_created) VALUES (?, ?, CURRENT_TIMESTAMP())",
+            'ss',
+            $userId,
+            $session_id
+        );
     }
 
-    public function clearPreviousUserLogins($con, $userId) {
-        $smtp = $con->prepare("DELETE FROM  users_logged_in WHERE user_id = ?");
-        $smtp->bind_param('s', $userId);
-
-        $smtp->execute();
+    public function clearPreviousUserLogins($con, $userId)
+    {
+        executeQuery(
+            $con,
+            "DELETE FROM  users_logged_in WHERE user_id = ?",
+            's',
+            $userId
+        );
     }
 
-    public function logout(){
+    public function logout()
+    {
+        $session_id = session_id();
+        $con = getDbConnection();
+
+        executeQuery(
+            $con,
+            "DELETE FROM users_logged_in WHERE session_id = ?",
+            's',
+            $session_id
+        );
+        $con->close();
+    }
+
+    public static function checkIfUserLoggedIn()
+    {
         $session_id = session_id();
 
-        $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
-        $con->query("SET NAMES 'utf8'");        
-        $smtp = $con->prepare("DELETE FROM users_logged_in WHERE session_id = ?");
-        $smtp->bind_param('s', $session_id);
+        $con = getDbConnection();
 
-        $smtp->execute();
-    }
+        $result = executeQuery(
+            $con,
+            "SELECT * FROM users_logged_in WHERE session_id = ?",
+            's',
+            $session_id
+        );
 
-    public static function checkIfUserLoggedIn(){
-        $session_id = session_id();
+        $con->close();
 
-        $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
-        $con->query("SET NAMES 'utf8'");        
-        $smtp = $con->prepare("SELECT * FROM users_logged_in WHERE session_id = ?");
-        $smtp->bind_param('s', $session_id);
-
-        $smtp->execute();
-
-        $result = $smtp->get_result();
-        if($result->num_rows > 0){
+        if ($result->num_rows > 0) {
             return TRUE;
         } else {
             return FALSE;
         }
     }
 }
-?>
