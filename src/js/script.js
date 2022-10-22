@@ -101,9 +101,9 @@ var appModel = new function () {
         });
     }
 
-    function getJSessionId(){
+    function getJSessionId() {
         var jsId = document.cookie.match(/JSESSIONID=[^;]+/);
-        if(jsId != null) {
+        if (jsId != null) {
             if (jsId instanceof Array)
                 jsId = jsId[0].substring(11);
             else

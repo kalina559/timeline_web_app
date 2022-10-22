@@ -1,10 +1,12 @@
 <?php
 include '../../../config.php';
+include '../common/CommonFunctions.php';
 
 class AccountHandler
 {  
     public function tryLogin($login, $password) {
 
+        log_message(LogModes::Info->name, "testing logs");
         $hashedPassword = hash('sha256', $password);
 
         $con = mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
@@ -77,3 +79,4 @@ class AccountHandler
         }
     }
 }
+?>
