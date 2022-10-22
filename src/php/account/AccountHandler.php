@@ -4,7 +4,7 @@ include '../common/CommonFunctions.php';
 
 class AccountHandler
 {
-    public function tryLogin($login, $password)
+    static function tryLogin($login, $password)
     {
 
         log_message(LogModes::Info->name, "Trying to log in");
@@ -24,8 +24,8 @@ class AccountHandler
             $row = $result->fetch_row();
             $userId = $row[0] ?? false;
 
-            $this->clearPreviousUserLogins($con, $userId);
-            $this->markUserAsLoggedIn($con, $userId);
+            AccountHandler::clearPreviousUserLogins($con, $userId);
+            AccountHandler::markUserAsLoggedIn($con, $userId);
 
             return TRUE;
         }
@@ -35,7 +35,7 @@ class AccountHandler
         return FALSE;
     }
 
-    public function markUserAsLoggedIn($con, $userId)
+    static function markUserAsLoggedIn($con, $userId)
     {
         $session_id = session_id();
 
@@ -48,7 +48,7 @@ class AccountHandler
         );
     }
 
-    public function clearPreviousUserLogins($con, $userId)
+    static function clearPreviousUserLogins($con, $userId)
     {
         executeQuery(
             $con,
@@ -58,7 +58,7 @@ class AccountHandler
         );
     }
 
-    public function logout()
+    static function logout()
     {
         $session_id = session_id();
         $con = getDbConnection();
@@ -72,7 +72,7 @@ class AccountHandler
         $con->close();
     }
 
-    public static function checkIfUserLoggedIn()
+    static function checkIfUserLoggedIn()
     {
         $session_id = session_id();
 

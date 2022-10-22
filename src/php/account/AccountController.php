@@ -11,7 +11,7 @@ if (!isset($_POST['functionname'])) {
 }
 
 $data = $_POST['arguments'];
-$accountHandler = new AccountHandler;
+log_message(LogModes::Info->name, "creating new object");
 
 if (!isset($output['error'])) {
 
@@ -20,7 +20,7 @@ if (!isset($output['error'])) {
             $login = $data['Login'];
             $pass = $data['Password'];
 
-            $success = $accountHandler->tryLogin($login, $pass);
+            $success =  AccountHandler::tryLogin($login, $pass);
             if ($success !== TRUE) {
                 $output['result'] = 'failed';
             } else {
@@ -30,7 +30,7 @@ if (!isset($output['error'])) {
 
         case 'logout':
 
-            $success = $accountHandler->logout();
+            $success =  AccountHandler::logout();
             $output['result'] = 'success';
             
             break;
