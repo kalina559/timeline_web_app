@@ -23,13 +23,14 @@ class AccountHandler
         if ($result->num_rows === 1) {
             $row = $result->fetch_row();
             $userId = $row[0] ?? false;
-
-            AccountHandler::clearPreviousUserLogins($con, $userId);
+            
             AccountHandler::markUserAsLoggedIn($con, $userId);
+            AccountHandler::clearExpiredUserLogins($con, $userId);
 
+            $con->close();
             return TRUE;
         }
-
+        
         $con->close();
 
         return FALSE;
@@ -39,22 +40,27 @@ class AccountHandler
     {
         $session_id = session_id();
 
+        $now = new DateTime();
+        $now->add(new DateInterval('PT' . LOGIN_SESSION_DURATION_MINUTES . 'M'));
+
         executeQuery(
             $con,
-            "INSERT INTO  users_logged_in (user_id, session_id, date_created) VALUES (?, ?, CURRENT_TIMESTAMP())",
-            'ss',
+            "INSERT INTO  users_logged_in (user_id, session_id, valid_until) VALUES (?, ?, ?)",
+            'sss',
             $userId,
-            $session_id
+            $session_id, $now->format('Y-m-d H:i:s')
         );
     }
 
-    static function clearPreviousUserLogins($con, $userId)
+    static function clearExpiredUserLogins($con)
     {
+        $now = new DateTime();
+
         executeQuery(
             $con,
-            "DELETE FROM  users_logged_in WHERE user_id = ?",
+            "DELETE FROM  users_logged_in WHERE valid_until < ?",
             's',
-            $userId
+            $now->format('Y-m-d H:i:s')
         );
     }
 
@@ -72,7 +78,7 @@ class AccountHandler
         $con->close();
     }
 
-    static function checkIfUserLoggedIn()
+    static function validateUserLoggedIn()
     {
         $session_id = session_id();
 
@@ -97,14 +103,17 @@ class AccountHandler
     static function getLoggedInUser()
     {
         $session_id = session_id();
+        $now = new DateTime();
 
         $con = getDbConnection();
 
         $result = executeQuery(
             $con,
-            "SELECT login FROM users_logged_in JOIN users ON users_logged_in.user_id = users.id WHERE session_id = ?",
-            's',
-            $session_id
+            "SELECT login FROM users_logged_in
+            JOIN users ON users_logged_in.user_id = users.id
+            WHERE session_id = ? AND valid_until > ?",
+            'ss',
+            $session_id, $now->format('Y-m-d H:i:s')
         );
 
         $con->close();

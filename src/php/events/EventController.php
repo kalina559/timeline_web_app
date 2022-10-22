@@ -17,7 +17,7 @@ if (!isset($aResult['error'])) {
 
     switch ($_POST['functionname']) {
         case 'add':
-            if(AccountHandler::checkIfUserLoggedIn()){
+            if(AccountHandler::validateUserLoggedIn()){
                 $aResult['result'] = 'success';
             } else {
                 $aResult['result'] = 'failed';
