@@ -14,7 +14,7 @@ class AccountHandler
 
         $result = executeQuery(
             $con,
-            "SELECT * FROM users WHERE login = ? AND password = ?",
+            "SELECT id FROM users WHERE login = ? AND password = ?",
             'ss',
             $login,
             $hashedPassword
@@ -88,9 +88,33 @@ class AccountHandler
         $con->close();
 
         if ($result->num_rows > 0) {
-            return TRUE;
+            return array(TRUE);
         } else {
             return FALSE;
+        }
+    }
+
+    static function getLoggedInUser()
+    {
+        $session_id = session_id();
+
+        $con = getDbConnection();
+
+        $result = executeQuery(
+            $con,
+            "SELECT login FROM users_logged_in JOIN users ON users_logged_in.user_id = users.id WHERE session_id = ?",
+            's',
+            $session_id
+        );
+
+        $con->close();
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_row();
+            $login = $row[0] ?? false;
+            return array($login);
+        } else {
+            return NULL;
         }
     }
 }

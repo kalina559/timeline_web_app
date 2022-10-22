@@ -32,7 +32,18 @@ if (!isset($output['error'])) {
 
             $success =  AccountHandler::logout();
             $output['result'] = 'success';
-            
+
+            break;
+
+        case 'checkIfLoggedIn':
+
+            $result =  AccountHandler::getLoggedInUser();            
+            // if ($result !== NULL) {
+            //     $output['result'] = 'failed';
+            // } else {
+            //     $output['result'] = 'success';
+            // }
+            $output['result'] = $result;
             break;
         default:
             $output['result'] = 'failed';
@@ -40,4 +51,3 @@ if (!isset($output['error'])) {
     }
 }
 echo json_encode($output['result']);
-

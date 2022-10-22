@@ -6,6 +6,8 @@ window.addEventListener('error', function (event) {
 
 $(document).ready(function () {
     ko.applyBindings(appModel, $('html')[0])
+
+    
 })
 
 var appModel = new function () {
@@ -16,6 +18,16 @@ var appModel = new function () {
     this.login = ko.observable(null)
     this.password = ko.observable(null)
     this.currentUser = ko.observable(null)
+
+
+    makeAjaxCall('checkIfLoggedIn', { User: 'something so that arguments are not null'},
+            '../src/php/account/AccountController.php',
+            function (data) {
+                if (data != null) {
+                    self.userLoggedIn(true)
+                    self.currentUser(data.success)
+                }
+            })
 
     self.toggleLogin = function () {
         self.showLogin(!self.showLogin())
@@ -45,9 +57,6 @@ var appModel = new function () {
                 } else {
                     alert('Login failed');
                 }
-            },
-            function (data) {
-                alert('Login failed');
             })
     }
 
@@ -66,9 +75,6 @@ var appModel = new function () {
                     // shouldn't really happen, but just in case
                     alert('Logout failed');
                 }
-            },
-            function (data) {
-                alert('Logout failed');
             })
     }
 
@@ -85,31 +91,19 @@ var appModel = new function () {
                     // shouldn't really happen, but just in case
                     alert('Add event failed');
                 }
-            },
-            function (data) {
-                alert('Add event failed');
             })
     }
 
-    function makeAjaxCall(functionName, args, url, success, error) {
+    function makeAjaxCall(functionName, args, url, success) {
         jQuery.ajax({
             type: 'POST',
             data: { functionname: functionName, arguments: args },
             url: url,
             success: success,
-            error: error
+            error: function (data) {
+                alert(`Ajax call failed with message: ${data}`);
+            }
         });
-    }
-
-    function getJSessionId() {
-        var jsId = document.cookie.match(/JSESSIONID=[^;]+/);
-        if (jsId != null) {
-            if (jsId instanceof Array)
-                jsId = jsId[0].substring(11);
-            else
-                jsId = jsId.substring(11);
-        }
-        return jsId;
     }
 }
 
