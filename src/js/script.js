@@ -6,23 +6,8 @@ window.addEventListener('error', function (event) {
 
 $(document).ready(function () {
     ko.applyBindings(appModel, $('html')[0])
-    $('#crud-timeline').Timeline()
 
-    $('#crud-timeline').Timeline('addEvent', [
-        { id: 21, start: '2022-11-16 00:00', end: '2022-11-20 02:00', row: 2, label: 'Add Event', content: 'test test test...' },
-        { id: 22, start: '2022-11-18 12:00', end: '2022-11-22 12:00', row: 3, label: 'Add Event 2', content: 'test2 test2 test2...' }
-    ]
-    )
-
-    $('#crud-timeline').Timeline( 'reload', { reloadCacheKeep: true }, function(){
-        console.log("essa")
-    })
-
-    
-    // $('#crud-timeline').Timeline({       
-    //     startDatetime: "2019-02-25 00:00"   
-    // })
-
+    appModel.initializeTimelineWithDummyData()
 })
 
 var appModel = new function () {
@@ -133,6 +118,33 @@ var appModel = new function () {
                     alert('Add event failed');
                 }
             })
+    }
+
+    self.initializeTimelineWithDummyData = function () {
+        // var timeline = document.createElement('div');
+        // timeline.className = 'timeline';
+        // document.getElementsByTagName('body')[0].appendChild(timeline);
+
+        var timeline = document.getElementById("timeline")
+        timeline.className = 'timeline';
+        
+        for (let i = 0; i < 6; i++) {
+            var container = document.createElement('div');
+            container.className = 'container';
+            timeline.appendChild(container);
+
+            var content = document.createElement('div');
+            content.className = 'content';
+            container.appendChild(content);
+
+            var h = document.createElement('h');
+            h.textContent = 'test'
+            var p = document.createElement('p');
+            p.textContent = 'text2'
+
+            content.appendChild(h);
+            content.appendChild(p);
+        }
     }
 
     function makeAjaxCall(functionName, args, url, success) {
