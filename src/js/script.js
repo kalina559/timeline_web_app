@@ -122,6 +122,26 @@ var appModel = new function () {
             })
     }
 
+    self.showAddEventModal = function () {
+        $('#add-event-modal').modal('show');
+    }
+
+    self.addEvent = function () {
+        var requestArguments = {
+            User: 'something so that arguments are not null'
+        }
+        makeAjaxCall('add', requestArguments,
+            '../src/php/events/EventController.php',
+            function (data) {
+                if (data == 'Success') {
+                    refreshEvents()
+                } else {
+                    // shouldn't really happen, but just in case
+                    alert('Add event failed');
+                }
+            })
+    }
+
     function makeAjaxCall(functionName, args, url, success) {
         jQuery.ajax({
             type: 'POST',
