@@ -6,6 +6,16 @@ var EventItemModel = function (event) {
     this.category_id = event.category_id;
     this.title = event.title;
     this.description = event.description;
+
+    this.formattedEventPeriod = function () {
+        if (this.end_date == null) {
+            return moment.utc(event.start_date).format(appModel.dateFormat);
+        } else if (this.start_date != null) {
+            return `${moment.utc(this.start_date).format(appModel.dateFormat)} - ${moment.utc(this.end_date).format(appModel.dateFormat)}`;
+        } else {
+            return '';
+        }
+    }
 }
 
 window.addEventListener('error', function (event) {
@@ -27,6 +37,7 @@ var appModel = new function () {
     this.password = ko.observable(null)
     this.currentUser = ko.observable(null)
     this.events = ko.observableArray()
+    this.dateFormat = 'DD/MM/YYYY'
 
     makeAjaxCall('checkIfLoggedIn', { User: 'something so that arguments are not null' },
         '../src/php/account/AccountController.php',
@@ -36,19 +47,6 @@ var appModel = new function () {
                 self.currentUser(data.success)
             }
         })
-
-
-    self.setUpTimeline = function () {
-        $('#timeline').Timeline('addEvent', [
-            { id: 21, start: '2022-11-16 00:00', end: '2022-11-20 02:00', row: 2, label: 'Add Event', content: 'test test test...' },
-            { id: 22, start: '2022-11-18 12:00', end: '2022-11-22 12:00', row: 3, label: 'Add Event 2', content: 'test2 test2 test2...' }
-        ],
-            function (elm, opts, usrdata, addedEvents) {
-                console.log(usrdata.message) // show "Added Events!" in console
-            },
-            { message: 'Added Events!' }
-        )
-    }
 
     self.toggleLogin = function () {
         self.showLogin(!self.showLogin())
@@ -117,7 +115,6 @@ var appModel = new function () {
                     }
 
                     self.events(eventArray);
-                    alert('Add event succeeded');
                 } else {
                     // shouldn't really happen, but just in case
                     alert('Add event failed');

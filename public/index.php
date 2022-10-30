@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../src/libs/bootstrap/css/bootstrap.min.css">
   <link href="../src/css/styles.css" rel="stylesheet">
   <script type="text/javascript" src="../src/libs/jquery.min.js"></script>
+  <script type="text/javascript" src="../src/libs/moment/moment.min.js"></script>
   <script type="text/javascript" src="../src/libs/knockout-3.5.1.min.js"></script>
   <script src="../src/js/script.js"></script>
 
@@ -50,7 +51,7 @@
   <div class="timeline" data-bind="foreach: appModel.events">
     <div class="container ">
       <div class="content">
-        <h2 data-bind="text: start_date"></h2>
+        <h2 data-bind="text: formattedEventPeriod()"></h2>
         <p data-bind="text: description"></p>
       </div>
     </div>
