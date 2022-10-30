@@ -42,70 +42,19 @@
       <button type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
       <div>
         <span data-bind="visible: appModel.userLoggedIn()">Amazing feature only visible to logged in users</span>
-        <button type="button" data-bind="click: appModel.tryAddEvent, visible: appModel.userLoggedIn()">Some action available to logged in users</button>
+        <button type="button" data-bind="click: appModel.refreshEvents, visible: appModel.userLoggedIn()">Some action available to logged in users</button>
       </div>
     </div>
   </div>
 
-
-  <!-- <div class="timeline">
+  <div class="timeline" data-bind="foreach: appModel.events">
     <div class="container ">
       <div class="content">
-        <h2>2017</h2>
-        <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
+        <h2 data-bind="text: start_date"></h2>
+        <p data-bind="text: description"></p>
       </div>
     </div>
-    <div class="container ">
-      <div class="content">
-        <h2>2016</h2>
-        <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-      </div>
-    </div>
-    <div class="container ">
-      <div class="content">
-        <h2>2015</h2>
-        <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-      </div>
-    </div>
-    <div class="container ">
-      <div class="content">
-        <h2>2012</h2>
-        <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-      </div>
-    </div>
-    <div class="container ">
-      <div class="content">
-        <h2>2011</h2>
-        <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-      </div>
-    </div>
-    <div class="container ">
-      <div class="content">
-        <h2>2007</h2>
-        <p>Lorem ipsum dolor sit amet, quo ei simul congue exerci, ad nec admodum perfecto mnesarchum, vim ea mazim fierent detracto. Ea quis iuvaret expetendis his, te elit voluptua dignissim per, habeo iusto primis ea eam.</p>
-      </div>
-    </div>
-  </div> -->
-<div id="timeline"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  </div>
 
   <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
 

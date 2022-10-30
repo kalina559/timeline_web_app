@@ -27,7 +27,24 @@ function getDbConnection()
 {
     return mysqli_connect(DBHOST, DBUSER, DBPWD, DBNAME);
 }
-function executeQuery($con, $query, $paramTypes, ...$params)
+
+function executeQuery($con, $query)
+{
+    try {
+        $con->query("SET NAMES 'utf8'");
+        $smtp = $con->prepare("$query");
+        $smtp->execute();
+
+        $result = $smtp->get_result();
+        return $result;
+    } catch (Exception $e) {
+        log_message(LogModes::Error->name, $e->getMessage());
+    } catch (Error $e) {
+        log_message(LogModes::Error->name, $e->getMessage());
+    }
+}
+
+function executeQueryWithParams($con, $query, $paramTypes, ...$params)
 {
     try {
         $con->query("SET NAMES 'utf8'");

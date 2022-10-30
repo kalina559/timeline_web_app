@@ -1,4 +1,5 @@
 <?php
+include '../common/CommonFunctions.php';
 include 'AccountHandler.php';
 
 session_start();

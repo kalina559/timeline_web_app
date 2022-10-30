@@ -1,6 +1,4 @@
 <?php
-//include '../../../config.php';
-include '../common/CommonFunctions.php';
 
 class AccountHandler
 {
@@ -12,7 +10,7 @@ class AccountHandler
 
         $con = getDbConnection();
 
-        $result = executeQuery(
+        $result = executeQueryWithParams(
             $con,
             "SELECT id FROM users WHERE login = ? AND password = ?",
             'ss',
@@ -43,7 +41,7 @@ class AccountHandler
         $now = new DateTime();
         $now->add(new DateInterval('PT' . LOGIN_SESSION_DURATION_MINUTES . 'M'));
 
-        executeQuery(
+        executeQueryWithParams(
             $con,
             "INSERT INTO  users_logged_in (user_id, session_id, valid_until) VALUES (?, ?, ?)",
             'sss',
@@ -56,7 +54,7 @@ class AccountHandler
     {
         $now = new DateTime();
 
-        executeQuery(
+        executeQueryWithParams(
             $con,
             "DELETE FROM  users_logged_in WHERE valid_until < ?",
             's',
@@ -69,7 +67,7 @@ class AccountHandler
         $session_id = session_id();
         $con = getDbConnection();
 
-        executeQuery(
+        executeQueryWithParams(
             $con,
             "DELETE FROM users_logged_in WHERE session_id = ?",
             's',
@@ -84,7 +82,7 @@ class AccountHandler
 
         $con = getDbConnection();
 
-        $result = executeQuery(
+        $result = executeQueryWithParams(
             $con,
             "SELECT * FROM users_logged_in WHERE session_id = ?",
             's',
@@ -107,7 +105,7 @@ class AccountHandler
 
         $con = getDbConnection();
 
-        $result = executeQuery(
+        $result = executeQueryWithParams(
             $con,
             "SELECT login FROM users_logged_in
             JOIN users ON users_logged_in.user_id = users.id

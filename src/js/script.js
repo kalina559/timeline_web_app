@@ -1,4 +1,12 @@
 'use strict'
+var EventItemModel = function (event) {
+    this.id = event.id;
+    this.start_date = event.start_date;
+    this.end_date = event.end_date;
+    this.category_id = event.category_id;
+    this.title = event.title;
+    this.description = event.description;
+}
 
 window.addEventListener('error', function (event) {
 
@@ -7,7 +15,7 @@ window.addEventListener('error', function (event) {
 $(document).ready(function () {
     ko.applyBindings(appModel, $('html')[0])
 
-    appModel.initializeTimelineWithDummyData()
+    appModel.refreshEvents()
 })
 
 var appModel = new function () {
@@ -18,20 +26,7 @@ var appModel = new function () {
     this.login = ko.observable(null)
     this.password = ko.observable(null)
     this.currentUser = ko.observable(null)
-
-    // $("#timeline').Timeline({       
-    //     startDatetime: "2019-02-25 00:00"   
-    // })
-
-    // $('#timeline').Timeline('addEvent', [
-    //     { id: 21, start: '2022-11-16 00:00', end: '2022-11-20 02:00', row: 2, label: 'Add Event', content: 'test test test...' },
-    //     { id: 22, start: '2022-11-18 12:00', end: '2022-11-22 12:00', row: 3, label: 'Add Event 2', content: 'test2 test2 test2...' }
-    // ],
-    //     function (elm, opts, usrdata, addedEvents) {
-    //         console.log(usrdata.message) // show "Added Events!" in console
-    //     },
-    //     { message: 'Added Events!' }
-    // )
+    this.events = ko.observableArray()
 
     makeAjaxCall('checkIfLoggedIn', { User: 'something so that arguments are not null' },
         '../src/php/account/AccountController.php',
@@ -104,47 +99,30 @@ var appModel = new function () {
             })
     }
 
-    self.tryAddEvent = function () {
+    self.refreshEvents = function () {
         var requestArguments = {
             User: 'something so that arguments are not null'
         }
-        makeAjaxCall('add', requestArguments,
+        makeAjaxCall('get', requestArguments,
             '../src/php/events/EventController.php',
             function (data) {
-                if (data == 'success') {
+                if (data != null) {
+                    self.events.removeAll();
+                    var events = data
+
+                    var eventArray = [];
+
+                    for (var i = 0; i < events.length; i++) {
+                        eventArray[i] = new EventItemModel(events[i])
+                    }
+
+                    self.events(eventArray);
                     alert('Add event succeeded');
                 } else {
                     // shouldn't really happen, but just in case
                     alert('Add event failed');
                 }
             })
-    }
-
-    self.initializeTimelineWithDummyData = function () {
-        // var timeline = document.createElement('div');
-        // timeline.className = 'timeline';
-        // document.getElementsByTagName('body')[0].appendChild(timeline);
-
-        var timeline = document.getElementById("timeline")
-        timeline.className = 'timeline';
-        
-        for (let i = 0; i < 6; i++) {
-            var container = document.createElement('div');
-            container.className = 'container';
-            timeline.appendChild(container);
-
-            var content = document.createElement('div');
-            content.className = 'content';
-            container.appendChild(content);
-
-            var h = document.createElement('h');
-            h.textContent = 'test'
-            var p = document.createElement('p');
-            p.textContent = 'text2'
-
-            content.appendChild(h);
-            content.appendChild(p);
-        }
     }
 
     function makeAjaxCall(functionName, args, url, success) {
@@ -159,4 +137,3 @@ var appModel = new function () {
         });
     }
 }
-

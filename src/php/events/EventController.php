@@ -1,4 +1,5 @@
 <?php
+include '../common/CommonFunctions.php';
 include '../account/AccountHandler.php';
 include 'EventHandler.php';
 
@@ -16,6 +17,9 @@ $data = $_POST['arguments'];
 if (!isset($aResult['error'])) {
 
     switch ($_POST['functionname']) {
+        case 'get':
+                $aResult['result'] = EventHandler::getEvents();
+            break;
         case 'add':
             if(AccountHandler::validateUserLoggedIn()){
                 $aResult['result'] = 'success';
