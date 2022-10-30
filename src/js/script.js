@@ -46,6 +46,13 @@ var appModel = new function () {
     this.events = ko.observableArray()
     this.categories = ko.observableArray()
 
+    this.eventTitle = ko.observable(null)
+    this.eventDescription = ko.observable(null)
+    this.eventStartDate = ko.observable(null)
+    this.eventEndDate = ko.observable(null)
+    this.eventCategory = ko.observable(null)
+    this.eventImageFile = ko.observable(null)
+
     this.dateFormat = 'DD/MM/YYYY'
 
     makeAjaxCall('checkIfLoggedIn', { User: 'something so that arguments are not null' },
@@ -160,20 +167,45 @@ var appModel = new function () {
         $('#add-event-modal').modal('show');
     }
 
+    self.updateEventImageFile = function (value) {
+        var addEventImage = document.getElementById('addEventImage');
+        addEventImage.src = URL.createObjectURL(event.target.files[0]);
+
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result
+                .replace('data:', '')
+                .replace(/^.+,/, '');
+
+            self.eventImageFile(reader.result);
+        };
+        reader.readAsDataURL(file);
+
+        addEventImage.onload = function () {
+            URL.revokeObjectURL(addEventImage.src) // free memory
+        }
+    }
+
     self.addEvent = function () {
         var requestArguments = {
-            User: 'something so that arguments are not null'
+            Title: self.eventTitle,
+            Description: self.eventDescription,
+            StartDate: self.eventStartDate,
+            EndDate: self.eventEndDate,
+            CategoryId: self.eventCategory().id,
+            ImageFile: self.eventImageFile
         }
-        makeAjaxCall('add', requestArguments,
-            '../src/php/events/EventController.php',
-            function (data) {
-                if (data == 'Success') {
-                    refreshEvents()
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert('Add event failed');
-                }
-            })
+        // makeAjaxCall('add', requestArguments,
+        //     '../src/php/events/EventController.php',
+        //     function (data) {
+        //         if (data == 'Success') {
+        //             refreshEvents()
+        //         } else {
+        //             // shouldn't really happen, but just in case
+        //             alert('Add event failed');
+        //         }
+        //     })
     }
 
     function makeAjaxCall(functionName, args, url, success) {

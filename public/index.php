@@ -54,41 +54,41 @@
   </div>
 
   <!-- Add event input modal -->
-  <form class="form-horizontal">
-    <div class="modal fade" id="add-event-modal" data-backdrop="static" data-bind="with: appModel" tabindex="-1">
+  <form class="form-horizontal" data-bind="with: appModel, submit: addEvent">
+    <div class="modal fade" id="add-event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Add event</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
-          <form class="form-horizontal" data-bind="">
+          <form class="form-horizontal">
             <div class="modal-body">
               <div class="form-group modal-field">
                 <label for="title" class="col-sm-offset-1 col-sm-4 control-label">Title:</label>
                 <div class="col-sm-8">
-                  <textarea required id="title" class="form-control"></textarea>
+                  <textarea required id="title" data-bind="value: eventTitle" class="form-control"></textarea>
                 </div>
               </div>
 
               <div class="form-group modal-field">
                 <label for="description" class="col-sm-offset-1 col-sm-4 control-label">Description:</label>
                 <div class="col-sm-8">
-                  <textarea required rows="4" id="description" class="form-control"></textarea>
+                  <textarea required rows="4" id="description" data-bind="value: eventDescription" class="form-control"></textarea>
                 </div>
               </div>
 
               <div class="form-group modal-field">
                 <label for="start-date" class="col-sm-offset-1 col-sm-4 control-label">Start date:</label>
                 <div class="col-sm-8">
-                  <input required id="start-date" type="date" class="form-control"></input>
+                  <input required id="start-date" data-bind="value: eventStartDate" type="date" class="form-control"></input>
                 </div>
               </div>
 
               <div class="form-group modal-field">
                 <label for="end-date" class="col-sm-offset-1 col-sm-4 control-label">End date (optional):</label>
                 <div class="col-sm-8">
-                  <input id="end-date" type="date" class="form-control"></input>
+                  <input id="end-date" data-bind="value: eventEndDate" type="date" class="form-control"></input>
                 </div>
               </div>
 
@@ -97,14 +97,15 @@
                 <div class="col-sm-8">
                   <select required id="category" class="form-control" data-bind="options: appModel.categories, optionsText: 'name',
                        value: 'id',
-                       optionsCaption: 'Choose...'"></select>
+                       optionsCaption: 'Choose...', value: eventCategory"></select>
                 </div>
               </div>
 
               <div class="form-group modal-field">
                 <label for="image" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
                 <div class="col-sm-8">
-                  <input id="image" type="file" accept="image/*" class="form-control"></input>
+                  <input id="image" type="file" accept="image/*" onchange="appModel.updateEventImageFile(event)">
+                  <img class="col-sm-12" id="addEventImage"/>
                 </div>
               </div>
 
@@ -117,7 +118,7 @@
         </div>
       </div>
     </div>
-</form>
+  </form>
 
   <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
 
