@@ -180,3 +180,6 @@ body {
     border-radius: 6px;
 }
 
+.modal-field{
+    display: flex;
+}

@@ -1,7 +1,7 @@
 <?php
 include '../common/CommonFunctions.php';
 include '../account/AccountHandler.php';
-include 'EventHandler.php';
+include 'CategoriesHandler.php';
 
 session_start();
 
@@ -18,7 +18,7 @@ if (!isset($aResult['error'])) {
 
     switch ($_POST['functionname']) {
         case 'get':
-                $aResult['result'] = EventHandler::getEvents();
+                $aResult['result'] = CategoriesHandler::getCategories();
             break;
         case 'add':
             //TODO

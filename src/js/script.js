@@ -18,6 +18,12 @@ var EventItemModel = function (event) {
     }
 }
 
+var CategoryItemModel = function (category) {
+    this.id = category.id;
+    this.name = category.name;
+    this.color_hex = category.color_hex;
+}
+
 window.addEventListener('error', function (event) {
 
 });
@@ -26,6 +32,7 @@ $(document).ready(function () {
     ko.applyBindings(appModel, $('html')[0])
 
     appModel.refreshEvents()
+    appModel.refreshCategories()
 })
 
 var appModel = new function () {
@@ -37,6 +44,8 @@ var appModel = new function () {
     this.password = ko.observable(null)
     this.currentUser = ko.observable(null)
     this.events = ko.observableArray()
+    this.categories = ko.observableArray()
+
     this.dateFormat = 'DD/MM/YYYY'
 
     makeAjaxCall('checkIfLoggedIn', { User: 'something so that arguments are not null' },
@@ -117,7 +126,32 @@ var appModel = new function () {
                     self.events(eventArray);
                 } else {
                     // shouldn't really happen, but just in case
-                    alert('Add event failed');
+                    alert('Get events failed');
+                }
+            })
+    }
+
+    self.refreshCategories = function () {
+        var requestArguments = {
+            User: 'something so that arguments are not null'
+        }
+        makeAjaxCall('get', requestArguments,
+            '../src/php/categories/CategoriesController.php',
+            function (data) {
+                if (data != null) {
+                    self.categories.removeAll();
+                    var categories = data
+
+                    var categoriesArray = [];
+
+                    for (var i = 0; i < categories.length; i++) {
+                        categoriesArray[i] = new CategoryItemModel(categories[i])
+                    }
+
+                    self.categories(categoriesArray);
+                } else {
+                    // shouldn't really happen, but just in case
+                    alert('Get categories failed');
                 }
             })
     }

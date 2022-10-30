@@ -53,31 +53,71 @@
     </div>
   </div>
 
-  <!-- add event input modal -->
-  <div class="modal fade" id="add-event-modal" data-backdrop="static" data-bind="with: appModel" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Add event</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <form class="form-horizontal" data-bind="">
-          <div class="modal-body">
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Nyt navn</label>
-              <div class="col-sm-6">
-                <input class="form-control" required oninput="appModel.checkInput(this, 'common')" />
+  <!-- Add event input modal -->
+  <form class="form-horizontal">
+    <div class="modal fade" id="add-event-modal" data-backdrop="static" data-bind="with: appModel" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add event</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <form class="form-horizontal" data-bind="">
+            <div class="modal-body">
+              <div class="form-group modal-field">
+                <label for="title" class="col-sm-offset-1 col-sm-4 control-label">Title:</label>
+                <div class="col-sm-8">
+                  <textarea required id="title" class="form-control"></textarea>
+                </div>
               </div>
+
+              <div class="form-group modal-field">
+                <label for="description" class="col-sm-offset-1 col-sm-4 control-label">Description:</label>
+                <div class="col-sm-8">
+                  <textarea required rows="4" id="description" class="form-control"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group modal-field">
+                <label for="start-date" class="col-sm-offset-1 col-sm-4 control-label">Start date:</label>
+                <div class="col-sm-8">
+                  <input required id="start-date" type="date" class="form-control"></input>
+                </div>
+              </div>
+
+              <div class="form-group modal-field">
+                <label for="end-date" class="col-sm-offset-1 col-sm-4 control-label">End date (optional):</label>
+                <div class="col-sm-8">
+                  <input id="end-date" type="date" class="form-control"></input>
+                </div>
+              </div>
+
+              <div class="form-group modal-field">
+                <label for="category" class="col-sm-offset-1 col-sm-4 control-label">Category:</label>
+                <div class="col-sm-8">
+                  <select required id="category" class="form-control" data-bind="options: appModel.categories, optionsText: 'name',
+                       value: 'id',
+                       optionsCaption: 'Choose...'"></select>
+                </div>
+              </div>
+
+              <div class="form-group modal-field">
+                <label for="image" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
+                <div class="col-sm-8">
+                  <input id="image" type="file" accept="image/*" class="form-control"></input>
+                </div>
+              </div>
+
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Luk</button>
-            <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Rediger</button>
-          </div>
-        </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
+              <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Add</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
+</form>
 
   <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
 
