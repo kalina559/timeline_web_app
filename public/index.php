@@ -10,31 +10,27 @@
   <script type="text/javascript" src="../src/libs/moment/moment.min.js"></script>
   <script type="text/javascript" src="../src/libs/knockout-3.5.1.min.js"></script>
   <script src="../src/js/script.js"></script>
+  <script src="../src/js/components/category.js"></script>
+  <script src="../src/js/components/events.js"></script>
 
   <!-- login window -->
   <div class="col-sm-12">
     <div class="col-sm-6" style="text-align: center; width: 50%; margin: 0 auto" data-bind="visible: !appModel.userLoggedIn()">
-
       <form class="login-form col-sm-12" data-bind="visible: appModel.showLogin(), submit: appModel.tryLogin">
         <div class="col-sm-12">
           <label class="col-sm-4" for="login-field">Login:</label>
           <input id="login-field" class="input-field col-sm-6" required type="text" data-bind="value: appModel.login" placeholder="Type your login" />
         </div>
-
         <div class="col-sm-12">
           <label class="col-sm-4" for="password-field">Password:</label>
           <input id="password-field" class="input-field col-sm-6" type="password" required type="text" data-bind="value: appModel.password" placeholder="Type your password" />
         </div>
-
         <div class="col-sm-12">
           <button type="submit">Submit</button>
         </div>
       </form>
-
       <button type="button" data-bind="click: appModel.toggleLogin, text: appModel.loginButtonText">Login</button>
     </div>
-
-
     <div class="col-sm-6" style="text-align: center; width: 50%; margin: 0 auto">
       <button type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
       <div>
@@ -44,17 +40,17 @@
     </div>
   </div>
 
-  <aside class="category-legend col-sm-3">
+  <aside class="category-legend col-sm-3" data-bind="with: categoryModel">
     <h2>Categories:</h2>
-    <div data-bind="foreach: appModel.categories">
+    <div data-bind="foreach: categoryModel.categories">
       <div class="category-color-box" data-bind="style:{ 'background-color': color_hex}"></div>
       <p data-bind="text: name"></p>
     </div>
   </aside>
 
-  <div class="timeline" data-bind="foreach: appModel.events">
+  <div class="timeline" data-bind="foreach: eventModel.events">
     <div class="container">
-      <div class="content" data-bind="style:{ 'background-color': appModel.categories().length > 0 ? categoryColor() : '#FFFFFF' }">
+      <div class="content" data-bind="style:{ 'background-color': categoryModel.categories().length > 0 ? categoryColor() : '#FFFFFF' }">
         <h2 data-bind="text: title"></h2>
         <h4 data-bind="text: formattedEventPeriod()"></h4>
         <p data-bind="text: description"></p>
@@ -65,9 +61,8 @@
       </div>
     </div>
   </div>
-
   <!-- Add event input modal -->
-  <form class="form-horizontal" data-bind="with: appModel, submit: editEvent">
+  <form class="form-horizontal" data-bind="with: eventModel, submit: eventModel.editEvent">
     <div class="modal fade" id="event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -83,37 +78,32 @@
                   <textarea required id="title" data-bind="value: eventTitle" class="form-control"></textarea>
                 </div>
               </div>
-
               <div class="form-group modal-field">
                 <label for="description" class="col-sm-offset-1 col-sm-4 control-label">Description:</label>
                 <div class="col-sm-8">
                   <textarea required rows="4" id="description" data-bind="value: eventDescription" class="form-control"></textarea>
                 </div>
               </div>
-
               <div class="form-group modal-field">
                 <label for="start-date" class="col-sm-offset-1 col-sm-4 control-label">Start date:</label>
                 <div class="col-sm-8">
                   <input required id="start-date" data-bind="value: eventStartDate" type="date" class="form-control"></input>
                 </div>
               </div>
-
               <div class="form-group modal-field">
                 <label for="end-date" class="col-sm-offset-1 col-sm-4 control-label">End date (optional):</label>
                 <div class="col-sm-8">
                   <input id="end-date" data-bind="value: eventEndDate" type="date" class="form-control"></input>
                 </div>
               </div>
-
               <div class="form-group modal-field">
                 <label for="category" class="col-sm-offset-1 col-sm-4 control-label">Category:</label>
                 <div class="col-sm-8">
-                  <select required id="category" class="form-control" data-bind="options: appModel.categories, optionsText: 'name',
+                  <select required id="category" class="form-control" data-bind="options: categoryModel.categories, optionsText: 'name',
                        value: 'id',
                        optionsCaption: 'Choose...', value: eventCategory"></select>
                 </div>
               </div>
-
               <div class="form-group modal-field">
                 <label for="image" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
                 <div class="col-sm-8">
@@ -121,20 +111,18 @@
                   <img class="col-sm-12" id="addEventImage" />
                 </div>
               </div>
-
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
-              <button data-bind="disable: appModel.busy, text: appModel.eventModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
+              <button data-bind="disable: appModel.busy, text: eventModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
             </div>
           </form>
         </div>
       </div>
     </div>
   </form>
-
   <!-- Delete event confirmation -->
-  <form class="form-horizontal" data-bind="with: appModel, submit: deleteEvent">
+  <form class="form-horizontal" data-bind="with: eventModel, submit: eventModel.deleteEvent">
     <div class="modal fade" id="delete-event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -155,9 +143,7 @@
       </div>
     </div>
   </form>
-
   <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
-
 </body>
 
 </html>
