@@ -35,7 +35,7 @@
       <button type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
       <div>
         <span data-bind="visible: appModel.userLoggedIn()">Amazing feature only visible to logged in users</span>
-        <button type="button" data-bind="click: appModel.showAddEventModal, visible: appModel.userLoggedIn()">Some action available to logged in users</button>
+        <button type="button" data-bind="click: eventModel.showAddEventModal, visible: appModel.userLoggedIn()">Some action available to logged in users</button>
       </div>
     </div>
   </div>
@@ -46,6 +46,7 @@
       <div class="category-color-box" data-bind="style:{ 'background-color': color_hex}"></div>
       <p data-bind="text: name"></p>
     </div>
+    <button data-bind="click: showAddCategoryModal">Add a category</button>
   </aside>
 
   <div class="timeline" data-bind="foreach: eventModel.events">
@@ -61,13 +62,14 @@
       </div>
     </div>
   </div>
-  <!-- Add event input modal -->
-  <form class="form-horizontal" data-bind="with: eventModel, submit: eventModel.editEvent">
+
+  <!-- Event input modal -->
+  <form class="form-horizontal add-update-modal" data-bind="with: eventModel, submit: eventModel.submitEvent">
     <div class="modal fade" id="event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Add event</h4>
+            <h4 class="modal-title" data-bind="text: eventModalMode() + ' event'"></h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
           <form class="form-horizontal">
@@ -121,8 +123,9 @@
       </div>
     </div>
   </form>
+
   <!-- Delete event confirmation -->
-  <form class="form-horizontal" data-bind="with: eventModel, submit: eventModel.deleteEvent">
+  <form class="form-horizontal add-update-modal" data-bind="with: eventModel, submit: eventModel.deleteEvent">
     <div class="modal fade" id="delete-event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -146,4 +149,38 @@
   <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
 </body>
 
+<!-- Category input modal -->
+<form class="form-horizontal add-update-modal" data-bind="with: categoryModel, submit: categoryModel.submitCategory">
+    <div class="modal fade" id="category-modal" data-backdrop="static" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+          <h4 class="modal-title" data-bind="text: categoryModalMode() + ' category'"></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <form class="form-horizontal">
+            <div class="modal-body">
+              <div class="form-group modal-field">
+                <label for="category-name" class="col-sm-offset-1 col-sm-4 control-label">Name:</label>
+                <div class="col-sm-8">
+                  <textarea required id="category-name" data-bind="value: categoryName" class="form-control"></textarea>
+                </div>
+              </div>
+              <div class="form-group modal-field">
+                <label for="category-color" class="col-sm-offset-1 col-sm-4 control-label">Color:</label>
+                <div class="col-sm-8">
+                  <textarea required rows="4" id="category-color" data-bind="value: categoryColorHex" class="form-control"></textarea>
+                </div>
+              </div>              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
+              <button data-bind="disable: appModel.busy, text: categoryModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </form>
+  
 </html>

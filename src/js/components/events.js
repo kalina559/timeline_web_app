@@ -16,7 +16,7 @@ var EventItemModel = function (event) {
             return '';
         }
     }
-    
+
     this.categoryColor = function () {
         var currentCategory = categoryModel.categories().find(c => c.id == this.category_id)
         return currentCategory.color_hex
@@ -116,7 +116,15 @@ var eventModel = new function () {
         }
     }
 
-    self.addEvent = function () {
+    self.submitEvent = function () {
+        if (self.eventModalMode() == 'Add') {
+            addEvent()
+        } else if (self.eventModalMode() == 'Edit') {
+            editEvent()
+        }
+    }
+
+    function addEvent() {
         var requestArguments = {
             Title: self.eventTitle,
             Description: self.eventDescription,
@@ -138,7 +146,7 @@ var eventModel = new function () {
             })
     }
 
-    self.editEvent = function () {
+    function editEvent() {
         var requestArguments = {
             Id: self.editedEventId,
             Title: self.eventTitle,
@@ -156,7 +164,7 @@ var eventModel = new function () {
                     self.refreshEvents()
                 } else {
                     // shouldn't really happen, but just in case
-                    alert('Add event failed');
+                    alert('Update event failed');
                 }
             })
     }
@@ -173,7 +181,7 @@ var eventModel = new function () {
                     self.refreshEvents()
                 } else {
                     // shouldn't really happen, but just in case
-                    alert('Add event failed');
+                    alert('Delete event failed');
                 }
             })
     }

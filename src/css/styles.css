@@ -184,7 +184,7 @@ body {
     display: flex;
 }
 
-#event-modal {
+.add-update-modal {
     z-index: 100000;
 }
 
