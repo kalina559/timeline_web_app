@@ -43,8 +43,10 @@
   <aside class="category-legend col-sm-3" data-bind="with: categoryModel">
     <h2>Categories:</h2>
     <div data-bind="foreach: categoryModel.categories">
-      <div class="category-color-box" data-bind="style:{ 'background-color': color_hex}"></div>
-      <p data-bind="text: name"></p>
+      <div class="category-item" data-bind="click: showEditCategoryModal">
+        <div class="category-color-box" data-bind="style:{ 'background-color': color_hex}"></div>
+        <p data-bind="text: name"></p>
+      </div>
     </div>
     <button data-bind="click: showAddCategoryModal">Add a category</button>
   </aside>
@@ -151,36 +153,36 @@
 
 <!-- Category input modal -->
 <form class="form-horizontal add-update-modal" data-bind="with: categoryModel, submit: categoryModel.submitCategory">
-    <div class="modal fade" id="category-modal" data-backdrop="static" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
+  <div class="modal fade" id="category-modal" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
           <h4 class="modal-title" data-bind="text: categoryModalMode() + ' category'"></h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <form class="form-horizontal">
-            <div class="modal-body">
-              <div class="form-group modal-field">
-                <label for="category-name" class="col-sm-offset-1 col-sm-4 control-label">Name:</label>
-                <div class="col-sm-8">
-                  <textarea required id="category-name" data-bind="value: categoryName" class="form-control"></textarea>
-                </div>
-              </div>
-              <div class="form-group modal-field">
-                <label for="category-color" class="col-sm-offset-1 col-sm-4 control-label">Color:</label>
-                <div class="col-sm-8">
-                  <textarea required rows="4" id="category-color" data-bind="value: categoryColorHex" class="form-control"></textarea>
-                </div>
-              </div>              
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
-              <button data-bind="disable: appModel.busy, text: categoryModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
-            </div>
-          </form>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
+        <form class="form-horizontal">
+          <div class="modal-body">
+            <div class="form-group modal-field">
+              <label for="category-name" class="col-sm-offset-1 col-sm-4 control-label">Name:</label>
+              <div class="col-sm-8">
+                <textarea required id="category-name" data-bind="value: categoryName" class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="form-group modal-field">
+              <label for="category-color" class="col-sm-offset-1 col-sm-4 control-label">Color:</label>
+              <div class="col-sm-8">
+                <textarea required rows="4" id="category-color" data-bind="value: categoryColorHex" class="form-control"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
+            <button data-bind="disable: appModel.busy, text: categoryModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
+          </div>
+        </form>
       </div>
     </div>
-  </form>
-  
+  </div>
+</form>
+
 </html>
