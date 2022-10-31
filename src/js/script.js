@@ -196,16 +196,17 @@ var appModel = new function () {
             CategoryId: self.eventCategory().id,
             ImageFile: self.eventImageFile
         }
-        // makeAjaxCall('add', requestArguments,
-        //     '../src/php/events/EventController.php',
-        //     function (data) {
-        //         if (data == 'Success') {
-        //             refreshEvents()
-        //         } else {
-        //             // shouldn't really happen, but just in case
-        //             alert('Add event failed');
-        //         }
-        //     })
+        makeAjaxCall('add', requestArguments,
+            '../src/php/events/EventController.php',
+            function (data) {
+                $('#add-event-modal').modal('hide');
+                if (data == 'success') {
+                    self.refreshEvents()
+                } else {
+                    // shouldn't really happen, but just in case
+                    alert('Add event failed');
+                }
+            })
     }
 
     function makeAjaxCall(functionName, args, url, success) {
@@ -215,7 +216,7 @@ var appModel = new function () {
             url: url,
             success: success,
             error: function (data) {
-                alert(`Ajax call failed with message: ${data}`);
+                alert(`Ajax call failed with message: ${data.responseText}`);
             }
         });
     }

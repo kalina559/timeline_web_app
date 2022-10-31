@@ -180,6 +180,10 @@ body {
     border-radius: 6px;
 }
 
-.modal-field{
+.modal-field {
     display: flex;
+}
+
+#add-event-modal {
+    z-index: 100000;
 }

@@ -1,6 +1,5 @@
 <?php
 include '../common/CommonFunctions.php';
-include '../account/AccountHandler.php';
 include 'EventHandler.php';
 
 session_start();
@@ -21,17 +20,24 @@ if (!isset($aResult['error'])) {
                 $aResult['result'] = EventHandler::getEvents();
             break;
         case 'add':
-            //TODO
-            if(AccountHandler::validateUserLoggedIn()){
-                $aResult['result'] = 'success';
-            } else {
+            $title = $data['Title'];
+            $description = $data['Description'];
+            $startDate = $data['StartDate'];
+            $endDate = $data['EndDate'];
+            $categoryId = $data['CategoryId'];
+            $imageFile = $data['ImageFile'];
+            
+            if($endDate != null && $startDate > $endDate){
                 $aResult['result'] = 'failed';
+                break;
             }
+            EventHandler::addEvent($title, $description, $startDate, $endDate, $categoryId, $imageFile);
+            $aResult['result'] = 'success';
             break;
         case 'update':
             //TODO
         default:
-            $aResult['result'] = 'failed';
+            
             break;
     }
 }

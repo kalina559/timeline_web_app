@@ -55,7 +55,7 @@
 
   <!-- Add event input modal -->
   <form class="form-horizontal" data-bind="with: appModel, submit: addEvent">
-    <div class="modal fade" id="add-event-modal" data-backdrop="static" tabindex="-1">
+    <div class="modal fade" id="add-event-modal" data-backdrop="static" tabindex="10000">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
