@@ -47,7 +47,8 @@
   <div class="timeline" data-bind="foreach: appModel.events">
     <div class="container ">
       <div class="content">
-        <h2 data-bind="text: formattedEventPeriod()"></h2>
+        <h2 data-bind="text: title"></h2>
+        <h4 data-bind="text: formattedEventPeriod()"></h4>
         <p data-bind="text: description"></p>
         <div data-bind="visible: appModel.userLoggedIn()">
           <button data-bind="click: showEditEventModal">Edit</button>
@@ -58,7 +59,7 @@
   </div>
 
   <!-- Add event input modal -->
-  <form class="form-horizontal" data-bind="with: appModel, submit: addEvent">
+  <form class="form-horizontal" data-bind="with: appModel, submit: editEvent">
     <div class="modal fade" id="add-event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">

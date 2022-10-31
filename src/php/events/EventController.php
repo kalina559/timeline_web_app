@@ -26,7 +26,7 @@ if (!isset($aResult['error'])) {
             $endDate = $data['EndDate'];
             $categoryId = $data['CategoryId'];
             $imageFile = $data['ImageFile'];
-            
+
             if($endDate != null && $startDate > $endDate){
                 $aResult['result'] = 'failed';
                 break;
@@ -35,7 +35,22 @@ if (!isset($aResult['error'])) {
             $aResult['result'] = 'success';
             break;
         case 'update':
-            //TODO
+            $id = $data['Id'];
+            $title = $data['Title'];
+            $description = $data['Description'];
+            $startDate = $data['StartDate'];
+            $endDate = $data['EndDate'];
+            $categoryId = $data['CategoryId'];
+            $imageFile = $data['ImageFile'];
+
+            if($endDate != null && $startDate > $endDate){
+                $aResult['result'] = 'failed';
+                break;
+            }
+
+            EventHandler::editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile);
+            $aResult['result'] = 'success';
+            break;
         default:
             
             break;

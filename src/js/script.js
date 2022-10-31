@@ -24,12 +24,15 @@ var EventItemModel = function (event) {
     this.showEditEventModal = function () {
 
         appModel.eventModalMode('Edit');
-
+        appModel.editedEventId(this.id);
         appModel.eventTitle(this.title)
         appModel.eventDescription(this.description)
         appModel.eventStartDate(this.start_date)
         appModel.eventEndDate(this.end_date)
-        appModel.eventCategory(this.category_id)
+
+        var selectedCategory = appModel.categories().find(c => c.id == this.category_id)
+        appModel.eventCategory(selectedCategory)
+
         //appModel.eventImageFile(this.title)
         $('#add-event-modal').modal('show');
     }
@@ -70,6 +73,7 @@ var appModel = new function () {
     this.eventEndDate = ko.observable(null)
     this.eventCategory = ko.observable(null)
     this.eventImageFile = ko.observable(null)
+    this.editedEventId = ko.observable(null)
 
     this.dateFormat = 'DD/MM/YYYY'
 
@@ -226,6 +230,29 @@ var appModel = new function () {
             ImageFile: self.eventImageFile
         }
         makeAjaxCall('add', requestArguments,
+            '../src/php/events/EventController.php',
+            function (data) {
+                $('#add-event-modal').modal('hide');
+                if (data == 'success') {
+                    self.refreshEvents()
+                } else {
+                    // shouldn't really happen, but just in case
+                    alert('Add event failed');
+                }
+            })
+    }
+
+    self.editEvent = function () {
+        var requestArguments = {
+            Id: self.editedEventId,
+            Title: self.eventTitle,
+            Description: self.eventDescription,
+            StartDate: self.eventStartDate,
+            EndDate: self.eventEndDate,
+            CategoryId: self.eventCategory().id,
+            ImageFile: self.eventImageFile
+        }
+        makeAjaxCall('update', requestArguments,
             '../src/php/events/EventController.php',
             function (data) {
                 $('#add-event-modal').modal('hide');

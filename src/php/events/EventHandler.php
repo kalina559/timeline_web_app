@@ -37,4 +37,24 @@ class EventHandler
 
         $con->close();
     }
+
+    static function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
+    {
+        if(!AccountHandler::validateUserLoggedIn()){
+            throw new Exception("User is not logged in."); 
+        }
+
+        $con = getDbConnection();
+
+        executeQueryWithParams(
+            $con,
+            "UPDATE events 
+            SET title = ?, description = ?, start_date = ?, end_date = ?, category_id = ?
+            WHERE id = ?",
+            'ssssss',
+            $title, $description, $startDate, $endDate != null ? $endDate : NULL, $categoryId, $id
+        );
+
+        $con->close();
+    }
 }

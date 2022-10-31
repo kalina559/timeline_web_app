@@ -187,3 +187,7 @@ body {
 #add-event-modal {
     z-index: 100000;
 }
+
+h2{
+    font-weight: bold;
+}
