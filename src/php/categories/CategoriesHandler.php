@@ -67,6 +67,15 @@ class CategoriesHandler
 
         executeQueryWithParams(
             $con,
+            "UPDATE events
+            SET category_id = NULL
+            WHERE category_id = ?",
+            's',
+            $id
+        );
+
+        executeQueryWithParams(
+            $con,
             "DELETE FROM categories 
             WHERE id = ?",
             's',
