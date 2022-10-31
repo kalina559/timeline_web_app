@@ -49,13 +49,17 @@
       <div class="content">
         <h2 data-bind="text: formattedEventPeriod()"></h2>
         <p data-bind="text: description"></p>
+        <div data-bind="visible: appModel.userLoggedIn()">
+          <button data-bind="click: showEditEventModal">Edit</button>
+          <button data-bind="click: showDeleteEventModal">Delete</button>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Add event input modal -->
   <form class="form-horizontal" data-bind="with: appModel, submit: addEvent">
-    <div class="modal fade" id="add-event-modal" data-backdrop="static" tabindex="10000">
+    <div class="modal fade" id="add-event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -105,14 +109,37 @@
                 <label for="image" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
                 <div class="col-sm-8">
                   <input id="image" type="file" accept="image/*" onchange="appModel.updateEventImageFile(event)">
-                  <img class="col-sm-12" id="addEventImage"/>
+                  <img class="col-sm-12" id="addEventImage" />
                 </div>
               </div>
 
             </div>
             <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
+              <button data-bind="disable: appModel.busy, text: appModel.eventModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Delete event confirmation -->
+  <form class="form-horizontal" data-bind="with: appModel, submit: addEvent">
+    <div class="modal fade" id="delete-event-modal" data-backdrop="static" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Delete event</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <form class="form-horizontal">
+            <div class="modal-body">
+              <p>Are you sure you want to remove this event?</p>
+            </div>
+            <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
-              <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Add</button>
+              <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Delete</button>
             </div>
           </form>
         </div>

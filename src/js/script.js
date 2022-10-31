@@ -16,6 +16,23 @@ var EventItemModel = function (event) {
             return '';
         }
     }
+
+    this.showDeleteEventModal = function () {
+        $('#delete-event-modal').modal('show');
+    }
+
+    this.showEditEventModal = function () {
+
+        appModel.eventModalMode('Edit');
+
+        appModel.eventTitle(this.title)
+        appModel.eventDescription(this.description)
+        appModel.eventStartDate(this.start_date)
+        appModel.eventEndDate(this.end_date)
+        appModel.eventCategory(this.category_id)
+        //appModel.eventImageFile(this.title)
+        $('#add-event-modal').modal('show');
+    }
 }
 
 var CategoryItemModel = function (category) {
@@ -46,6 +63,7 @@ var appModel = new function () {
     this.events = ko.observableArray()
     this.categories = ko.observableArray()
 
+    this.eventModalMode = ko.observable(null)
     this.eventTitle = ko.observable(null)
     this.eventDescription = ko.observable(null)
     this.eventStartDate = ko.observable(null)
@@ -72,6 +90,15 @@ var appModel = new function () {
         } else {
             self.loginButtonText('Login')
         }
+    }
+
+    self.resetEventFields = function () {
+        self.eventTitle(null)
+        self.eventDescription(null)
+        self.eventStartDate(null)
+        self.eventEndDate(null)
+        self.eventCategory(null)
+        self.eventImageFile(null)
     }
 
     self.tryLogin = function () {
@@ -164,6 +191,8 @@ var appModel = new function () {
     }
 
     self.showAddEventModal = function () {
+        self.resetEventFields();
+        self.eventModalMode('Add');
         $('#add-event-modal').modal('show');
     }
 
