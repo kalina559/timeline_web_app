@@ -11,6 +11,11 @@ var CategoryItemModel = function (category) {
         categoryModel.categoryColorHex(this.color_hex);
         $('#category-modal').modal('show');
     }
+
+    this.showDeleteCategoryModal = function () {
+        categoryModel.editedCategoryId(this.id);
+        $('#delete-category-modal').modal('show');
+    }
 }
 
 var categoryModel = new function () {

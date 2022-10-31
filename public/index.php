@@ -43,9 +43,10 @@
   <aside class="category-legend col-sm-3" data-bind="with: categoryModel">
     <h2>Categories:</h2>
     <div data-bind="foreach: categoryModel.categories">
-      <div class="category-item" data-bind="click: showEditCategoryModal">
-        <div class="category-color-box" data-bind="style:{ 'background-color': color_hex}"></div>
+      <div class="row">
+        <div class="category-color-box" data-bind="click: showEditCategoryModal, style:{ 'background-color': color_hex}"></div>
         <p data-bind="text: name"></p>
+        <p class="delete-button" data-bind="click: showDeleteCategoryModal">x</p>
       </div>
     </div>
     <button data-bind="click: showAddCategoryModal">Add a category</button>
@@ -184,5 +185,32 @@
     </div>
   </div>
 </form>
+
+<!-- Delete category confirmation -->
+<form class="form-horizontal add-update-modal" data-bind="with: categoryModel, submit: categoryModel.deleteCategory">
+    <div class="modal fade" id="delete-category-modal" data-backdrop="static" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Delete category</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <form class="form-horizontal">
+            <div class="modal-body">
+              <p>Are you sure you want to remove this category?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
+              <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+  <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
+</body>
 
 </html>

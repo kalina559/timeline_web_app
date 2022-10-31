@@ -200,12 +200,16 @@ h2 {
     border: 1px solid black;
     clear: both;
     margin-right: 5px;
+    margin-left: 15px;
+    cursor: pointer;
 }
 
 .category-legend {
     position: absolute;
 }
 
-.category-item {
+.delete-button {
     cursor: pointer;
+    margin-left: 10px;
+    color: red;
 }

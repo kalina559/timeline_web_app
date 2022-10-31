@@ -19,7 +19,11 @@ var EventItemModel = function (event) {
 
     this.categoryColor = function () {
         var currentCategory = categoryModel.categories().find(c => c.id == this.category_id)
-        return currentCategory.color_hex
+        if (currentCategory != null) {
+            return currentCategory.color_hex
+        } else {
+            return '#FFFFFF';
+        }
     }
 
     this.showDeleteEventModal = function () {
