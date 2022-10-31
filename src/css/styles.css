@@ -188,6 +188,20 @@ body {
     z-index: 100000;
 }
 
-h2{
+h2 {
     font-weight: bold;
+}
+
+.category-color-box {
+    float: left;
+    height: 20px;
+    width: 20px;
+    margin-bottom: 15px;
+    border: 1px solid black;
+    clear: both;
+    margin-right: 5px;
+}
+
+.category-legend {
+    position: absolute;
 }

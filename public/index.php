@@ -44,6 +44,14 @@
     </div>
   </div>
 
+  <aside class="category-legend col-sm-3">
+    <h2>Categories:</h2>
+    <div data-bind="foreach: appModel.categories">
+      <div class="category-color-box" data-bind="style:{ 'background-color': color_hex}"></div>
+      <p data-bind="text: name"></p>
+    </div>
+  </aside>
+
   <div class="timeline" data-bind="foreach: appModel.events">
     <div class="container">
       <div class="content" data-bind="style:{ 'background-color': appModel.categories().length > 0 ? categoryColor() : '#FFFFFF' }">
