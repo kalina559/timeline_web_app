@@ -9,7 +9,9 @@ class EventHandler
 
         $result = executeQuery(
             $con,
-            "SELECT id, start_date, end_date, category_id, title, description FROM events"
+            "SELECT id, start_date, end_date, category_id, title, description
+            FROM events
+            ORDER BY start_date DESC"
         );
 
         $json = mysqli_fetch_all ($result, MYSQLI_ASSOC);
