@@ -17,7 +17,7 @@ if (!isset($aResult['error'])) {
 
     switch ($_POST['functionname']) {
         case 'get':
-                $aResult['result'] = EventHandler::getEvents();
+            $aResult['result'] = EventHandler::getEvents();
             break;
         case 'add':
             $title = $data['Title'];
@@ -27,7 +27,7 @@ if (!isset($aResult['error'])) {
             $categoryId = $data['CategoryId'];
             $imageFile = $data['ImageFile'];
 
-            if($endDate != null && $startDate > $endDate){
+            if ($endDate != null && $startDate > $endDate) {
                 $aResult['result'] = 'failed';
                 break;
             }
@@ -43,7 +43,7 @@ if (!isset($aResult['error'])) {
             $categoryId = $data['CategoryId'];
             $imageFile = $data['ImageFile'];
 
-            if($endDate != null && $startDate > $endDate){
+            if ($endDate != null && $startDate > $endDate) {
                 $aResult['result'] = 'failed';
                 break;
             }
@@ -51,8 +51,15 @@ if (!isset($aResult['error'])) {
             EventHandler::editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile);
             $aResult['result'] = 'success';
             break;
+
+        case 'delete':
+            $id = $data['Id'];            
+
+            EventHandler::deleteEvent($id);
+            $aResult['result'] = 'success';
+            break;
         default:
-            
+
             break;
     }
 }

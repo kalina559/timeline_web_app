@@ -18,6 +18,7 @@ var EventItemModel = function (event) {
     }
 
     this.showDeleteEventModal = function () {
+        appModel.editedEventId(this.id);
         $('#delete-event-modal').modal('show');
     }
 
@@ -34,7 +35,7 @@ var EventItemModel = function (event) {
         appModel.eventCategory(selectedCategory)
 
         //appModel.eventImageFile(this.title)
-        $('#add-event-modal').modal('show');
+        $('#event-modal').modal('show');
     }
 }
 
@@ -197,7 +198,7 @@ var appModel = new function () {
     self.showAddEventModal = function () {
         self.resetEventFields();
         self.eventModalMode('Add');
-        $('#add-event-modal').modal('show');
+        $('#event-modal').modal('show');
     }
 
     self.updateEventImageFile = function (value) {
@@ -232,7 +233,7 @@ var appModel = new function () {
         makeAjaxCall('add', requestArguments,
             '../src/php/events/EventController.php',
             function (data) {
-                $('#add-event-modal').modal('hide');
+                $('#event-modal').modal('hide');
                 if (data == 'success') {
                     self.refreshEvents()
                 } else {
@@ -255,7 +256,24 @@ var appModel = new function () {
         makeAjaxCall('update', requestArguments,
             '../src/php/events/EventController.php',
             function (data) {
-                $('#add-event-modal').modal('hide');
+                $('#event-modal').modal('hide');
+                if (data == 'success') {
+                    self.refreshEvents()
+                } else {
+                    // shouldn't really happen, but just in case
+                    alert('Add event failed');
+                }
+            })
+    }
+
+    self.deleteEvent = function () {
+        var requestArguments = {
+            Id: self.editedEventId
+        }
+        makeAjaxCall('delete', requestArguments,
+            '../src/php/events/EventController.php',
+            function (data) {
+                $('#delete-event-modal').modal('hide');
                 if (data == 'success') {
                     self.refreshEvents()
                 } else {

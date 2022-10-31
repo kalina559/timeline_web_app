@@ -60,7 +60,7 @@
 
   <!-- Add event input modal -->
   <form class="form-horizontal" data-bind="with: appModel, submit: editEvent">
-    <div class="modal fade" id="add-event-modal" data-backdrop="static" tabindex="-1">
+    <div class="modal fade" id="event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -126,7 +126,7 @@
   </form>
 
   <!-- Delete event confirmation -->
-  <form class="form-horizontal" data-bind="with: appModel, submit: addEvent">
+  <form class="form-horizontal" data-bind="with: appModel, submit: deleteEvent">
     <div class="modal fade" id="delete-event-modal" data-backdrop="static" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">

@@ -57,4 +57,23 @@ class EventHandler
 
         $con->close();
     }
+
+    static function deleteEvent($id)
+    {
+        if(!AccountHandler::validateUserLoggedIn()){
+            throw new Exception("User is not logged in."); 
+        }
+
+        $con = getDbConnection();
+
+        executeQueryWithParams(
+            $con,
+            "DELETE FROM events 
+            WHERE id = ?",
+            's',
+            $id
+        );
+
+        $con->close();
+    }
 }
