@@ -45,8 +45,8 @@
   </div>
 
   <div class="timeline" data-bind="foreach: appModel.events">
-    <div class="container ">
-      <div class="content">
+    <div class="container">
+      <div class="content" data-bind="style:{ 'background-color': appModel.categories().length > 0 ? categoryColor() : '#FFFFFF' }">
         <h2 data-bind="text: title"></h2>
         <h4 data-bind="text: formattedEventPeriod()"></h4>
         <p data-bind="text: description"></p>

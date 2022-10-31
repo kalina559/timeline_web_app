@@ -16,6 +16,11 @@ var EventItemModel = function (event) {
             return '';
         }
     }
+    
+    this.categoryColor = function () {
+        var currentCategory = appModel.categories().find(c => c.id == this.category_id)
+        return currentCategory.color_hex
+    }
 
     this.showDeleteEventModal = function () {
         appModel.editedEventId(this.id);
