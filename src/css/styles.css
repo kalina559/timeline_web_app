@@ -213,3 +213,12 @@ h2 {
     margin-left: 10px;
     color: red;
 }
+
+.event-image{
+    max-width: -webkit-fill-available
+}
+
+.image-container{
+    display: flex;
+    justify-content: center;
+}

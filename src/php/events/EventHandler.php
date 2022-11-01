@@ -14,11 +14,19 @@ class EventHandler
             ORDER BY start_date DESC"
         );
 
-        //$json = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         $json = [];
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            $row['base64String'] = 'xd';
+            $currentEventId = $row['id'];
+
+            $path = "../../../images/event$currentEventId.jpg";
+            if (file_exists($path)) {
+                $data = file_get_contents($path);
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                $row['base64String'] = $base64;
+            }
+
             array_push($json, $row);
         }
 
@@ -47,10 +55,11 @@ class EventHandler
             $categoryId
         );
 
-
+        // add new image file
         // TODO extract method
         $data = explode(',', $imageFile);
         $filename_path = "event$con->insert_id.jpg";
+
         $decoded = base64_decode($data[1]);
         file_put_contents("../../../images/" . $filename_path, $decoded);
 
@@ -79,7 +88,33 @@ class EventHandler
             $id
         );
 
+        // remove the existing image file
+        if (file_exists("../../../images/event$id.jpg")) {
+            // TODO check if the data is equal
+            unlink("../../../images/event$id.jpg");
+        }
+
+        $scaledImage = EventHandler::resizeImage($imageFile, 200);
+
+        $filename_path = "../../../images/event$id.jpg";
+        imagejpeg($scaledImage, $filename_path);
+
         $con->close();
+    }
+
+    static function resizeImage($imageData, $newHeight){
+        $data = explode(',', $imageData);
+        $decodedSource = base64_decode($data[1]);
+
+        $im = imagecreatefromstring($decodedSource);
+        $source_width = imagesx($im);
+        $source_height = imagesy($im);
+        $ratio =  $source_width / $source_height;
+
+        $new_height = $newHeight;
+        $new_width = $ratio * $newHeight;
+
+        return imagescale($im, $new_width, $new_height);
     }
 
     static function deleteEvent($id)
@@ -98,25 +133,24 @@ class EventHandler
             $id
         );
 
+        // remove the existing image file
+        if (file_exists("../../../images/event$id.jpg")) {
+            // TODO check if the data is equal
+            unlink("../../../images/event$id.jpg");
+        }
+
         $con->close();
     }
 
-    static function base64_to_jpeg($base64_string, $output_file)
+    static function addEventImage($id)
     {
-        // open the output file for writing
-        $ifp = fopen($output_file, 'wb');
+    }
 
-        // split the string on commas
-        // $data[ 0 ] == "data:image/png;base64"
-        // $data[ 1 ] == <actual base64 string>
-        $data = explode(',', $base64_string);
+    static function removeEventImage($id)
+    {
+    }
 
-        // we could add validation here with ensuring count( $data ) > 1
-        fwrite($ifp, base64_decode($data[1]));
-
-        // clean up the file resource
-        fclose($ifp);
-
-        return $output_file;
+    static function replaceEventImage($id)
+    {
     }
 }

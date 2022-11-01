@@ -44,7 +44,7 @@
 
   <!-- list of all categories -->
   <aside class="category-legend col-sm-3" data-bind="with: categoryModel">
-  <h1 class="mb-4">Categories:</h1>
+    <h1 class="mb-4">Categories:</h1>
     <div data-bind="foreach: categoryModel.categories">
       <div class="row">
         <div class="category-color-box" data-bind="click: showEditCategoryModal, style:{ 'background-color': color_hex}"></div>
@@ -60,7 +60,9 @@
     <div class="container">
       <div class="content" data-bind="style:{ 'background-color': categoryModel.categories().length > 0 ? categoryColor() : '#FFFFFF' }">
         <h2 data-bind="text: title"></h2>
-        <img data-bind="src: image">
+        <div class="image-container">
+          <img class="event-image" data-bind="attr:{src: image}, visible: image != null" />
+        </div>
         <h4 data-bind="text: formattedEventPeriod()"></h4>
         <p data-bind="text: description"></p>
         <div data-bind="visible: appModel.userLoggedIn()">
