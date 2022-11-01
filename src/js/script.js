@@ -86,6 +86,9 @@ var appModel = new function () {
     }
 
     self.showChangePasswordModal = function () {
+        self.currentPassword(null);
+        self.newPassword(null);
+        self.newPasswordRepeat(null);
         $('#update-password-modal').modal('show');
     }
 

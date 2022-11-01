@@ -238,19 +238,19 @@
           <div class="form-group modal-field">
             <label for="current-password" class="col-sm-offset-1 col-sm-4 control-label">Current password</label>
             <div class="col-sm-8">
-              <input type="text" required id="current-password" data-bind="value: currentPassword" class="form-control"></textarea>
+              <input type="password" required id="current-password" data-bind="value: currentPassword" class="form-control"></textarea>
             </div>
           </div>
           <div class="form-group modal-field">
             <label for="new-password" class="col-sm-offset-1 col-sm-4 control-label">New password:</label>
             <div class="col-sm-8">
-              <input type="text" id="new-password" data-bind="value: newPassword" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
+              <input type="password" id="new-password" data-bind="value: newPassword" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
             </div>
           </div>
           <div class="form-group modal-field">
             <label for="new-password-repeat" class="col-sm-offset-1 col-sm-4 control-label">Repeat new password:</label>
             <div class="col-sm-8">
-              <input type="text" id="new-password-repeat" data-bind="value: newPasswordRepeat" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
+              <input type="password" id="new-password-repeat" data-bind="value: newPasswordRepeat" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
             </div>
           </div>
           <div class="modal-footer">
