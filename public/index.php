@@ -34,8 +34,16 @@
     </div>
 
     <!-- add new event -->
-    <div class="col-sm-6" id="login-logout-layout">
-      <button class="btn btn-danger" type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
+    <div class="col-sm-6" id="login-logout-layout" data-bind="visible: appModel.userLoggedIn()">
+      <div>
+        <div>
+          <h5 data-bind="text: 'Logged in as: ' + currentUserName()"></h5>
+        </div>
+        <div>
+          <button class="btn btn-danger" type="button" data-bind="click: appModel.tryLogout">Logout</button>
+          <button class="btn btn-info" type="button" data-bind="click: appModel.showChangePasswordModal">Change password</button>
+        </div>
+      </div>
       <div>
         <button class="btn btn-primary" id="add-new-event-button" type="button" data-bind="click: eventModel.showAddEventModal, visible: appModel.userLoggedIn()">Add a new event</button>
       </div>
@@ -121,7 +129,7 @@
                 <label for="image" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
                 <div class="col-sm-8">
                   <input id="image-file-input" type="file" accept="image/*" onchange="eventModel.updateEventImageFile(event)">
-                  <img class="col-sm-12" id="addEventImage" data-bind="attr:{src: eventImageFile}, visible: eventImageFile() != null"/>
+                  <img class="col-sm-12" id="addEventImage" data-bind="attr:{src: eventImageFile}, visible: eventImageFile() != null" />
                 </div>
               </div>
             </div>
@@ -180,8 +188,7 @@
             <div class="form-group modal-field">
               <label for="category-color" class="col-sm-offset-1 col-sm-4 control-label">Color:</label>
               <div class="col-sm-8">
-                <input required type="color" id="category-color" data-bind="value: categoryColorHex" class="form-control">
-                <!-- <textarea required rows="4" id="category-color" data-bind="value: categoryColorHex" class="form-control"></textarea> -->
+                <input type="color" id="category-color" data-bind="value: categoryColorHex" class="form-control">
               </div>
             </div>
           </div>
@@ -218,6 +225,43 @@
   </div>
 </form>
 
+<!-- Update account password -->
+<form class="form-horizontal add-update-modal" data-bind="submit: updatePassword">
+  <div class="modal fade" id="update-password-modal" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Update password</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form class="form-horizontal">
+          <div class="form-group modal-field">
+            <label for="current-password" class="col-sm-offset-1 col-sm-4 control-label">Current password</label>
+            <div class="col-sm-8">
+              <input type="text" required id="current-password" data-bind="value: currentPassword" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group modal-field">
+            <label for="new-password" class="col-sm-offset-1 col-sm-4 control-label">New password:</label>
+            <div class="col-sm-8">
+              <input type="text" id="new-password" data-bind="value: newPassword" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
+            </div>
+          </div>
+          <div class="form-group modal-field">
+            <label for="new-password-repeat" class="col-sm-offset-1 col-sm-4 control-label">Repeat new password:</label>
+            <div class="col-sm-8">
+              <input type="text" id="new-password-repeat" data-bind="value: newPasswordRepeat" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
+            <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</form>
 
 <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
 </body>

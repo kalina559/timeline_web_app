@@ -30,22 +30,23 @@ if (!isset($output['error'])) {
             break;
 
         case 'logout':
-
             $success =  AccountHandler::logout();
             $output['result'] = 'success';
 
             break;
 
         case 'checkIfLoggedIn':
-
-            $result =  AccountHandler::getLoggedInUser();            
-            // if ($result !== NULL) {
-            //     $output['result'] = 'failed';
-            // } else {
-            //     $output['result'] = 'success';
-            // }
+            $result =  AccountHandler::getLoggedInUser();
             $output['result'] = $result;
             break;
+
+        case 'updatePassword':
+            $oldPassword = $data['OldPassword'];
+            $newPassword = $data['NewPassword'];
+            $result =  AccountHandler::updateUsersPassword($oldPassword, $newPassword);
+            $output['result'] = $result;
+            break;
+
         default:
             $output['result'] = 'failed';
             break;

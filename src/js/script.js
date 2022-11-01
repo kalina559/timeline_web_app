@@ -20,7 +20,10 @@ var appModel = new function () {
     this.loginButtonText = ko.observable('Login')
     this.login = ko.observable(null)
     this.password = ko.observable(null)
-    this.currentUser = ko.observable(null)
+    this.currentUserName = ko.observable(null)
+    this.currentPassword = ko.observable(null)
+    this.newPassword = ko.observable(null)
+    this.newPasswordRepeat = ko.observable(null)
     //this.busy = ko.observable(true)
 
     this.dateFormat = 'DD/MM/YYYY'
@@ -32,7 +35,7 @@ var appModel = new function () {
         function (data) {
             if (data != null) {
                 self.userLoggedIn(true)
-                self.currentUser(data.success)
+                self.currentUserName(data)
             }
         })
     }
@@ -59,7 +62,7 @@ var appModel = new function () {
             function (data) {
                 if (data == 'success') {
                     self.userLoggedIn(true)
-                    self.currentUser(self.login)
+                    self.currentUserName(self.login())
                     self.login(null)
                     self.password(null)
                 } else {
@@ -69,19 +72,47 @@ var appModel = new function () {
     }
 
     self.tryLogout = function () {
-        var requestArguments = {
-            User: self.currentUser
-        }
-
-        this.makeAjaxCall('logout', requestArguments,
+        this.makeAjaxCall('logout', { User: 'something so that arguments are not null' },
             '../src/php/account/AccountController.php',
             function (data) {
                 if (data == 'success') {
                     self.userLoggedIn(false)
-                    self.currentUser(null)
+                    self.currentUserName(null)
                 } else {
                     // shouldn't really happen, but just in case
                     alert('Logout failed');
+                }
+            })
+    }
+
+    self.showChangePasswordModal = function () {
+        $('#update-password-modal').modal('show');
+    }
+
+    self.validatePasswordRepeat = function () {
+        var newPassword = document.getElementById("new-password");
+        var newPasswordRepeat = document.getElementById("new-password-repeat");
+        if(newPassword.value != newPasswordRepeat.value){
+            newPasswordRepeat.setCustomValidity("Passwords don't match");
+        } else {
+            newPasswordRepeat.setCustomValidity('');
+        }
+    }
+
+    self.updatePassword = function () {
+        var requestArguments = {
+            OldPassword: self.currentPassword,
+            NewPassword: self.newPassword
+        }
+
+        this.makeAjaxCall('updatePassword', requestArguments,
+            '../src/php/account/AccountController.php',
+            function (data) {
+                if (data == 'success') {
+                    $('#update-password-modal').modal('hide');
+                } else {
+                    // shouldn't really happen, but just in case
+                    alert(data);
                 }
             })
     }

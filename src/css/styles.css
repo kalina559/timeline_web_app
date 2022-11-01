@@ -1,6 +1,6 @@
 html,
 body {
-    font-family: arial, sans-serif;
+    font-family: Helvetica;
 }
 
 .input-field {
@@ -13,7 +13,7 @@ body {
 
 body {
     background-color: #035d96;
-    font-family: Helvetica, sans-serif;
+    font-family: Helvetica;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -230,7 +230,8 @@ h2 {
 #login-logout-layout {
     text-align: center;
     width: 50%;
-     margin: 0 auto
+    margin: 0 auto;
+    margin-top: 15px;
 }
 
 #add-new-event-button{
