@@ -26,22 +26,25 @@
           <input id="password-field" class="input-field col-sm-6" type="password" required type="text" data-bind="value: appModel.password" placeholder="Type your password" />
         </div>
         <div class="col-sm-12">
-          <button type="submit">Submit</button>
+          <button class="btn btn-primary" type="submit">Submit</button>
         </div>
       </form>
-      <button type="button" data-bind="click: appModel.toggleLogin, text: appModel.loginButtonText">Login</button>
+      <button class="btn btn-primary" type="button" data-bind="click: appModel.toggleLogin, text: appModel.loginButtonText">Login</button>
     </div>
+
+    <!-- add new event -->
     <div class="col-sm-6" style="text-align: center; width: 50%; margin: 0 auto">
-      <button type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
+      <button class="btn btn-danger" type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
       <div>
-        <span data-bind="visible: appModel.userLoggedIn()">Amazing feature only visible to logged in users</span>
-        <button type="button" data-bind="click: eventModel.showAddEventModal, visible: appModel.userLoggedIn()">Some action available to logged in users</button>
+        <button class="btn btn-primary" type="button" data-bind="click: eventModel.showAddEventModal, visible: appModel.userLoggedIn()">Add new event</button>
       </div>
     </div>
+
   </div>
 
+  <!-- list of all categories -->
   <aside class="category-legend col-sm-3" data-bind="with: categoryModel">
-    <h2>Categories:</h2>
+  <h1 class="mb-4">Categories:</h1>
     <div data-bind="foreach: categoryModel.categories">
       <div class="row">
         <div class="category-color-box" data-bind="click: showEditCategoryModal, style:{ 'background-color': color_hex}"></div>
@@ -49,7 +52,7 @@
         <p class="delete-button" data-bind="click: showDeleteCategoryModal">x</p>
       </div>
     </div>
-    <button data-bind="click: showAddCategoryModal">Add a category</button>
+    <button class="btn btn-primary" data-bind="click: showAddCategoryModal">Add a category</button>
   </aside>
 
   <div class="timeline" data-bind="foreach: eventModel.events">
@@ -59,8 +62,8 @@
         <h4 data-bind="text: formattedEventPeriod()"></h4>
         <p data-bind="text: description"></p>
         <div data-bind="visible: appModel.userLoggedIn()">
-          <button data-bind="click: showEditEventModal">Edit</button>
-          <button data-bind="click: showDeleteEventModal">Delete</button>
+          <button class="btn btn-primary" data-bind="click: showEditEventModal">Edit</button>
+          <button class="btn btn-danger" data-bind="click: showDeleteEventModal">Delete</button>
         </div>
       </div>
     </div>
@@ -142,7 +145,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
-              <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Delete</button>
+              <button data-bind="disable: appModel.busy" type="submit" class="btn btn-danger"><span class="fa fa-pencil"></span> Delete</button>
             </div>
           </form>
         </div>
@@ -188,29 +191,29 @@
 
 <!-- Delete category confirmation -->
 <form class="form-horizontal add-update-modal" data-bind="with: categoryModel, submit: categoryModel.deleteCategory">
-    <div class="modal fade" id="delete-category-modal" data-backdrop="static" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Delete category</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-          <form class="form-horizontal">
-            <div class="modal-body">
-              <p>Are you sure you want to remove this category?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
-              <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Delete</button>
-            </div>
-          </form>
+  <div class="modal fade" id="delete-category-modal" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete category</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
+        <form class="form-horizontal">
+          <div class="modal-body">
+            <p>Are you sure you want to remove this category?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
+            <button data-bind="disable: appModel.busy" type="submit" class="btn btn-danger"><span class="fa fa-pencil"></span> Delete</button>
+          </div>
+        </form>
       </div>
     </div>
-  </form>
+  </div>
+</form>
 
 
-  <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
 </body>
 
 </html>
