@@ -73,7 +73,7 @@ var categoryModel = new function () {
     function addCategory() {
         var requestArguments = {
             Name: self.categoryName,
-            ColorHex: self.categoryColorHex
+            ColorHex: self.categoryColorHex() != null ? self.categoryColorHex : '#000000'
         }
         appModel.makeAjaxCall('add', requestArguments,
             '../src/php/categories/CategoriesController.php',

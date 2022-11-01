@@ -180,7 +180,8 @@
             <div class="form-group modal-field">
               <label for="category-color" class="col-sm-offset-1 col-sm-4 control-label">Color:</label>
               <div class="col-sm-8">
-                <textarea required rows="4" id="category-color" data-bind="value: categoryColorHex" class="form-control"></textarea>
+                <input required type="color" id="category-color" data-bind="value: categoryColorHex" class="form-control">
+                <!-- <textarea required rows="4" id="category-color" data-bind="value: categoryColorHex" class="form-control"></textarea> -->
               </div>
             </div>
           </div>
