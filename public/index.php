@@ -29,14 +29,15 @@
           <button class="btn btn-primary" type="submit">Submit</button>
         </div>
       </form>
+      <!-- login/logout button -->
       <button class="btn btn-primary" type="button" data-bind="click: appModel.toggleLogin, text: appModel.loginButtonText">Login</button>
     </div>
 
     <!-- add new event -->
-    <div class="col-sm-6" style="text-align: center; width: 50%; margin: 0 auto">
+    <div class="col-sm-6" id="login-logout-layout">
       <button class="btn btn-danger" type="button" data-bind="click: appModel.tryLogout, visible: appModel.userLoggedIn()">Logout</button>
       <div>
-        <button class="btn btn-primary" type="button" data-bind="click: eventModel.showAddEventModal, visible: appModel.userLoggedIn()">Add new event</button>
+        <button class="btn btn-primary" id="add-new-event-button" type="button" data-bind="click: eventModel.showAddEventModal, visible: appModel.userLoggedIn()">Add a new event</button>
       </div>
     </div>
 
@@ -48,11 +49,11 @@
     <div data-bind="foreach: categoryModel.categories">
       <div class="row">
         <div class="category-color-box" data-bind="click: showEditCategoryModal, style:{ 'background-color': color_hex}"></div>
-        <p data-bind="text: name"></p>
+        <p class="category-name" data-bind="text: name"></p>
         <p class="delete-button" data-bind="click: showDeleteCategoryModal">x</p>
       </div>
     </div>
-    <button class="btn btn-primary" data-bind="click: showAddCategoryModal">Add a category</button>
+    <button class="btn btn-primary" data-bind="click: showAddCategoryModal">Add a new category</button>
   </aside>
 
   <!-- timeline with all events -->
