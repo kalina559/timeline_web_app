@@ -6,6 +6,7 @@ var EventItemModel = function (event) {
     this.category_id = event.category_id;
     this.title = event.title;
     this.description = event.description;
+    this.image = event.base64String
 
     this.formattedEventPeriod = function () {
         if (this.end_date == null) {

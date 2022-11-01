@@ -55,10 +55,12 @@
     <button class="btn btn-primary" data-bind="click: showAddCategoryModal">Add a category</button>
   </aside>
 
+  <!-- timeline with all events -->
   <div class="timeline" data-bind="foreach: eventModel.events">
     <div class="container">
       <div class="content" data-bind="style:{ 'background-color': categoryModel.categories().length > 0 ? categoryColor() : '#FFFFFF' }">
         <h2 data-bind="text: title"></h2>
+        <img data-bind="src: image">
         <h4 data-bind="text: formattedEventPeriod()"></h4>
         <p data-bind="text: description"></p>
         <div data-bind="visible: appModel.userLoggedIn()">
@@ -115,7 +117,7 @@
               <div class="form-group modal-field">
                 <label for="image" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
                 <div class="col-sm-8">
-                  <input id="image" type="file" accept="image/*" onchange="appModel.updateEventImageFile(event)">
+                  <input id="image" type="file" accept="image/*" onchange="eventModel.updateEventImageFile(event)">
                   <img class="col-sm-12" id="addEventImage" />
                 </div>
               </div>
