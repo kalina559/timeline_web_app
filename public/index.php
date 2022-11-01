@@ -119,8 +119,8 @@
               <div class="form-group modal-field">
                 <label for="image" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
                 <div class="col-sm-8">
-                  <input id="image" type="file" accept="image/*" onchange="eventModel.updateEventImageFile(event)">
-                  <img class="col-sm-12" id="addEventImage" />
+                  <input id="image-file-input" type="file" accept="image/*" onchange="eventModel.updateEventImageFile(event)">
+                  <img class="col-sm-12" id="addEventImage" data-bind="attr:{src: eventImageFile}, visible: eventImageFile() != null"/>
                 </div>
               </div>
             </div>
