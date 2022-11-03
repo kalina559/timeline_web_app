@@ -50,6 +50,10 @@ var appModel = new function () {
         }
     }
 
+    self.printTimeline = function () {
+        window.print();
+    }
+
     self.tryLogin = function () {
 
         var requestArguments = {

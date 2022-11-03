@@ -1,5 +1,4 @@
-html,
-body {
+html {
     font-family: Helvetica;
 }
 
@@ -8,8 +7,12 @@ body {
 }
 
 body {
-    background-color: #035d96;
     font-family: Helvetica;
+    background-color: #035d96 !important;
+}
+
+.body-background {
+    background-color: #035d96 !important;
 }
 
 /* The actual timeline (the vertical ruler) */
@@ -35,7 +38,6 @@ body {
 .container {
     padding: 10px 40px;
     position: relative;
-    background-color: inherit;
     margin-left: 0;
     width: 50%;
 }
@@ -144,6 +146,7 @@ h2 {
 }
 
 .category-name {
+    margin-left: 15px;
     font-size: large;
     font-weight: 500;
 }
@@ -170,6 +173,27 @@ h2 {
     margin-top: 15px;
 }
 
-#add-new-event-button{
+#add-new-event-button {
     margin-top: 25px;
+}
+
+/* Handling the page printing */
+@media print and (color) {
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    body {
+        zoom: 40%;
+    }
+
+    .ui-element {
+        visibility: hidden;
+    }
+
+    /* The containers to the left of the timeline */
+    .timeline .container:nth-child(odd) {
+        left: -392.5px;
+    }
 }
