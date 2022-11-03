@@ -6,8 +6,7 @@ window.addEventListener('error', function (event) {
 
 $(document).ready(function () {
     ko.applyBindings(appModel, $('html')[0])
-    //appModel.busy(false)
-
+    appModel.busy(false)
     eventModel.refreshEvents()
     appModel.checkIfUserLoggedIn()
     categoryModel.refreshCategories()
@@ -24,7 +23,7 @@ var appModel = new function () {
     this.currentPassword = ko.observable(null)
     this.newPassword = ko.observable(null)
     this.newPasswordRepeat = ko.observable(null)
-    //this.busy = ko.observable(true)
+    this.busy = ko.observable(true)
 
     this.dateFormat = 'DD/MM/YYYY'
 
@@ -125,11 +124,19 @@ var appModel = new function () {
     }
 
     self.makeAjaxCall = function (functionName, args, url, success) {
+
+        // we're locking the UI everytime an AJAX call is made
+        var concatCallback = function (data) {
+            success(data)
+            appModel.busy(false)
+        };
+
+        appModel.busy(true)
         jQuery.ajax({
             type: 'POST',
             data: { functionname: functionName, arguments: args },
             url: url,
-            success: success,
+            success: concatCallback,
             error: function (data) {
                 alert(`Ajax call failed with message: ${data.responseText}`);
             }

@@ -192,7 +192,10 @@ h2 {
         visibility: hidden;
     }
 
-    /* The containers to the left of the timeline */
+    /*
+    * window.print() messes up the position of containers to the left
+    * so we need to manually correct this.
+    */
     .timeline .container:nth-child(odd) {
         left: -392.5px;
     }
