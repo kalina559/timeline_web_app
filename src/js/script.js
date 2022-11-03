@@ -29,8 +29,8 @@ var appModel = new function () {
 
 
     self.checkIfUserLoggedIn = function () {
-        this.makeAjaxCall('checkIfLoggedIn', { User: 'something so that arguments are not null' },
-        '../src/php/account/AccountController.php',
+        this.makeAjaxCall({ User: 'something so that arguments are not null' },
+        '../src/php/controllers/account/CheckLoginStateController.php',
         function (data) {
             if (data != null) {
                 self.userLoggedIn(true)
@@ -60,8 +60,8 @@ var appModel = new function () {
             Password: self.password
         }
 
-        this.makeAjaxCall('login', requestArguments,
-            '../src/php/account/AccountController.php',
+        this.makeAjaxCall(requestArguments,
+            '../src/php/controllers/account/LoginController.php',
             function (data) {
                 if (data == 'success') {
                     self.userLoggedIn(true)
@@ -75,8 +75,8 @@ var appModel = new function () {
     }
 
     self.tryLogout = function () {
-        this.makeAjaxCall('logout', { User: 'something so that arguments are not null' },
-            '../src/php/account/AccountController.php',
+        this.makeAjaxCall({ User: 'something so that arguments are not null' },
+            '../src/php/controllers/account/LogoutController.php',
             function (data) {
                 if (data == 'success') {
                     self.userLoggedIn(false)
@@ -111,8 +111,8 @@ var appModel = new function () {
             NewPassword: self.newPassword
         }
 
-        this.makeAjaxCall('updatePassword', requestArguments,
-            '../src/php/account/AccountController.php',
+        this.makeAjaxCall(requestArguments,
+            '../src/php/controllers/account/UpdatePasswordController.php',
             function (data) {
                 if (data == 'success') {
                     $('#update-password-modal').modal('hide');
@@ -123,7 +123,7 @@ var appModel = new function () {
             })
     }
 
-    self.makeAjaxCall = function (functionName, args, url, success) {
+    self.makeAjaxCall = function (args, url, success) {
 
         // we're locking the UI everytime an AJAX call is made
         var concatCallback = function (data) {
@@ -134,11 +134,12 @@ var appModel = new function () {
         appModel.busy(true)
         jQuery.ajax({
             type: 'POST',
-            data: { functionname: functionName, arguments: args },
+            data: { arguments: args },
             url: url,
             success: concatCallback,
             error: function (data) {
                 alert(`Ajax call failed with message: ${data.responseText}`);
+                appModel.busy(false)
             }
         });
     }

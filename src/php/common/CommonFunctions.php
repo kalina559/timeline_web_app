@@ -1,5 +1,5 @@
 <?php
-include '../../../config.php';
+include __DIR__.'/../../../config.php';
 
 #region Logging to a file
 enum LogModes

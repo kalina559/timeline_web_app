@@ -35,8 +35,8 @@ var categoryModel = new function () {
         var requestArguments = {
             User: 'something so that arguments are not null'
         }
-        appModel.makeAjaxCall('get', requestArguments,
-            '../src/php/categories/CategoriesController.php',
+        appModel.makeAjaxCall(requestArguments,
+            '../src/php/controllers/category/CategoryGetController.php',
             function (data) {
                 if (data != null) {
                     self.categories.removeAll();
@@ -75,8 +75,8 @@ var categoryModel = new function () {
             Name: self.categoryName,
             ColorHex: self.categoryColorHex() != null ? self.categoryColorHex : '#000000'
         }
-        appModel.makeAjaxCall('add', requestArguments,
-            '../src/php/categories/CategoriesController.php',
+        appModel.makeAjaxCall(requestArguments,
+            '../src/php/controllers/category/CategoryAddController.php',
             function (data) {
                 $('#category-modal').modal('hide');
                 if (data == 'success') {
@@ -94,8 +94,8 @@ var categoryModel = new function () {
             Name: self.categoryName,
             ColorHex: self.categoryColorHex
         }
-        appModel.makeAjaxCall('update', requestArguments,
-            '../src/php/categories/CategoriesController.php',
+        appModel.makeAjaxCall(requestArguments,
+            '../src/php/controllers/category/CategoryUpdateController.php',
             function (data) {
                 $('#category-modal').modal('hide');
                 if (data == 'success') {
@@ -111,8 +111,8 @@ var categoryModel = new function () {
         var requestArguments = {
             Id: self.editedCategoryId
         }
-        appModel.makeAjaxCall('delete', requestArguments,
-            '../src/php/categories/CategoriesController.php',
+        appModel.makeAjaxCall(requestArguments,
+            '../src/php/controllers/category/CategoryDeleteController.php',
             function (data) {
                 $('#delete-category-modal').modal('hide');
                 if (data == 'success') {

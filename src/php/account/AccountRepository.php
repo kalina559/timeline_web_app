@@ -1,17 +1,27 @@
 <?php
+include __DIR__.'/../common/CommonFunctions.php';
 
-class AccountHandler
+class AccountRepository
 {
-    static function tryLogin($login, $password)
-    {
+    private $con;
 
-        log_message(LogModes::Info->name, "Trying to log in");
+    function __construct() {
+        log_message(LogModes::Info->name, "Creating AccountRepository");
+        $this->con = getDbConnection();
+    }
+
+    function __destruct() {
+        log_message(LogModes::Info->name, "Deleting AccountRepository");
+        $this->con->close();
+        unset($this->con);
+    }
+
+    public function login($login, $password)
+    {
         $hashedPassword = hash('sha256', $password);
 
-        $con = getDbConnection();
-
         $result = executeQueryWithParams(
-            $con,
+            $this->con,
             "SELECT id FROM users WHERE login = ? AND password = ?",
             'ss',
             $login,
@@ -22,19 +32,15 @@ class AccountHandler
             $row = $result->fetch_row();
             $userId = $row[0] ?? false;
 
-            AccountHandler::clearExpiredUserLogins($con, $userId);
-            AccountHandler::markUserAsLoggedIn($con, $userId);
+            $this->clearExpiredUserLogins($userId);
+            $this->markUserAsLoggedIn($userId);
 
-            $con->close();
             return TRUE;
         }
-
-        $con->close();
-
         return FALSE;
     }
 
-    static function markUserAsLoggedIn($con, $userId)
+    public function markUserAsLoggedIn($userId)
     {
         $session_id = session_id();
 
@@ -42,7 +48,7 @@ class AccountHandler
         $now->add(new DateInterval('PT' . LOGIN_SESSION_DURATION_MINUTES . 'M'));
 
         executeQueryWithParams(
-            $con,
+            $this->con,
             "INSERT INTO  users_logged_in (user_id, session_id, valid_until) VALUES (?, ?, ?)",
             'sss',
             $userId,
@@ -51,13 +57,14 @@ class AccountHandler
         );
     }
 
-    static function clearExpiredUserLogins($con)
+    
+    public function clearExpiredUserLogins()
     {
         $now = new DateTime();
         $session_id = session_id();
 
         executeQueryWithParams(
-            $con,
+            $this->con,
             "DELETE FROM  users_logged_in WHERE valid_until < ? OR session_id = ?",
             'ss',
             $now->format('Y-m-d H:i:s'),
@@ -65,34 +72,28 @@ class AccountHandler
         );
     }
 
-    static function logout()
+    public function logout()
     {
         $session_id = session_id();
-        $con = getDbConnection();
 
         executeQueryWithParams(
-            $con,
+            $this->con,
             "DELETE FROM users_logged_in WHERE session_id = ?",
             's',
             $session_id
         );
-        $con->close();
     }
 
-    static function validateUserLoggedIn()
+    public function validateUserLoggedIn()
     {
         $session_id = session_id();
 
-        $con = getDbConnection();
-
         $result = executeQueryWithParams(
-            $con,
+            $this->con,
             "SELECT * FROM users_logged_in WHERE session_id = ?",
             's',
             $session_id
         );
-
-        $con->close();
 
         if ($result->num_rows > 0) {
             return array(TRUE);
@@ -101,15 +102,13 @@ class AccountHandler
         }
     }
 
-    static function getLoggedInUser()
+    public function getLoggedInUser()
     {
         $session_id = session_id();
         $now = new DateTime();
 
-        $con = getDbConnection();
-
         $result = executeQueryWithParams(
-            $con,
+            $this->con,
             "SELECT login FROM users_logged_in
             JOIN users ON users_logged_in.user_id = users.id
             WHERE session_id = ? AND valid_until > ?",
@@ -117,8 +116,6 @@ class AccountHandler
             $session_id,
             $now->format('Y-m-d H:i:s')
         );
-
-        $con->close();
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_row();
@@ -129,36 +126,32 @@ class AccountHandler
         }
     }
 
-    static function updateUsersPassword($oldPassword, $newPassword)
+    public function updateUsersPassword($oldPassword, $newPassword)
     {
-        $con = getDbConnection();
-        $currentUser = AccountHandler::getCurrentUser($con);
+        $currentUser = $this->getCurrentUser();
         if ($currentUser->num_rows == 1) {
             $row = $currentUser->fetch_row();
             $userId = $row[0];
-            $isOldPasswordCorrect = AccountHandler::validateOldPassword($con, $userId, $oldPassword);
+            $isOldPasswordCorrect = $this->validateOldPassword($userId, $oldPassword);
 
             if ($isOldPasswordCorrect->num_rows == 1) {
                 $row = $isOldPasswordCorrect->fetch_row();
-                AccountHandler::updatePassword($con, $userId, $newPassword);
-                $con->close();
+                $this->updatePassword($userId, $newPassword);
                 return "success";
             } else {
-                $con->close();
                 return "old password incorrect";
             }
         } else {
-            $con->close();
             return "no user found";
         }
     }
 
-    static function getCurrentUser($con)
+    public function getCurrentUser()
     {
         $session_id = session_id();
 
         return executeQueryWithParams(
-            $con,
+            $this->con,
             "SELECT user_id FROM users_logged_in
             WHERE session_id = ?",
             's',
@@ -166,13 +159,13 @@ class AccountHandler
         );
     }
 
-    static function validateOldPassword($con, $userId, $oldPassword)
+    public function validateOldPassword($userId, $oldPassword)
     {
         $hashedOldPassword = hash('sha256', $oldPassword);
 
         // check if the provided old password is correct
         return executeQueryWithParams(
-            $con,
+            $this->con,
             "SELECT id FROM users
         WHERE id = ? AND password = ?",
             'ss',
@@ -181,13 +174,13 @@ class AccountHandler
         );
     }
 
-    static function updatePassword($con, $userId, $newPassword)
+    public function updatePassword($userId, $newPassword)
     {
         $hashedNewPassword = hash('sha256', $newPassword);
 
         // update the password
         executeQueryWithParams(
-            $con,
+            $this->con,
             "UPDATE users
             SET password = ?
             WHERE id = ?",

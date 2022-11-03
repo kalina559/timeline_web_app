@@ -1,14 +1,25 @@
 <?php
-include '../account/AccountHandler.php';
+include __DIR__.'\..\common\CommonFunctions.php';
 
-class EventHandler
+class EventRepository
 {
-    static function getEvents()
-    {
-        $con = getDbConnection();
+    private $con;
 
+    function __construct() {
+        log_message(LogModes::Info->name, "Creating EventRepository");
+        $this->con = getDbConnection();
+    }
+
+    function __destruct() {
+        log_message(LogModes::Info->name, "Deleting EventRepository");
+        $this->con->close();
+        unset($this->con);
+    }
+
+    public function getEvents()
+    {
         $result = executeQuery(
-            $con,
+            $this->con,
             "SELECT events.id, start_date, end_date, category_id, title, description, NULL as base64String
             FROM events
             ORDER BY start_date DESC"
@@ -19,7 +30,7 @@ class EventHandler
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $currentEventId = $row['id'];
 
-            $path = "../../../images/event$currentEventId.jpg";
+            $path = __DIR__."/../../../images/event$currentEventId.jpg";
             if (file_exists($path)) {
                 $data = file_get_contents($path);
                 $type = pathinfo($path, PATHINFO_EXTENSION);
@@ -30,21 +41,18 @@ class EventHandler
             array_push($json, $row);
         }
 
-        $con->close();
-
         return $json;
     }
 
-    static function addEvent($title, $description, $startDate, $endDate, $categoryId, $imageFile)
+    public function addEvent($title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
-        if (!AccountHandler::validateUserLoggedIn()) {
-            throw new Exception("User is not logged in.");
-        }
+        // if (!AccountService::validateUserLoggedIn()) {
+        //     throw new Exception("User is not logged in.");
+        // }
 
-        $con = getDbConnection();
 
         executeQueryWithParams(
-            $con,
+            $this->con,
             "INSERT INTO events (title, description, start_date, end_date, category_id) 
             VALUES (?,?,?,?,?)",
             'sssss',
@@ -58,24 +66,22 @@ class EventHandler
         // add new image file
         // TODO extract method
         $data = explode(',', $imageFile);
-        $filename_path = "event$con->insert_id.jpg";
+        $eventId = $this->con->insert_id;
+        $filename_path = "event$eventId.jpg";
 
         $decoded = base64_decode($data[1]);
-        file_put_contents("../../../images/" . $filename_path, $decoded);
+        file_put_contents(__DIR__."/../../../images/" . $filename_path, $decoded);
 
-        $con->close();
     }
 
-    static function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
+    public function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
-        if (!AccountHandler::validateUserLoggedIn()) {
-            throw new Exception("User is not logged in.");
-        }
-
-        $con = getDbConnection();
+        // if (!AccountService::validateUserLoggedIn()) {
+        //     throw new Exception("User is not logged in.");
+        // }
 
         executeQueryWithParams(
-            $con,
+            $this->con,
             "UPDATE events 
             SET title = ?, description = ?, start_date = ?, end_date = ?, category_id = ?
             WHERE id = ?",
@@ -89,20 +95,18 @@ class EventHandler
         );
 
         // remove the existing image file
-        if (file_exists("../../../images/event$id.jpg")) {
+        if (file_exists(__DIR__."/../../../images/event$id.jpg")) {
             // TODO check if the data is equal
-            unlink("../../../images/event$id.jpg");
+            unlink(__DIR__."/../../../images/event$id.jpg");
         }
 
-        $scaledImage = EventHandler::resizeImage($imageFile, 200);
+        $scaledImage = $this->resizeImage($imageFile, 200);
 
-        $filename_path = "../../../images/event$id.jpg";
+        $filename_path = __DIR__."/../../../images/event$id.jpg";
         imagejpeg($scaledImage, $filename_path);
-
-        $con->close();
     }
 
-    static function resizeImage($imageData, $newHeight){
+    public function resizeImage($imageData, $newHeight){
         $data = explode(',', $imageData);
         $decodedSource = base64_decode($data[1]);
 
@@ -117,16 +121,14 @@ class EventHandler
         return imagescale($im, $new_width, $new_height);
     }
 
-    static function deleteEvent($id)
+    public function deleteEvent($id)
     {
-        if (!AccountHandler::validateUserLoggedIn()) {
-            throw new Exception("User is not logged in.");
-        }
-
-        $con = getDbConnection();
+        // if (!AccountService::validateUserLoggedIn()) {
+        //     throw new Exception("User is not logged in.");
+        // }
 
         executeQueryWithParams(
-            $con,
+            $this->con,
             "DELETE FROM events 
             WHERE id = ?",
             's',
@@ -134,23 +136,9 @@ class EventHandler
         );
 
         // remove the existing image file
-        if (file_exists("../../../images/event$id.jpg")) {
+        if (file_exists(__DIR__."/../../../images/event$id.jpg")) {
             // TODO check if the data is equal
-            unlink("../../../images/event$id.jpg");
+            unlink(__DIR__."/../../../images/event$id.jpg");
         }
-
-        $con->close();
-    }
-
-    static function addEventImage($id)
-    {
-    }
-
-    static function removeEventImage($id)
-    {
-    }
-
-    static function replaceEventImage($id)
-    {
     }
 }

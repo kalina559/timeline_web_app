@@ -76,8 +76,8 @@ var eventModel = new function () {
         var requestArguments = {
             User: 'something so that arguments are not null'
         }
-        appModel.makeAjaxCall('get', requestArguments,
-            '../src/php/events/EventController.php',
+        appModel.makeAjaxCall(requestArguments,
+            '../src/php/controllers/event/EventGetController.php',
             function (data) {
                 if (data != null) {
                     self.events.removeAll();
@@ -140,8 +140,8 @@ var eventModel = new function () {
             CategoryId: self.eventCategory().id,
             ImageFile: self.eventImageFile
         }
-        appModel.makeAjaxCall('add', requestArguments,
-            '../src/php/events/EventController.php',
+        appModel.makeAjaxCall(requestArguments,
+            '../src/php/controllers/event/EventAddController.php',
             function (data) {
                 $('#event-modal').modal('hide');
                 if (data == 'success') {
@@ -163,8 +163,8 @@ var eventModel = new function () {
             CategoryId: self.eventCategory().id,
             ImageFile: self.eventImageFile
         }
-        appModel.makeAjaxCall('update', requestArguments,
-            '../src/php/events/EventController.php',
+        appModel.makeAjaxCall(requestArguments,
+            '../src/php/controllers/event/EventUpdateController.php',
             function (data) {
                 $('#event-modal').modal('hide');
                 if (data == 'success') {
@@ -180,8 +180,8 @@ var eventModel = new function () {
         var requestArguments = {
             Id: self.editedEventId
         }
-        appModel.makeAjaxCall('delete', requestArguments,
-            '../src/php/events/EventController.php',
+        appModel.makeAjaxCall(requestArguments,
+            '../src/php/controllers/event/EventDeleteController.php',
             function (data) {
                 $('#delete-event-modal').modal('hide');
                 if (data == 'success') {
