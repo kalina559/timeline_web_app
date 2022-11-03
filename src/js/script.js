@@ -6,7 +6,6 @@ window.addEventListener('error', function (event) {
 
 $(document).ready(function () {
     ko.applyBindings(appModel, $('html')[0])
-    appModel.busy(false)
     eventModel.refreshEvents()
     appModel.checkIfUserLoggedIn()
     categoryModel.refreshCategories()
@@ -23,7 +22,7 @@ var appModel = new function () {
     this.currentPassword = ko.observable(null)
     this.newPassword = ko.observable(null)
     this.newPasswordRepeat = ko.observable(null)
-    this.busy = ko.observable(true)
+    this.apiCallsInProcess = ko.observable(0)
 
     this.dateFormat = 'DD/MM/YYYY'
 
@@ -123,15 +122,38 @@ var appModel = new function () {
             })
     }
 
+    self.updatePassword = function () {
+        var requestArguments = {
+            OldPassword: self.currentPassword,
+            NewPassword: self.newPassword
+        }
+
+        this.makeAjaxCall(requestArguments,
+            '../src/php/controllers/account/UpdatePasswordController.php',
+            function (data) {
+                if (data == 'success') {
+                    $('#update-password-modal').modal('hide');
+                } else {
+                    // shouldn't really happen, but just in case
+                    alert(data);
+                }
+            })
+    }
+
+    self.isBusy = ko.computed(function () {
+        return self.apiCallsInProcess() != 0;
+    });
+
     self.makeAjaxCall = function (args, url, success) {
 
         // we're locking the UI everytime an AJAX call is made
         var concatCallback = function (data) {
             success(data)
-            appModel.busy(false)
+            self.apiCallsInProcess(self.apiCallsInProcess() - 1)
         };
 
-        appModel.busy(true)
+        self.apiCallsInProcess(self.apiCallsInProcess() + 1)
+
         jQuery.ajax({
             type: 'POST',
             data: { arguments: args },
@@ -139,7 +161,7 @@ var appModel = new function () {
             success: concatCallback,
             error: function (data) {
                 alert(`Ajax call failed with message: ${data.responseText}`);
-                appModel.busy(false)
+                self.apiCallsInProcess(self.apiCallsInProcess() - 1)
             }
         });
     }

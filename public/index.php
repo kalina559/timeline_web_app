@@ -14,6 +14,12 @@
     <script src="../src/js/components/category.js"></script>
     <script src="../src/js/components/events.js"></script>
 
+    <div class="col-sm-6 ui-element" id="print-button-layout">
+        <div>
+          <button class="btn btn-primary ui-element" type="button" data-bind="click: appModel.printTimeline, disable: appModel.isBusy">Print the timeline</button>
+        </div>
+      </div>
+
     <!-- login window -->
     <div class="col-sm-12 ui-element">
       <div class="col-sm-6" style="text-align: center; width: 50%; margin: 0 auto" data-bind="visible: !appModel.userLoggedIn()">
@@ -27,29 +33,27 @@
             <input id="password-field" class="input-field col-sm-6" type="password" required type="text" data-bind="value: appModel.password" placeholder="Type your password" />
           </div>
           <div class="col-sm-12">
-            <button class="btn btn-primary" type="submit" data-bind="disable: appModel.busy">Submit</button>
+            <button class="btn btn-primary" type="submit" data-bind="disable: appModel.isBusy">Submit</button>
           </div>
         </form>
 
         <!-- login/logout button -->
-        <button class="btn btn-primary" type="button" data-bind="click: appModel.toggleLogin, text: appModel.loginButtonText, disable: appModel.busy">Login</button>
-        <button class="btn btn-primary" type="button" data-bind="click: appModel.printTimeline, disable: appModel.busy">Print the timeline</button>
+        <button class="btn btn-primary" type="button" data-bind="click: appModel.toggleLogin, text: appModel.loginButtonText, disable: appModel.isBusy">Login</button>
       </div>
 
-      <!-- add new event layout -->
+      <!-- logged in user actions -->
       <div class="col-sm-6 ui-element" id="login-logout-layout" data-bind="visible: appModel.userLoggedIn()">
         <div>
           <div>
             <h5 data-bind="text: 'Logged in as: ' + currentUserName()"></h5>
           </div>
           <div>
-            <button class="btn btn-danger" type="button" data-bind="click: appModel.tryLogout, disable: appModel.busy">Logout</button>
-            <button class="btn btn-info" type="button" data-bind="click: appModel.showChangePasswordModal, disable: appModel.busy">Change password</button>
+            <button class="btn btn-danger" type="button" data-bind="click: appModel.tryLogout, disable: appModel.isBusy">Logout</button>
+            <button class="btn btn-info" type="button" data-bind="click: appModel.showChangePasswordModal, disable: appModel.isBusy">Change password</button>
           </div>
         </div>
         <div>
-          <button class="btn btn-primary" id="add-new-event-button" type="button"
-          data-bind="click: eventModel.showAddEventModal, visible: appModel.userLoggedIn(), disable: appModel.busy">Add a new event</button>
+          <button class="btn btn-primary" id="add-new-event-button" type="button" data-bind="click: eventModel.showAddEventModal, visible: appModel.userLoggedIn(), disable: appModel.isBusy">Add a new event</button>
         </div>
       </div>
 
@@ -65,7 +69,7 @@
           <p class="delete-button" data-bind="click: showDeleteCategoryModal">x</p>
         </div>
       </div>
-      <button class="btn btn-primary ui-element" data-bind="click: showAddCategoryModal, disable: appModel.busy">Add a new category</button>
+      <button class="btn btn-primary ui-element" data-bind="click: showAddCategoryModal, disable: appModel.isBusy">Add a new category</button>
     </aside>
 
     <!-- timeline with all events -->
@@ -79,8 +83,8 @@
           <h4 data-bind="text: formattedEventPeriod()"></h4>
           <p data-bind="text: description"></p>
           <div data-bind="visible: appModel.userLoggedIn()">
-            <button class="btn btn-primary ui-element" data-bind="click: showEditEventModal, disable: appModel.busy">Edit</button>
-            <button class="btn btn-danger ui-element" data-bind="click: showDeleteEventModal, disable: appModel.busy">Delete</button>
+            <button class="btn btn-primary ui-element" data-bind="click: showEditEventModal, disable: appModel.isBusy">Edit</button>
+            <button class="btn btn-danger ui-element" data-bind="click: showDeleteEventModal, disable: appModel.isBusy">Delete</button>
           </div>
         </div>
       </div>
@@ -138,8 +142,8 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-bind="disable: appModel.busy" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
-                <button data-bind="disable: appModel.busy, text: eventModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
+                <button type="button" class="btn btn-default" data-bind="disable: appModel.isBusy" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
+                <button data-bind="disable: appModel.isBusy, text: eventModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
               </div>
             </form>
           </div>
@@ -161,8 +165,8 @@
                 <p>Are you sure you want to remove this event?</p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
-                <button data-bind="disable: appModel.busy" type="submit" class="btn btn-danger"><span class="fa fa-pencil"></span> Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Cancel</button>
+                <button data-bind="disable: appModel.isBusy" type="submit" class="btn btn-danger"><span class="fa fa-pencil"></span> Delete</button>
               </div>
             </form>
           </div>
@@ -197,8 +201,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-bind="disable: appModel.busy" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
-            <button data-bind="disable: appModel.busy, text: categoryModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
+            <button type="button" class="btn btn-default" data-bind="disable: appModel.isBusy" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
+            <button data-bind="disable: appModel.isBusy, text: categoryModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
           </div>
         </form>
       </div>
@@ -220,8 +224,8 @@
             <p>Are you sure you want to remove this category?</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
-            <button data-bind="disable: appModel.busy" type="submit" class="btn btn-danger"><span class="fa fa-pencil"></span> Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Cancel</button>
+            <button data-bind="disable: appModel.isBusy" type="submit" class="btn btn-danger"><span class="fa fa-pencil"></span> Delete</button>
           </div>
         </form>
       </div>
@@ -258,8 +262,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.busy"><span class="fa fa-times"></span> Cancel</button>
-            <button data-bind="disable: appModel.busy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Update</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Cancel</button>
+            <button data-bind="disable: appModel.isBusy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Update</button>
           </div>
         </form>
       </div>

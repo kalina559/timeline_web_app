@@ -166,6 +166,13 @@ h2 {
     justify-content: center;
 }
 
+#print-button-layout {
+    text-align: center;
+    width: 50%;
+    margin: 0 auto;
+    margin-bottom: 5px;
+}
+
 #login-logout-layout {
     text-align: center;
     width: 50%;
