@@ -1,13 +1,28 @@
 <?php
-include __DIR__.'/../../event/EventService.php';
+include __DIR__ . '/../BaseController.php';
+include __DIR__ . '/../../event/EventService.php';
 
-session_start();
+class EventGetController extends BaseController
+{
+    function execute()
+    {
+        log_message(LogModes::Info->name, "Get events");
 
-header('Content-Type: application/json');
-$output = array();
+        session_start();
+
+        header('Content-Type: application/json');
+        $output = array();
 
 
-$eventService = new EventService();
-$output['result'] = $eventService->getEvents();
+        $eventService = new EventService();
+        $output['result'] = $eventService->getEvents();
 
-echo json_encode($output['result']);
+        $length =  count($output['result']);
+        log_message(LogModes::Info->name, "Events length $length");
+
+        echo json_encode($output['result']);
+    }
+}
+
+$controller = new EventGetController();
+

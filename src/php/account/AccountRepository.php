@@ -1,21 +1,8 @@
 <?php
-include __DIR__.'/../common/CommonFunctions.php';
+include_once __DIR__.'/../BaseRepository.php';
 
-class AccountRepository
+class AccountRepository extends BaseRepository
 {
-    private $con;
-
-    function __construct() {
-        log_message(LogModes::Info->name, "Creating AccountRepository");
-        $this->con = getDbConnection();
-    }
-
-    function __destruct() {
-        log_message(LogModes::Info->name, "Deleting AccountRepository");
-        $this->con->close();
-        unset($this->con);
-    }
-
     public function login($login, $password)
     {
         $hashedPassword = hash('sha256', $password);
@@ -84,7 +71,7 @@ class AccountRepository
         );
     }
 
-    public function validateUserLoggedIn()
+    public function userIsLoggedIn()
     {
         $session_id = session_id();
 
@@ -96,9 +83,9 @@ class AccountRepository
         );
 
         if ($result->num_rows > 0) {
-            return array(TRUE);
+            return array(FALSE);
         } else {
-            return FALSE;
+            return TRUE;
         }
     }
 

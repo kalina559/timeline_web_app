@@ -1,25 +1,8 @@
 <?php
-// include '../account/AccountService.php';
-include __DIR__.'/../common/CommonFunctions.php';
+include_once __DIR__.'/../BaseRepository.php';
 
-class CategoriesRepository
+class CategoriesRepository extends BaseRepository
 {  
-    private $con;
-    //private $accountService;
-
-    function __construct() {
-        log_message(LogModes::Info->name, "Creating CategoriesRepository");
-        $this->con = getDbConnection();
-        //$this->accountService = new AccountService();
-    }
-
-    function __destruct() {
-        log_message(LogModes::Info->name, "Deleting CategoriesRepository");
-        $this->con->close();
-        unset($this->con);
-        unset($this->accountService);
-    }
-
     public function getCategories()
     {
 
@@ -36,12 +19,6 @@ class CategoriesRepository
 
     public function addCategory($name, $colorHex)
     {
-        
-
-        // if(!$this->accountService->validateUserLoggedIn()){
-        //     throw new Exception("User is not logged in."); 
-        // }
-
         executeQueryWithParams(
             $this->con,
             "INSERT INTO categories (name, color_hex) 
@@ -54,11 +31,6 @@ class CategoriesRepository
 
     public function editCategory($id, $name, $colorHex)
     {
-        // if(!$this->accountService->validateUserLoggedIn()){
-        //     throw new Exception("User is not logged in."); 
-        // }
-
-
         executeQueryWithParams(
             $this->con,
             "UPDATE categories 
@@ -72,11 +44,6 @@ class CategoriesRepository
 
     public function deleteCategory($id)
     {
-        // if(!AccountService::validateUserLoggedIn()){
-        //     throw new Exception("User is not logged in."); 
-        // }
-
-
         executeQueryWithParams(
             $this->con,
             "UPDATE events

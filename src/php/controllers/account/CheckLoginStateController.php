@@ -1,19 +1,22 @@
 <?php
-include __DIR__.'/../../account/AccountService.php';
+include __DIR__ . '/../BaseController.php';
 
-session_start();
+class LoginStateController extends BaseController
+{
+    function execute()
+    {
+        session_start();
 
-header('Content-Type: application/json');
-$output = array();
+        header('Content-Type: application/json');
+        $output = array();
 
-if (!isset($_POST['arguments'])) {
-    $output['result'] = 'No arguments!';
+        $accountService = new AccountService();
+
+        $result =  $accountService->getLoggedInUser();
+        $output['result'] = $result;
+
+        echo json_encode($output['result']);
+    }
 }
 
-$data = $_POST['arguments'];
-$accountService = new AccountService();
-
-$result =  $accountService->getLoggedInUser();
-$output['result'] = $result;
-
-echo json_encode($output['result']);
+$controller = new LoginStateController();

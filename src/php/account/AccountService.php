@@ -20,12 +20,12 @@ class AccountService
 
     public function logout()
     {
-        return $this->repository->logout();
+        $this->repository->logout();
     }
 
-    public function validateUserLoggedIn()
+    public function userIsLoggedIn()
     {
-        return $this->repository->validateUserLoggedIn();
+        return $this->repository->userIsLoggedIn();
     }
 
     public function getLoggedInUser()

@@ -1,21 +1,8 @@
 <?php
-include __DIR__.'\..\common\CommonFunctions.php';
+include_once __DIR__.'/../BaseRepository.php';
 
-class EventRepository
+class EventRepository extends BaseRepository
 {
-    private $con;
-
-    function __construct() {
-        log_message(LogModes::Info->name, "Creating EventRepository");
-        $this->con = getDbConnection();
-    }
-
-    function __destruct() {
-        log_message(LogModes::Info->name, "Deleting EventRepository");
-        $this->con->close();
-        unset($this->con);
-    }
-
     public function getEvents()
     {
         $result = executeQuery(
@@ -46,11 +33,6 @@ class EventRepository
 
     public function addEvent($title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
-        // if (!AccountService::validateUserLoggedIn()) {
-        //     throw new Exception("User is not logged in.");
-        // }
-
-
         executeQueryWithParams(
             $this->con,
             "INSERT INTO events (title, description, start_date, end_date, category_id) 
@@ -76,10 +58,6 @@ class EventRepository
 
     public function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
-        // if (!AccountService::validateUserLoggedIn()) {
-        //     throw new Exception("User is not logged in.");
-        // }
-
         executeQueryWithParams(
             $this->con,
             "UPDATE events 
@@ -123,10 +101,6 @@ class EventRepository
 
     public function deleteEvent($id)
     {
-        // if (!AccountService::validateUserLoggedIn()) {
-        //     throw new Exception("User is not logged in.");
-        // }
-
         executeQueryWithParams(
             $this->con,
             "DELETE FROM events 
