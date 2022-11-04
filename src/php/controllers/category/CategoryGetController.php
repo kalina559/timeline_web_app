@@ -1,6 +1,6 @@
 <?php
-include __DIR__ . '/../BaseController.php';
-include __DIR__ . '/../../categories/CategoriesService.php';
+include __DIR__ .'/../BaseController.php';
+include __DIR__ .'/../../categories/CategoriesService.php';
 
 class CategoryGetController extends BaseController
 {

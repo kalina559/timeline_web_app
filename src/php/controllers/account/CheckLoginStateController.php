@@ -1,5 +1,5 @@
 <?php
-include '../BaseController.php';
+include __DIR__ .'/../BaseController.php';
 
 class LoginStateController extends BaseController
 {
@@ -13,7 +13,7 @@ class LoginStateController extends BaseController
         $accountService = new AccountService();
 
         $result =  $accountService->getLoggedInUser();
-        $output['result'] = __DIR__;
+        $output['result'] = $result;
 
         echo json_encode($output['result']);
     }
