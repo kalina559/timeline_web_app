@@ -44,8 +44,6 @@ var EventItemModel = function (event) {
 
         var selectedCategory = categoryModel.categories().find(c => c.id == this.category_id)
         eventModel.eventCategory(selectedCategory)
-
-        //appModel.eventImageFile(this.title)
         $('#event-modal').modal('show');
     }
 }
@@ -69,7 +67,6 @@ var eventModel = new function () {
         self.eventEndDate(null)
         self.eventCategory(null)
         self.eventImageFile(null)
-        // document.getElementById('image-file-input').value = null
     }
 
     self.refreshEvents = function () {
@@ -104,9 +101,6 @@ var eventModel = new function () {
     }
 
     self.updateEventImageFile = function (value) {
-        //var addEventImage = document.getElementById('addEventImage');
-        //addEventImage.src = URL.createObjectURL(event.target.files[0]);
-
         const file = event.target.files[0];
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -117,10 +111,6 @@ var eventModel = new function () {
             self.eventImageFile(reader.result);
         };
         reader.readAsDataURL(file);
-
-        // addEventImage.onload = function () {
-        //     URL.revokeObjectURL(addEventImage.src) // free memory
-        // }
     }
 
     self.submitEvent = function () {

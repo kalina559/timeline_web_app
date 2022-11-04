@@ -49,14 +49,21 @@ class EventRepository extends BaseRepository
             $categoryId
         );
 
-        // add new image file
-        // TODO extract method
-        $data = explode(',', $imageFile);
-        $eventId = $this->con->insert_id;
-        $filename_path = "event$eventId.jpg";
+        // // add new image file
+        // // TODO extract method
+        // $data = explode(',', $imageFile);
+         $eventId = $this->con->insert_id;
+        // $filename_path = "event$eventId.jpg";
 
-        $decoded = base64_decode($data[1]);
-        file_put_contents(__DIR__ . "/../../../images/" . $filename_path, $decoded);
+        // $decoded = base64_decode($data[1]);
+        // file_put_contents(__DIR__ . "/../../../images/" . $filename_path, $decoded);
+
+        if ($imageFile != null) {
+            $scaledImage = $this->resizeImage($imageFile, 200);
+
+            $filename_path = __DIR__ . "/../../../images/event$eventId.jpg";
+            imagejpeg($scaledImage, $filename_path);
+        }
     }
 
     public function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
