@@ -49,21 +49,9 @@ class EventRepository extends BaseRepository
             $categoryId
         );
 
-        // // add new image file
-        // // TODO extract method
-        // $data = explode(',', $imageFile);
-         $eventId = $this->con->insert_id;
-        // $filename_path = "event$eventId.jpg";
+        $eventId = $this->con->insert_id;
 
-        // $decoded = base64_decode($data[1]);
-        // file_put_contents(__DIR__ . "/../../../images/" . $filename_path, $decoded);
-
-        if ($imageFile != null) {
-            $scaledImage = $this->resizeImage($imageFile, 200);
-
-            $filename_path = __DIR__ . "/../../../images/event$eventId.jpg";
-            imagejpeg($scaledImage, $filename_path);
-        }
+        $this->saveImage($imageFile, $eventId);
     }
 
     public function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
@@ -86,17 +74,9 @@ class EventRepository extends BaseRepository
             $id
         );
 
-        // remove the existing image file
-        if (file_exists(__DIR__ . "/../../../images/event$id.jpg")) {
-            unlink(__DIR__ . "/../../../images/event$id.jpg");
-        }
+        $this->deleteImage($id);
 
-        if ($imageFile != null) {
-            $scaledImage = $this->resizeImage($imageFile, 200);
-
-            $filename_path = __DIR__ . "/../../../images/event$id.jpg";
-            imagejpeg($scaledImage, $filename_path);
-        }
+        $this->saveImage($imageFile, $id);
     }
 
     public function resizeImage($imageData, $newHeight)
@@ -125,7 +105,18 @@ class EventRepository extends BaseRepository
             $id
         );
 
-        // remove the existing image file
+        $this->deleteImage($id);
+    }
+
+    private function saveImage($imageFile, $id){
+        if ($imageFile != null) {
+            $scaledImage = $this->resizeImage($imageFile, 200);
+            $filename_path = __DIR__ . "/../../../images/event$id.jpg";
+            imagejpeg($scaledImage, $filename_path);
+        }
+    }
+
+    private function deleteImage($id){
         if (file_exists(__DIR__ . "/../../../images/event$id.jpg")) {
             unlink(__DIR__ . "/../../../images/event$id.jpg");
         }
