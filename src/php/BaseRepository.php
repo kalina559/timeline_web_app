@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__.'\common\CommonFunctions.php';
+include_once __DIR__.'/common/CommonFunctions.php';
 
 class BaseRepository
 {
