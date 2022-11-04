@@ -13,7 +13,7 @@ class LoginStateController extends BaseController
         $accountService = new AccountService();
 
         $result =  $accountService->getLoggedInUser();
-        $output['result'] = $result;
+        $output['result'] = __DIR__;
 
         echo json_encode($output['result']);
     }
