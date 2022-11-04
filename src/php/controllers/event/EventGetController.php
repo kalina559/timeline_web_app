@@ -1,6 +1,6 @@
 <?php
-include __DIR__ .'/../BaseController.php';
-include __DIR__ .'/../../event/EventService.php';
+include '../BaseController.php';
+include '../../event/EventService.php';
 
 class EventGetController extends BaseController
 {
