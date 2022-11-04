@@ -33,6 +33,10 @@ class EventRepository extends BaseRepository
 
     public function addEvent($title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
+        if ($endDate != null && $startDate > $endDate) {
+            throw new Exception('Start date cannot be after end date!');
+        }
+
         executeQueryWithParams(
             $this->con,
             "INSERT INTO events (title, description, start_date, end_date, category_id) 
@@ -57,6 +61,10 @@ class EventRepository extends BaseRepository
 
     public function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
+        if ($endDate != null && $startDate > $endDate) {
+            throw new Exception('Start date cannot be after end date!');
+        }
+
         executeQueryWithParams(
             $this->con,
             "UPDATE events 
@@ -73,7 +81,6 @@ class EventRepository extends BaseRepository
 
         // remove the existing image file
         if (file_exists(__DIR__ . "/../../../images/event$id.jpg")) {
-            // TODO check if the data is equal
             unlink(__DIR__ . "/../../../images/event$id.jpg");
         }
 
@@ -113,7 +120,6 @@ class EventRepository extends BaseRepository
 
         // remove the existing image file
         if (file_exists(__DIR__ . "/../../../images/event$id.jpg")) {
-            // TODO check if the data is equal
             unlink(__DIR__ . "/../../../images/event$id.jpg");
         }
     }

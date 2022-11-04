@@ -126,10 +126,10 @@ class AccountRepository extends BaseRepository
                 $this->updatePassword($userId, $newPassword);
                 return "success";
             } else {
-                return "old password incorrect";
+                throw new Exception("The current password provided was incorrect.");
             }
         } else {
-            return "no user found";
+            throw new Exception("Couldn't find the current user in the database.");
         }
     }
 

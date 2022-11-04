@@ -19,6 +19,10 @@ class CategoriesRepository extends BaseRepository
 
     public function addCategory($name, $colorHex)
     {
+        if (!preg_match('/^#[a-f0-9]{6}$/i', $colorHex)) {
+            throw new Exception('Color is not in hex format!');
+        }
+
         executeQueryWithParams(
             $this->con,
             "INSERT INTO categories (name, color_hex) 
@@ -31,6 +35,10 @@ class CategoriesRepository extends BaseRepository
 
     public function editCategory($id, $name, $colorHex)
     {
+        if (!preg_match('/^#[a-f0-9]{6}$/i', $colorHex)) {
+            throw new Exception('Color is not in hex format!');
+        }
+        
         executeQueryWithParams(
             $this->con,
             "UPDATE categories 

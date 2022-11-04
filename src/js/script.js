@@ -23,6 +23,8 @@ var appModel = new function () {
     this.newPassword = ko.observable(null)
     this.newPasswordRepeat = ko.observable(null)
     this.apiCallsInProcess = ko.observable(0)
+    this.serverErrorMessage = ko.observable(null)
+    this.serverErrorStackTrace = ko.observable(null)
 
     this.dateFormat = 'DD/MM/YYYY'
 
@@ -62,14 +64,11 @@ var appModel = new function () {
         this.makeAjaxCall(requestArguments,
             '../src/php/controllers/account/LoginController.php',
             function (data) {
-                if (data == 'success') {
                     self.userLoggedIn(true)
                     self.currentUserName(self.login())
                     self.login(null)
                     self.password(null)
-                } else {
-                    alert('Login failed');
-                }
+                
             })
     }
 
@@ -77,13 +76,9 @@ var appModel = new function () {
         this.makeAjaxCall({ User: 'something so that arguments are not null' },
             '../src/php/controllers/account/LogoutController.php',
             function (data) {
-                if (data == 'success') {
                     self.userLoggedIn(false)
                     self.currentUserName(null)
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert('Logout failed');
-                }
+                
             })
     }
 
@@ -113,12 +108,9 @@ var appModel = new function () {
         this.makeAjaxCall(requestArguments,
             '../src/php/controllers/account/UpdatePasswordController.php',
             function (data) {
-                if (data == 'success') {
+
                     $('#update-password-modal').modal('hide');
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert(data);
-                }
+                
             })
     }
 
@@ -130,13 +122,10 @@ var appModel = new function () {
 
         this.makeAjaxCall(requestArguments,
             '../src/php/controllers/account/UpdatePasswordController.php',
-            function (data) {
-                if (data == 'success') {
+            function () {
+
                     $('#update-password-modal').modal('hide');
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert(data);
-                }
+                
             })
     }
 
@@ -144,8 +133,11 @@ var appModel = new function () {
         return self.apiCallsInProcess() != 0;
     });
 
-    self.makeAjaxCall = function (args, url, success) {
+    self.showServerErrorModal = function () {
+        $('#server-error-modal').modal('show');
+    }
 
+    self.makeAjaxCall = function (args, url, success) {
         // we're locking the UI everytime an AJAX call is made
         var concatCallback = function (data) {
             success(data)
@@ -160,8 +152,11 @@ var appModel = new function () {
             url: url,
             success: concatCallback,
             error: function (data) {
-                alert(`Ajax call failed with message: ${data.responseText}`);
+                //alert(`Ajax call failed with message: ${data.responseText}`);
                 self.apiCallsInProcess(self.apiCallsInProcess() - 1)
+                self.serverErrorMessage(data.responseJSON.errorMessage)
+                self.serverErrorStackTrace(data.responseJSON.stackTrace)
+                self.showServerErrorModal();
             }
         });
     }

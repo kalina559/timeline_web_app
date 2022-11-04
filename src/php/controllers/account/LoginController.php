@@ -5,30 +5,16 @@ class LoginController extends BaseController
 {
     function execute()
     {
-        session_start();
+        $login = new InputField('Login');
+        $password = new InputField('Password');
 
-        header('Content-Type: application/json');
-        $output = array();
+        $accountService = new AccountService();        
 
-        if (!isset($_POST['arguments'])) {
-            $output['result'] = 'No arguments!';
-        }
-
-        $data = $_POST['arguments'];
-        $accountService = new AccountService();
-
-        $login = $data['Login'];
-        $pass = $data['Password'];
-
-        $success =  $accountService->login($login, $pass);
+        $success =  $accountService->login($login->get(), $password->get());
         if ($success !== TRUE) {
-            $output['result'] = 'failed';
-        } else {
-            $output['result'] = 'success';
+            throw new Exception('User credentials are wrong!');
         }
-
-        echo json_encode($output['result']);
     }
 }
 
-$controller = new LoginController();
+$controller = new LoginController(requiresArguments: true);

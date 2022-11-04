@@ -6,30 +6,14 @@ class CategoryUpdateController extends BaseController
 {
     function execute()
     {
-        session_start();
+        $id = new InputField('Id');
+        $name = new InputField('Name');
+        $colorHex = new InputField('ColorHex');
 
-        header('Content-Type: application/json');
-        $output = array();
-
-        if (!isset($_POST['arguments'])) {
-            $output['result'] = 'No arguments!';
-        }
-
-        $data = $_POST['arguments'];
         $categoryService = new CategoriesService();
-
-        $id = $data['Id'];
-        $name = $data['Name'];
-        $colorHex = $data['ColorHex'];
-
-        if (!preg_match('/^#[a-f0-9]{6}$/i', $colorHex)) {
-            $output['result'] = 'failed';
-        }
-        $categoryService->editCategory($id, $name, $colorHex);
-        $output['result'] = 'success';
-
-        echo json_encode($output['result']);
+        
+        $categoryService->editCategory($id->get(), $name->get(), $colorHex->get());
     }
 }
 
-$controller = new CategoryUpdateController(validateUserLoggedIn: true);
+$controller = new CategoryUpdateController(requiresArguments: true, validateUserLoggedIn: true);

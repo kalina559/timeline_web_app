@@ -6,35 +6,18 @@ class EventUpdateController extends BaseController
 {
     function execute()
     {
-        session_start();
-
-        header('Content-Type: application/json');
-        $output = array();
-
-        if (!isset($_POST['arguments'])) {
-            $output['result'] = 'No arguments!';
-        }
-
-        $data = $_POST['arguments'];
         $eventService = new EventService();
 
-        $id = $data['Id'];
-        $title = $data['Title'];
-        $description = $data['Description'];
-        $startDate = $data['StartDate'];
-        $endDate = $data['EndDate'];
-        $categoryId = $data['CategoryId'];
-        $imageFile = $data['ImageFile'];
+        $id = new InputField('Id');
+        $title = new InputField('Title');
+        $description = new InputField('Description');
+        $startDate = new InputField('StartDate');
+        $endDate = new InputField('EndDate');
+        $categoryId = new InputField('CategoryId');
+        $imageFile = new InputField('ImageFile');
 
-        if ($endDate != null && $startDate > $endDate) {
-            $output['result'] = 'failed';
-        }
-
-        $eventService->editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile);
-        $output['result'] = 'success';
-
-        echo json_encode($output['result']);
+        $eventService->editEvent($id->get(), $title->get(), $description->get(), $startDate->get(), $endDate->get(), $categoryId->get(), $imageFile->get());
     }
 }
 
-$controller = new EventUpdateController(validateUserLoggedIn: true);
+$controller = new EventUpdateController(requiresArguments: true, validateUserLoggedIn: true);

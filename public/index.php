@@ -1,24 +1,29 @@
+<!DOCTYPE HTML>
+<!-- (A) CSS & JS -->
+<link rel="stylesheet" href="../src/libs/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="../src/libs/bootstrap/css/bootstrap.min.css" media="print">
+<link rel="stylesheet" href="../src/libs/font-awesome/css/fontawesome.min.css">
+<link href="../src/css/styles.css" rel="stylesheet" media="all">
+<script type="text/javascript" src="../src/libs/jquery.min.js"></script>
+<script type="text/javascript" src="../src/libs/moment/moment.min.js"></script>
+<script type="text/javascript" src="../src/libs/knockout-3.5.1.min.js"></script>
+<script src="../src/js/script.js"></script>
+<script src="../src/js/components/category.js"></script>
+<script src="../src/js/components/events.js"></script>
+
 <html data-bind="with: appModel, visible: true">
 
 <body>
-  <div class="body-background">
-    <!DOCTYPE HTML>
-    <!-- (A) CSS & JS -->
-    <link rel="stylesheet" href="../src/libs/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../src/libs/bootstrap/css/bootstrap.min.css" media="print">
-    <link href="../src/css/styles.css" rel="stylesheet" media="all">
-    <script type="text/javascript" src="../src/libs/jquery.min.js"></script>
-    <script type="text/javascript" src="../src/libs/moment/moment.min.js"></script>
-    <script type="text/javascript" src="../src/libs/knockout-3.5.1.min.js"></script>
-    <script src="../src/js/script.js"></script>
-    <script src="../src/js/components/category.js"></script>
-    <script src="../src/js/components/events.js"></script>
+  <div class="overlay" data-bind="css: {'overlay-visible': isBusy}">
+    <span class="fa fa-spin fa-4x fa-cog"></span>
+  </div>
 
+  <div class="body-background">
     <div class="col-sm-6 ui-element" id="print-button-layout">
-        <div>
-          <button class="btn btn-primary ui-element" type="button" data-bind="click: appModel.printTimeline, disable: appModel.isBusy">Print the timeline</button>
-        </div>
+      <div>
+        <button class="btn btn-primary ui-element" type="button" data-bind="click: appModel.printTimeline, disable: appModel.isBusy">Print the timeline</button>
       </div>
+    </div>
 
     <!-- login window -->
     <div class="col-sm-12 ui-element">
@@ -253,18 +258,41 @@
           <div class="form-group modal-field">
             <label for="new-password" class="col-sm-offset-1 col-sm-4 control-label">New password:</label>
             <div class="col-sm-8">
-              <input type="password" id="new-password" data-bind="value: newPassword" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
+              <input type="password" required id="new-password" data-bind="value: newPassword" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
             </div>
           </div>
           <div class="form-group modal-field">
             <label for="new-password-repeat" class="col-sm-offset-1 col-sm-4 control-label">Repeat new password:</label>
             <div class="col-sm-8">
-              <input type="password" id="new-password-repeat" data-bind="value: newPasswordRepeat" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
+              <input type="password" required id="new-password-repeat" data-bind="value: newPasswordRepeat" class="form-control" onkeyup="appModel.validatePasswordRepeat()">
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Cancel</button>
             <button data-bind="disable: appModel.isBusy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Server error modal -->
+<form class="form-horizontal error-modal">
+  <div class="modal fade" id="server-error-modal" data-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="error-modal-title">Server error</h2>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <form class="form-horizontal">
+          <div class="modal-body">
+            <h3 data-bind="text: serverErrorMessage"></h3>
+            <textarea class="error-message-content" rows="25" data-bind="text: serverErrorStackTrace"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Close</button>
           </div>
         </form>
       </div>

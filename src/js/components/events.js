@@ -144,12 +144,8 @@ var eventModel = new function () {
             '../src/php/controllers/event/EventAddController.php',
             function (data) {
                 $('#event-modal').modal('hide');
-                if (data == 'success') {
-                    self.refreshEvents()
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert('Add event failed');
-                }
+                self.refreshEvents()
+
             })
     }
 
@@ -167,16 +163,12 @@ var eventModel = new function () {
             '../src/php/controllers/event/EventUpdateController.php',
             function (data) {
                 $('#event-modal').modal('hide');
-                if (data == 'success') {
-                    self.refreshEvents()
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert('Update event failed');
-                }
+                self.refreshEvents()
+
             })
     }
 
-    self.clearImageFile = function() {
+    self.clearImageFile = function () {
         eventModel.eventImageFile(null)
         document.getElementById("image-file-input").value = "";
     }
@@ -189,12 +181,8 @@ var eventModel = new function () {
             '../src/php/controllers/event/EventDeleteController.php',
             function (data) {
                 $('#delete-event-modal').modal('hide');
-                if (data == 'success') {
-                    self.refreshEvents()
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert('Delete event failed');
-                }
+                self.refreshEvents()
+
             })
     }
 

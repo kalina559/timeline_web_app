@@ -6,26 +6,12 @@ class CategoryAddController extends BaseController
 {
     function execute()
     {
-        session_start();
+        $name = new InputField('Name');
+        $colorHex = new InputField('ColorHex');
 
-        header('Content-Type: application/json');
-        $output = array();
-
-        if (!isset($_POST['arguments'])) {
-            $output['result'] = 'No arguments!';
-        }
-
-        $data = $_POST['arguments'];
         $categoryService = new CategoriesService();
-
-        $name = $data['Name'];
-        $colorHex = $data['ColorHex'];
-        $categoryService->addCategory($name, $colorHex);
-
-        $output['result'] = 'success';
-
-        echo json_encode($output['result']);
+        $categoryService->addCategory($name->get(), $colorHex->get());
     }
 }
 
-$controller = new CategoryAddController(validateUserLoggedIn: true);
+$controller = new CategoryAddController(requiresArguments: true, validateUserLoggedIn: true);

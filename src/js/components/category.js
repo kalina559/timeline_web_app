@@ -49,8 +49,7 @@ var categoryModel = new function () {
                     }
 
                     self.categories(categoriesArray);
-                } else {
-                    // shouldn't really happen, but just in case
+                } else {                    
                     alert('Get categories failed');
                 }
             })
@@ -79,12 +78,7 @@ var categoryModel = new function () {
             '../src/php/controllers/category/CategoryAddController.php',
             function (data) {
                 $('#category-modal').modal('hide');
-                if (data == 'success') {
                     self.refreshCategories()
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert('Add category failed');
-                }
             })
     }
 
@@ -98,12 +92,7 @@ var categoryModel = new function () {
             '../src/php/controllers/category/CategoryUpdateController.php',
             function (data) {
                 $('#category-modal').modal('hide');
-                if (data == 'success') {
                     self.refreshCategories()
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert('Update category failed');
-                }
             })
     }
 
@@ -115,12 +104,7 @@ var categoryModel = new function () {
             '../src/php/controllers/category/CategoryDeleteController.php',
             function (data) {
                 $('#delete-category-modal').modal('hide');
-                if (data == 'success') {
                     self.refreshCategories()
-                } else {
-                    // shouldn't really happen, but just in case
-                    alert('Delete category failed');
-                }
             })
     }
 
