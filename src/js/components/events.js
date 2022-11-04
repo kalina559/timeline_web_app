@@ -176,6 +176,11 @@ var eventModel = new function () {
             })
     }
 
+    self.clearImageFile = function() {
+        eventModel.eventImageFile(null)
+        document.getElementById("image-file-input").value = "";
+    }
+
     self.deleteEvent = function () {
         var requestArguments = {
             Id: self.editedEventId

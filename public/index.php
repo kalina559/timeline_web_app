@@ -138,6 +138,7 @@
                   <div class="col-sm-8">
                     <input id="image-file-input" type="file" accept="image/*" onchange="eventModel.updateEventImageFile(event)">
                     <img class="col-sm-12" id="addEventImage" data-bind="attr:{src: eventImageFile}, visible: eventImageFile() != null" />
+                    <button type="button" class="btn btn-default" data-bind="click: clearImageFile"></span>Clear image</button>
                   </div>
                 </div>
               </div>

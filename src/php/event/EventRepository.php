@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__.'/../BaseRepository.php';
+include_once __DIR__ . '/../BaseRepository.php';
 
 class EventRepository extends BaseRepository
 {
@@ -17,7 +17,7 @@ class EventRepository extends BaseRepository
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             $currentEventId = $row['id'];
 
-            $path = __DIR__."/../../../images/event$currentEventId.jpg";
+            $path = __DIR__ . "/../../../images/event$currentEventId.jpg";
             if (file_exists($path)) {
                 $data = file_get_contents($path);
                 $type = pathinfo($path, PATHINFO_EXTENSION);
@@ -52,8 +52,7 @@ class EventRepository extends BaseRepository
         $filename_path = "event$eventId.jpg";
 
         $decoded = base64_decode($data[1]);
-        file_put_contents(__DIR__."/../../../images/" . $filename_path, $decoded);
-
+        file_put_contents(__DIR__ . "/../../../images/" . $filename_path, $decoded);
     }
 
     public function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
@@ -73,18 +72,21 @@ class EventRepository extends BaseRepository
         );
 
         // remove the existing image file
-        if (file_exists(__DIR__."/../../../images/event$id.jpg")) {
+        if (file_exists(__DIR__ . "/../../../images/event$id.jpg")) {
             // TODO check if the data is equal
-            unlink(__DIR__."/../../../images/event$id.jpg");
+            unlink(__DIR__ . "/../../../images/event$id.jpg");
         }
 
-        $scaledImage = $this->resizeImage($imageFile, 200);
+        if ($imageFile != null) {
+            $scaledImage = $this->resizeImage($imageFile, 200);
 
-        $filename_path = __DIR__."/../../../images/event$id.jpg";
-        imagejpeg($scaledImage, $filename_path);
+            $filename_path = __DIR__ . "/../../../images/event$id.jpg";
+            imagejpeg($scaledImage, $filename_path);
+        }
     }
 
-    public function resizeImage($imageData, $newHeight){
+    public function resizeImage($imageData, $newHeight)
+    {
         $data = explode(',', $imageData);
         $decodedSource = base64_decode($data[1]);
 
@@ -110,9 +112,9 @@ class EventRepository extends BaseRepository
         );
 
         // remove the existing image file
-        if (file_exists(__DIR__."/../../../images/event$id.jpg")) {
+        if (file_exists(__DIR__ . "/../../../images/event$id.jpg")) {
             // TODO check if the data is equal
-            unlink(__DIR__."/../../../images/event$id.jpg");
+            unlink(__DIR__ . "/../../../images/event$id.jpg");
         }
     }
 }
