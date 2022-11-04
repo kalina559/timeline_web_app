@@ -1,5 +1,5 @@
 <?php
-include '../BaseController.php';
+include __DIR__.'/../BaseController.php';
 
 class LoginStateController extends BaseController
 {
