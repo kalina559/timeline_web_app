@@ -31,6 +31,5 @@ class CategoriesService
     public function deleteCategory($id)
     {
         return $this->repository->deleteCategory($id);
-
     }
 }

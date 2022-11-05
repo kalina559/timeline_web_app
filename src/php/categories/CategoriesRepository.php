@@ -13,7 +13,6 @@ class CategoriesRepository extends BaseRepository
 
         $json = mysqli_fetch_all ($result, MYSQLI_ASSOC);
 
-
         return $json;
     }
 
@@ -47,7 +46,6 @@ class CategoriesRepository extends BaseRepository
             'sss',
             $name, $colorHex, $id
         );
-
     }
 
     public function deleteCategory($id)
