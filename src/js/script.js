@@ -31,13 +31,13 @@ var appModel = new function () {
 
     self.checkIfUserLoggedIn = function () {
         this.makeAjaxCall({ User: 'something so that arguments are not null' },
-        '../src/php/controllers/account/LoginStateController.php',
-        function (data) {
-            if (data != null) {
-                self.userLoggedIn(true)
-                self.currentUserName(data)
-            }
-        })
+            '../src/php/controllers/account/LoginStateController.php',
+            function (data) {
+                if (data != null) {
+                    self.userLoggedIn(true)
+                    self.currentUserName(data)
+                }
+            })
     }
 
     self.toggleLogin = function () {
@@ -64,11 +64,11 @@ var appModel = new function () {
         this.makeAjaxCall(requestArguments,
             '../src/php/controllers/account/LoginController.php',
             function (data) {
-                    self.userLoggedIn(true)
-                    self.currentUserName(self.login())
-                    self.login(null)
-                    self.password(null)
-                
+                self.userLoggedIn(true)
+                self.currentUserName(self.login())
+                self.login(null)
+                self.password(null)
+
             })
     }
 
@@ -76,9 +76,9 @@ var appModel = new function () {
         this.makeAjaxCall({ User: 'something so that arguments are not null' },
             '../src/php/controllers/account/LogoutController.php',
             function (data) {
-                    self.userLoggedIn(false)
-                    self.currentUserName(null)
-                
+                self.userLoggedIn(false)
+                self.currentUserName(null)
+
             })
     }
 
@@ -92,7 +92,7 @@ var appModel = new function () {
     self.validatePasswordRepeat = function () {
         var newPassword = document.getElementById("new-password");
         var newPasswordRepeat = document.getElementById("new-password-repeat");
-        if(newPassword.value != newPasswordRepeat.value){
+        if (newPassword.value != newPasswordRepeat.value) {
             newPasswordRepeat.setCustomValidity("Passwords don't match");
         } else {
             newPasswordRepeat.setCustomValidity('');
@@ -104,11 +104,11 @@ var appModel = new function () {
             OldPassword: self.currentPassword,
             NewPassword: self.newPassword
         }
-        
+
         this.makeAjaxCall(requestArguments,
             '../src/php/controllers/account/UpdatePasswordController.php',
             function () {
-                    $('#update-password-modal').modal('hide');
+                $('#update-password-modal').modal('hide');
             })
     }
 
@@ -122,7 +122,7 @@ var appModel = new function () {
             '../src/php/controllers/account/UpdatePasswordController.php',
             function () {
 
-                    $('#update-password-modal').modal('hide');
+                $('#update-password-modal').modal('hide');
             })
     }
 
@@ -134,11 +134,11 @@ var appModel = new function () {
         $('#server-error-modal').modal('show');
     }
 
-    $(document).on('show.bs.modal', '.modal', function() {
+    $(document).on('show.bs.modal', '.modal', function () {
         const zIndex = 1040 + 10 * $('.modal:visible').length;
         $(this).css('z-index', zIndex);
         setTimeout(() => $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack'));
-      });
+    });
 
     self.makeAjaxCall = function (args, url, success) {
         // we're locking the UI everytime an AJAX call is made
@@ -155,13 +155,19 @@ var appModel = new function () {
             url: url,
             success: concatCallback,
             error: function (data) {
-                //alert(`Ajax call failed with message: ${data.responseText}`);
+
                 self.apiCallsInProcess(self.apiCallsInProcess() - 1)
-                self.serverErrorMessage(data.responseJSON.errorMessage)
-                self.serverErrorStackTrace(data.responseJSON.stackTrace)
+                if (data.responseJSON != null) {
+                    self.serverErrorMessage(data.responseJSON.errorMessage)
+                    self.serverErrorStackTrace(data.responseJSON.stackTrace)
+                } else {
+                    self.serverErrorMessage('Unexpected error')
+                    self.serverErrorStackTrace(data.responseText)
+                }
+
                 self.showServerErrorModal();
 
-                if(data.status == 403){
+                if (data.status == 403) {
                     // user authorization failed
                     self.userLoggedIn(false)
                     self.currentUserName(null)

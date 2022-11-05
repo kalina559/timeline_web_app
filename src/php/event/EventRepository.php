@@ -7,29 +7,14 @@ class EventRepository extends BaseRepository
     {
         $result = executeQuery(
             $this->con,
-            "SELECT events.id, start_date, end_date, category_id, name, title, description, NULL as base64String
+            "SELECT events.id, start_date, end_date, category_id, name, title, description, base64String
             FROM events
             ORDER BY start_date DESC"
         );
 
+        $json = mysqli_fetch_all ($result, MYSQLI_ASSOC);
 
-        $json = [];
-        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            $currentEventId = $row['id'];
-
-            $path = __DIR__ . "/../../../images/event$currentEventId.jpg";
-            if (file_exists($path)) {
-                $data = file_get_contents($path);
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                $row['base64String'] = $base64;
-            }
-
-            array_push($json, $row);
-        }
-
-        return $json;
-    }
+        return $json;    }
 
     public function addEvent($name, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
@@ -37,22 +22,21 @@ class EventRepository extends BaseRepository
             throw new Exception('Start date cannot be after end date!');
         }
 
+        $resizedImage = $this->getResizedImageBase64($imageFile, 200);
+
         executeQueryWithParams(
             $this->con,
-            "INSERT INTO events (name, title, description, start_date, end_date, category_id) 
-            VALUES (?,?,?,?,?,?)",
-            'ssssss',
+            "INSERT INTO events (name, title, description, start_date, end_date, category_id, base64String) 
+            VALUES (?,?,?,?,?,?,?)",
+            'sssssss',
             $name,
             $title,
             $description,
             $startDate,
             $endDate != null ? $endDate : NULL,
-            $categoryId
+            $categoryId,
+            $resizedImage
         );
-
-        $eventId = $this->con->insert_id;
-
-        $this->saveImage($imageFile, $eventId);
     }
 
     public function editEvent($id, $name, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
@@ -61,27 +45,26 @@ class EventRepository extends BaseRepository
             throw new Exception('Start date cannot be after end date!');
         }
 
+        $resizedImage = $imageFile != null ? $this->getResizedImageBase64($imageFile, 200) : null;
+
         executeQueryWithParams(
             $this->con,
             "UPDATE events 
-            SET name = ?, title = ?, description = ?, start_date = ?, end_date = ?, category_id = ?
+            SET name = ?, title = ?, description = ?, start_date = ?, end_date = ?, category_id = ?, base64String = ?
             WHERE id = ?",
-            'sssssss',
+            'ssssssss',
             $name,
             $title,
             $description,
             $startDate,
             $endDate != null ? $endDate : NULL,
             $categoryId,
+            $resizedImage,
             $id
         );
-
-        $this->deleteImage($id);
-
-        $this->saveImage($imageFile, $id);
     }
 
-    public function resizeImage($imageData, $newHeight)
+    public function getResizedImageBase64($imageData, $newHeight)
     {
         $data = explode(',', $imageData);
         $decodedSource = base64_decode($data[1]);
@@ -94,7 +77,20 @@ class EventRepository extends BaseRepository
         $new_height = $newHeight;
         $new_width = $ratio * $newHeight;
 
-        return imagescale($im, $new_width, $new_height);
+        $resizedImage = imagescale($im, $new_width, $new_height);
+
+        ob_start();
+
+        imagejpeg($resizedImage);
+        $image_data = ob_get_contents();
+
+        ob_end_clean();
+
+        $image_data_base64 = base64_encode($image_data);
+
+        $dataType = $data[0];
+
+        return "{$dataType},{$image_data_base64}";
     }
 
     public function deleteEvent($id)
@@ -106,21 +102,5 @@ class EventRepository extends BaseRepository
             's',
             $id
         );
-
-        $this->deleteImage($id);
-    }
-
-    private function saveImage($imageFile, $id){
-        if ($imageFile != null) {
-            $scaledImage = $this->resizeImage($imageFile, 200);
-            $filename_path = __DIR__ . "/../../../images/event$id.jpg";
-            imagejpeg($scaledImage, $filename_path);
-        }
-    }
-
-    private function deleteImage($id){
-        if (file_exists(__DIR__ . "/../../../images/event$id.jpg")) {
-            unlink(__DIR__ . "/../../../images/event$id.jpg");
-        }
     }
 }
