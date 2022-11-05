@@ -9,6 +9,7 @@ class EventUpdateController extends BaseController
         $eventService = new EventService();
 
         $id = new InputField('Id');
+        $name = new InputField('Name');
         $title = new InputField('Title');
         $description = new InputField('Description');
         $startDate = new InputField('StartDate');
@@ -16,7 +17,7 @@ class EventUpdateController extends BaseController
         $categoryId = new InputField('CategoryId');
         $imageFile = new InputField('ImageFile');
 
-        $eventService->editEvent($id->get(), $title->get(), $description->get(), $startDate->get(), $endDate->get(), $categoryId->get(), $imageFile->get());
+        $eventService->editEvent($id->get(), $name->get(), $title->get(), $description->get(), $startDate->get(), $endDate->get(), $categoryId->get(), $imageFile->get());
     }
 }
 

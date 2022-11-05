@@ -7,7 +7,7 @@ class EventRepository extends BaseRepository
     {
         $result = executeQuery(
             $this->con,
-            "SELECT events.id, start_date, end_date, category_id, title, description, NULL as base64String
+            "SELECT events.id, start_date, end_date, category_id, name, title, description, NULL as base64String
             FROM events
             ORDER BY start_date DESC"
         );
@@ -31,7 +31,7 @@ class EventRepository extends BaseRepository
         return $json;
     }
 
-    public function addEvent($title, $description, $startDate, $endDate, $categoryId, $imageFile)
+    public function addEvent($name, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
         if ($endDate != null && $startDate > $endDate) {
             throw new Exception('Start date cannot be after end date!');
@@ -39,9 +39,10 @@ class EventRepository extends BaseRepository
 
         executeQueryWithParams(
             $this->con,
-            "INSERT INTO events (title, description, start_date, end_date, category_id) 
-            VALUES (?,?,?,?,?)",
-            'sssss',
+            "INSERT INTO events (name, title, description, start_date, end_date, category_id) 
+            VALUES (?,?,?,?,?,?)",
+            'ssssss',
+            $name,
             $title,
             $description,
             $startDate,
@@ -54,7 +55,7 @@ class EventRepository extends BaseRepository
         $this->saveImage($imageFile, $eventId);
     }
 
-    public function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
+    public function editEvent($id, $name, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
         if ($endDate != null && $startDate > $endDate) {
             throw new Exception('Start date cannot be after end date!');
@@ -63,9 +64,10 @@ class EventRepository extends BaseRepository
         executeQueryWithParams(
             $this->con,
             "UPDATE events 
-            SET title = ?, description = ?, start_date = ?, end_date = ?, category_id = ?
+            SET name = ?, title = ?, description = ?, start_date = ?, end_date = ?, category_id = ?
             WHERE id = ?",
-            'ssssss',
+            'sssssss',
+            $name,
             $title,
             $description,
             $startDate,

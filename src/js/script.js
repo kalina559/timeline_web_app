@@ -104,13 +104,11 @@ var appModel = new function () {
             OldPassword: self.currentPassword,
             NewPassword: self.newPassword
         }
-
+        
         this.makeAjaxCall(requestArguments,
             '../src/php/controllers/account/UpdatePasswordController.php',
-            function (data) {
-
+            function () {
                     $('#update-password-modal').modal('hide');
-                
             })
     }
 
@@ -125,7 +123,6 @@ var appModel = new function () {
             function () {
 
                     $('#update-password-modal').modal('hide');
-                
             })
     }
 
@@ -136,6 +133,12 @@ var appModel = new function () {
     self.showServerErrorModal = function () {
         $('#server-error-modal').modal('show');
     }
+
+    $(document).on('show.bs.modal', '.modal', function() {
+        const zIndex = 1040 + 10 * $('.modal:visible').length;
+        $(this).css('z-index', zIndex);
+        setTimeout(() => $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack'));
+      });
 
     self.makeAjaxCall = function (args, url, success) {
         // we're locking the UI everytime an AJAX call is made

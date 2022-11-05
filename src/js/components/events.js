@@ -4,6 +4,7 @@ var EventItemModel = function (event) {
     this.start_date = event.start_date;
     this.end_date = event.end_date;
     this.category_id = event.category_id;
+    this.name = event.name;
     this.title = event.title;
     this.description = event.description;
     this.image = event.base64String
@@ -27,40 +28,55 @@ var EventItemModel = function (event) {
         }
     }
 
-    this.showDeleteEventModal = function () {
-        eventModel.editedEventId(this.id);
-        $('#delete-event-modal').modal('show');
+    this.categoryName = function () {
+        var currentCategory = categoryModel.categories().find(c => c.id == this.category_id)
+        if (currentCategory != null) {
+            return currentCategory.name
+        } else {
+            return '';
+        }
     }
 
-    this.showEditEventModal = function () {
-
+    this.showEventModal = function () {
         eventModel.eventModalMode('Edit');
         eventModel.editedEventId(this.id);
+        eventModel.eventName(this.name)
         eventModel.eventTitle(this.title)
         eventModel.eventDescription(this.description)
         eventModel.eventStartDate(this.start_date)
         eventModel.eventEndDate(this.end_date)
         eventModel.eventImageFile(this.image)
+        eventModel.imagePreviewFile(this.image)
+        eventModel.eventPeriod(this.formattedEventPeriod())
+        eventModel.eventCategoryColor(this.categoryColor())
+        eventModel.eventCategoryName(this.categoryName())
+        eventModel.eventCategory(selectedCategory)
 
         var selectedCategory = categoryModel.categories().find(c => c.id == this.category_id)
         eventModel.eventCategory(selectedCategory)
-        $('#event-modal').modal('show');
+        $('#show-event-modal').modal('show');
     }
 }
 
 var eventModel = new function () {
     var self = this;
     this.eventModalMode = ko.observable(null)
+    this.eventName = ko.observable(null)
     this.eventTitle = ko.observable(null)
     this.eventDescription = ko.observable(null)
     this.eventStartDate = ko.observable(null)
     this.eventEndDate = ko.observable(null)
     this.eventCategory = ko.observable(null)
     this.eventImageFile = ko.observable(null)
+    this.imagePreviewFile = ko.observable(null)
+    this.eventPeriod = ko.observable(null)
+    this.eventCategoryColor = ko.observable(null)
+    this.eventCategoryName = ko.observable(null)
     this.editedEventId = ko.observable(null)
     this.events = ko.observableArray()
 
     self.resetEventFields = function () {
+        self.eventName(null)
         self.eventTitle(null)
         self.eventDescription(null)
         self.eventStartDate(null)
@@ -100,6 +116,14 @@ var eventModel = new function () {
         $('#event-modal').modal('show');
     }
 
+    self.showDeleteEventModal = function () {
+        $('#delete-event-modal').modal('show');
+    }
+
+    self.showEditEventModal = function () {
+        $('#event-modal').modal('show');
+    }
+
     self.updateEventImageFile = function (value) {
         const file = event.target.files[0];
         const reader = new FileReader();
@@ -123,6 +147,7 @@ var eventModel = new function () {
 
     function addEvent() {
         var requestArguments = {
+            Name: self.eventName,
             Title: self.eventTitle,
             Description: self.eventDescription,
             StartDate: self.eventStartDate,
@@ -142,6 +167,7 @@ var eventModel = new function () {
     function editEvent() {
         var requestArguments = {
             Id: self.editedEventId,
+            Name: self.eventName,
             Title: self.eventTitle,
             Description: self.eventDescription,
             StartDate: self.eventStartDate,
@@ -152,6 +178,7 @@ var eventModel = new function () {
         appModel.makeAjaxCall(requestArguments,
             '../src/php/controllers/event/EventUpdateController.php',
             function (data) {
+                $('#show-event-modal').modal('hide');
                 $('#event-modal').modal('hide');
                 self.refreshEvents()
 
@@ -170,6 +197,7 @@ var eventModel = new function () {
         appModel.makeAjaxCall(requestArguments,
             '../src/php/controllers/event/EventDeleteController.php',
             function (data) {
+                $('#show-event-modal').modal('hide');
                 $('#delete-event-modal').modal('hide');
                 self.refreshEvents()
 

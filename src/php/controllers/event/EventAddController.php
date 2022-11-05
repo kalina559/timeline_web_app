@@ -6,6 +6,7 @@ class EventAddController extends BaseController
 {
     function execute()
     {
+        $name = new InputField('Name');
         $title = new InputField('Title');
         $description = new InputField('Description');
         $startDate = new InputField('StartDate');
@@ -15,7 +16,7 @@ class EventAddController extends BaseController
 
         $eventService = new EventService();
         
-        $eventService->addEvent($title->get(), $description->get(), $startDate->get(), $endDate->get(), $categoryId->get(), $imageFile->get());
+        $eventService->addEvent($name->get(), $title->get(), $description->get(), $startDate->get(), $endDate->get(), $categoryId->get(), $imageFile->get());
     }
 }
 

@@ -18,14 +18,14 @@ class EventService
         return $this->repository->getEvents();
     }
 
-    public function addEvent($title, $description, $startDate, $endDate, $categoryId, $imageFile)
+    public function addEvent($name, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
-        $this->repository->addEvent($title, $description, $startDate, $endDate, $categoryId, $imageFile);
+        $this->repository->addEvent($name, $title, $description, $startDate, $endDate, $categoryId, $imageFile);
     }
 
-    public function editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
+    public function editEvent($name, $id, $title, $description, $startDate, $endDate, $categoryId, $imageFile)
     {
-        $this->repository->editEvent($id, $title, $description, $startDate, $endDate, $categoryId, $imageFile);
+        $this->repository->editEvent($name, $id, $title, $description, $startDate, $endDate, $categoryId, $imageFile);
     }
 
     public function deleteEvent($id)

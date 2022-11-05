@@ -79,21 +79,56 @@
 
     <!-- timeline with all events -->
     <div class="timeline" data-bind="foreach: eventModel.events">
-      <div class="container">
+      <div class="container" data-bind="click: showEventModal">
         <div class="content" data-bind="style:{ 'background-color': categoryModel.categories().length > 0 ? categoryColor() : '#FFFFFF' }">
-          <h2 data-bind="text: title"></h2>
+          <h2 class="centered-div" data-bind="text: name"></h2>
           <div class="image-container">
             <img class="event-image" data-bind="attr:{src: image}, visible: image != null" />
           </div>
-          <h4 data-bind="text: formattedEventPeriod()"></h4>
-          <p data-bind="text: description"></p>
-          <div data-bind="visible: appModel.userLoggedIn()">
-            <button class="btn btn-primary ui-element" data-bind="click: showEditEventModal, disable: appModel.isBusy">Edit</button>
-            <button class="btn btn-danger ui-element" data-bind="click: showDeleteEventModal, disable: appModel.isBusy">Delete</button>
-          </div>
+          <h4 class="centered-div" data-bind="text: formattedEventPeriod()"></h4>
         </div>
       </div>
     </div>
+
+    <!-- Show event modal -->
+    <form class="form-horizontal preview-modal" data-bind="with: eventModel">
+      <div class="modal fade" id="show-event-modal" data-backdrop="static" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content" data-bind="style:{ 'background-color': categoryModel.categories().length > 0 ? eventModel.eventCategoryColor() : '#FFFFFF' }">
+            <div class="modal-header">
+              <h4 class="modal-name" data-bind="text: eventName"></h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form class="form-horizontal">
+              <div class="modal-body">
+                <div class="form-group modal-field centered-div">
+                  <div class="image-container">
+                    <img class="event-image" data-bind="attr:{src: imagePreviewFile}, visible: imagePreviewFile != null" />
+                  </div>
+                </div>
+                <div class="form-group modal-field centered-div">
+                  <p data-bind="text: eventPeriod"></p>
+                </div>
+                <div class="form-group modal-field centered-div">
+                  <h3 data-bind="text: eventTitle"></h3>
+                </div>
+                <div class="form-group modal-field centered-div">
+                  <textarea rows="10" class="wide-text-area" data-bind="text: eventDescription" data-bind="attr:{src: eventImageFile}, visible: eventImageFile != null"></textarea>
+                </div>
+                <div class="form-group modal-field centered-div">
+                  <p data-bind="text: eventCategoryName"></p>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary ui-element" data-bind="click: showEditEventModal, disable: appModel.isBusy">Edit</button>
+                <button class="btn btn-danger ui-element" data-bind="click: showDeleteEventModal, disable: appModel.isBusy">Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </form>
 
     <!-- Event input modal -->
     <form class="form-horizontal add-update-modal" data-bind="with: eventModel, submit: eventModel.submitEvent">
@@ -106,6 +141,12 @@
             </div>
             <form class="form-horizontal">
               <div class="modal-body">
+              <div class="form-group modal-field">
+                  <label for="title" class="col-sm-offset-1 col-sm-4 control-label">Name:</label>
+                  <div class="col-sm-8">
+                    <textarea required id="name" data-bind="value: eventName" class="form-control"></textarea>
+                  </div>
+                </div>
                 <div class="form-group modal-field">
                   <label for="title" class="col-sm-offset-1 col-sm-4 control-label">Title:</label>
                   <div class="col-sm-8">
