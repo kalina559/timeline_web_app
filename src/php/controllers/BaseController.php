@@ -1,11 +1,11 @@
 <?php
 include __DIR__ . '/../account/AccountService.php';
-include_once __DIR__ . '/InputField.php';
+include_once __DIR__ . '/ControllerInputField.php';
 include_once __DIR__ . '/../exceptions/InvalidCredentialsException.php';
 
 abstract class BaseController
 {
-    private $repository;
+    private $service;
     protected $response;
     protected $output = array();
 
@@ -17,7 +17,7 @@ abstract class BaseController
         $className = get_class($this);
         log_message(LogModes::Info->name, "Creating $className");
 
-        $this->repository = new AccountService();
+        $this->service = new AccountService();
 
         if ($requiresArguments && !isset($_POST['arguments'])) {
             throw new Exception("No request arguments were provided.");
@@ -26,7 +26,7 @@ abstract class BaseController
         header('Content-Type: application/json');
         try {
 
-            if ($validateUserLoggedIn && !$this->repository->userIsLoggedIn()) {
+            if ($validateUserLoggedIn && !$this->service->userIsLoggedIn()) {
                 throw new InvalidCredentialsException("User is not logged in.");
             }
             $this->execute();
@@ -57,9 +57,7 @@ abstract class BaseController
     {
         $className = get_class($this);
         log_message(LogModes::Info->name, "Deleting $className");
-
-
-        unset($this->repository);
+        unset($this->service);
     }
 
     abstract function execute();

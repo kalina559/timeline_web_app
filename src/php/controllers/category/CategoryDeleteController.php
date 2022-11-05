@@ -6,7 +6,7 @@ class CategoryDeleteController extends BaseController
 {
     function execute()
     {
-        $id = new InputField('Id');
+        $id = new ControllerInputField('Id');
 
         $categoryService = new CategoriesService();
 

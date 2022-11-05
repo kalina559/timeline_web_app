@@ -8,7 +8,7 @@ class EventDeleteController extends BaseController
     {
         $eventService = new EventService();
 
-        $id = new InputField('Id');
+        $id = new ControllerInputField('Id');
         
         $eventService->deleteEvent($id->get());
     }

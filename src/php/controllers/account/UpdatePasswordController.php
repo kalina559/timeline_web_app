@@ -5,8 +5,8 @@ class UpdatePasswordController extends BaseController
 {
     function execute()
     {
-        $oldPassword = new InputField('OldPassword');
-        $newPassword = new InputField('NewPassword');
+        $oldPassword = new ControllerInputField('OldPassword');
+        $newPassword = new ControllerInputField('NewPassword');
 
         $accountService = new AccountService();
         

@@ -6,13 +6,13 @@ class EventAddController extends BaseController
 {
     function execute()
     {
-        $name = new InputField('Name');
-        $title = new InputField('Title');
-        $description = new InputField('Description');
-        $startDate = new InputField('StartDate');
-        $endDate = new InputField('EndDate');
-        $categoryId = new InputField('CategoryId');
-        $imageFile = new InputField('ImageFile');
+        $name = new ControllerInputField('Name');
+        $title = new ControllerInputField('Title');
+        $description = new ControllerInputField('Description');
+        $startDate = new ControllerInputField('StartDate');
+        $endDate = new ControllerInputField('EndDate');
+        $categoryId = new ControllerInputField('CategoryId');
+        $imageFile = new ControllerInputField('ImageFile');
 
         $eventService = new EventService();
         

@@ -6,8 +6,8 @@ class CategoryAddController extends BaseController
 {
     function execute()
     {
-        $name = new InputField('Name');
-        $colorHex = new InputField('ColorHex');
+        $name = new ControllerInputField('Name');
+        $colorHex = new ControllerInputField('ColorHex');
 
         $categoryService = new CategoriesService();
         $categoryService->addCategory($name->get(), $colorHex->get());

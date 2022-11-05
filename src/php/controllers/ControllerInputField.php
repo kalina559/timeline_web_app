@@ -1,6 +1,6 @@
 <?php
 
-class InputField
+class ControllerInputField
 {
     private $value;
     function __construct($fieldName)

@@ -38,7 +38,7 @@
             <input id="password-field" class="input-field col-sm-6" type="password" required type="text" data-bind="value: appModel.password" placeholder="Type your password" />
           </div>
           <div class="col-sm-12">
-            <button class="btn btn-primary" type="submit" data-bind="disable: appModel.isBusy">Submit</button>
+            <button class="btn btn-primary" id="submit-button" type="submit" data-bind="disable: appModel.isBusy">Submit</button>
           </div>
         </form>
 
@@ -71,7 +71,7 @@
         <div class="row">
           <div class="category-color-box" data-bind="click: showEditCategoryModal, style:{ 'background-color': color_hex}"></div>
           <p class="category-name" data-bind="text: name"></p>
-          <p class="delete-button" data-bind="click: showDeleteCategoryModal">x</p>
+          <p class="delete-button" data-bind="click: showDeleteCategoryModal, visible: appModel.userLoggedIn()">x</p>
         </div>
       </div>
       <button class="btn btn-primary ui-element" data-bind="visible: appModel.userLoggedIn(), click: showAddCategoryModal, disable: appModel.isBusy">Add a new category</button>
@@ -94,13 +94,13 @@
     <form class="form-horizontal preview-modal" data-bind="with: eventModel">
       <div class="modal fade" id="show-event-modal" data-backdrop="static" tabindex="-1">
         <div class="modal-dialog">
-          <div class="modal-content" data-bind="style:{ 'background-color': categoryModel.categories().length > 0 ? eventModel.eventCategoryColor() : '#FFFFFF' }">
+          <div class="modal-content" data-bind="style:{ 'background-color': categoryModel.categories().length > 0 ? eventModel.eventCategoryColor : '#FFFFFF' }">
             <div class="modal-header">
               <h4 class="modal-name" data-bind="text: eventName"></h4>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <form class="form-horizontal">
-              <div class="modal-body">
+              <div class="modal-body" data-bind="style:{ 'background-color': eventModel.categoryLighterColor }">
                 <div class="form-group modal-field centered-div">
                   <div class="image-container">
                     <img class="event-image" data-bind="attr:{src: imagePreviewFile}, visible: imagePreviewFile != null" />
@@ -113,7 +113,7 @@
                   <h3 data-bind="text: eventTitle"></h3>
                 </div>
                 <div class="form-group modal-field centered-div">
-                  <textarea rows="10" class="wide-text-area" data-bind="text: eventDescription" data-bind="attr:{src: eventImageFile}, visible: eventImageFile != null"></textarea>
+                  <textarea rows="10" class="wide-text-area" data-bind="text: eventDescription, style:{ 'background-color': eventModel.categoryLighterColor }"></textarea>
                 </div>
                 <div class="form-group modal-field centered-div">
                   <p data-bind="text: eventCategoryName"></p>

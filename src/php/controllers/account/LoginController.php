@@ -5,8 +5,8 @@ class LoginController extends BaseController
 {
     function execute()
     {
-        $login = new InputField('Login');
-        $password = new InputField('Password');
+        $login = new ControllerInputField('Login');
+        $password = new ControllerInputField('Password');
 
         $accountService = new AccountService();        
 

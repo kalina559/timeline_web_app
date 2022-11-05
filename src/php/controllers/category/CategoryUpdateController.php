@@ -6,9 +6,9 @@ class CategoryUpdateController extends BaseController
 {
     function execute()
     {
-        $id = new InputField('Id');
-        $name = new InputField('Name');
-        $colorHex = new InputField('ColorHex');
+        $id = new ControllerInputField('Id');
+        $name = new ControllerInputField('Name');
+        $colorHex = new ControllerInputField('ColorHex');
 
         $categoryService = new CategoriesService();
         

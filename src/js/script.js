@@ -31,7 +31,7 @@ var appModel = new function () {
 
     self.checkIfUserLoggedIn = function () {
         this.makeAjaxCall({ User: 'something so that arguments are not null' },
-        '../src/php/controllers/account/CheckLoginStateController.php',
+        '../src/php/controllers/account/LoginStateController.php',
         function (data) {
             if (data != null) {
                 self.userLoggedIn(true)

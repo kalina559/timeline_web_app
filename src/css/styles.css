@@ -186,6 +186,10 @@ h2 {
     margin-bottom: 5px;
 }
 
+#submit-button {
+    margin-bottom: 5px;
+}
+
 #login-logout-layout {
     text-align: center;
     width: 50%;

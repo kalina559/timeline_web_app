@@ -50,11 +50,36 @@ var EventItemModel = function (event) {
         eventModel.eventPeriod(this.formattedEventPeriod())
         eventModel.eventCategoryColor(this.categoryColor())
         eventModel.eventCategoryName(this.categoryName())
+        setLighterCategoryColor(40)
         eventModel.eventCategory(selectedCategory)
 
         var selectedCategory = categoryModel.categories().find(c => c.id == this.category_id)
         eventModel.eventCategory(selectedCategory)
         $('#show-event-modal').modal('show');
+    }
+
+    function setLighterCategoryColor(percent) {
+
+        var color = eventModel.eventCategoryColor != null ? eventModel.eventCategoryColor() : "#FFFFFF";
+        var R = parseInt(color.substring(1, 3), 16);
+        var G = parseInt(color.substring(3, 5), 16);
+        var B = parseInt(color.substring(5, 7), 16);
+
+        R = parseInt(R * (100 + percent) / 100);
+        G = parseInt(G * (100 + percent) / 100);
+        B = parseInt(B * (100 + percent) / 100);
+
+        R = (R < 255) ? R : 255;
+        G = (G < 255) ? G : 255;
+        B = (B < 255) ? B : 255;
+
+        var RR = ((R.toString(16).length == 1) ? "0" + R.toString(16) : R.toString(16));
+        var GG = ((G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16));
+        var BB = ((B.toString(16).length == 1) ? "0" + B.toString(16) : B.toString(16));
+
+        var lighterColor =  "#" + RR + GG + BB;
+       
+        eventModel.categoryLighterColor(lighterColor)
     }
 }
 
@@ -70,8 +95,10 @@ var eventModel = new function () {
     this.eventImageFile = ko.observable(null)
     this.imagePreviewFile = ko.observable(null)
     this.eventPeriod = ko.observable(null)
-    this.eventCategoryColor = ko.observable(null)
+    this.categoryColor = ko.observable(null)
     this.eventCategoryName = ko.observable(null)
+    this.eventCategoryColor = ko.observable(null)
+    this.categoryLighterColor = ko.observable(null)
     this.editedEventId = ko.observable(null)
     this.events = ko.observableArray()
 
@@ -203,5 +230,4 @@ var eventModel = new function () {
 
             })
     }
-
 }
