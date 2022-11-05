@@ -74,7 +74,7 @@
           <p class="delete-button" data-bind="click: showDeleteCategoryModal">x</p>
         </div>
       </div>
-      <button class="btn btn-primary ui-element" data-bind="click: showAddCategoryModal, disable: appModel.isBusy">Add a new category</button>
+      <button class="btn btn-primary ui-element" data-bind="visible: appModel.userLoggedIn(), click: showAddCategoryModal, disable: appModel.isBusy">Add a new category</button>
     </aside>
 
     <!-- timeline with all events -->
@@ -120,8 +120,8 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button class="btn btn-primary ui-element" data-bind="click: showEditEventModal, disable: appModel.isBusy">Edit</button>
-                <button class="btn btn-danger ui-element" data-bind="click: showDeleteEventModal, disable: appModel.isBusy">Delete</button>
+                <button class="btn btn-primary ui-element" data-bind="visible: appModel.userLoggedIn(), click: showEditEventModal, disable: appModel.isBusy">Edit</button>
+                <button class="btn btn-danger ui-element" data-bind="visible: appModel.userLoggedIn(), click: showDeleteEventModal, disable: appModel.isBusy">Delete</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Close</button>
               </div>
             </form>

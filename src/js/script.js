@@ -160,6 +160,15 @@ var appModel = new function () {
                 self.serverErrorMessage(data.responseJSON.errorMessage)
                 self.serverErrorStackTrace(data.responseJSON.stackTrace)
                 self.showServerErrorModal();
+
+                if(data.status == 403){
+                    // user authorization failed
+                    self.userLoggedIn(false)
+                    self.currentUserName(null)
+
+                    // close all modals
+                    $('.modal').modal('hide');
+                }
             }
         });
     }

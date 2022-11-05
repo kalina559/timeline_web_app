@@ -83,9 +83,9 @@ class AccountRepository extends BaseRepository
         );
 
         if ($result->num_rows > 0) {
-            return array(FALSE);
-        } else {
             return TRUE;
+        } else {
+            return FALSE;
         }
     }
 
