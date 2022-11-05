@@ -69,7 +69,7 @@
       <h1 class="mb-4">Categories:</h1>
       <div data-bind="foreach: categoryModel.categories">
         <div class="row">
-          <div class="category-color-box" data-bind="click: showEditCategoryModal, style:{ 'background-color': color_hex}"></div>
+          <div class="category-color-box" data-bind="click: showEditCategoryModal, style:{ 'background-color': color_hex, cursor: appModel.userLoggedIn() ? 'pointer' : 'auto'}"></div>
           <p class="category-name" data-bind="text: name"></p>
           <p class="delete-button" data-bind="click: showDeleteCategoryModal, visible: appModel.userLoggedIn()">x</p>
         </div>

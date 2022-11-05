@@ -5,11 +5,13 @@ var CategoryItemModel = function (category) {
     this.color_hex = category.color_hex;
 
     this.showEditCategoryModal = function () {
+        if(appModel.userLoggedIn()){
         categoryModel.categoryModalMode('Edit');
         categoryModel.editedCategoryId(this.id);
         categoryModel.categoryName(this.name);
         categoryModel.categoryColorHex(this.color_hex);
         $('#category-modal').modal('show');
+        }
     }
 
     this.showDeleteCategoryModal = function () {
