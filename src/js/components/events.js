@@ -113,11 +113,7 @@ var eventModel = new function () {
     }
 
     self.refreshEvents = function () {
-        var requestArguments = {
-            User: 'something so that arguments are not null'
-        }
-        appModel.makeAjaxCall(requestArguments,
-            '../src/php/controllers/event/EventGetController.php',
+        appModel.makeAjaxCall({}, '../src/php/controllers/event/EventGetController.php',
             function (data) {
                 if (data != null) {
                     self.events.removeAll();

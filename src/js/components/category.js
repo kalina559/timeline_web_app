@@ -34,11 +34,7 @@ var categoryModel = new function () {
     }
 
     self.refreshCategories = function () {
-        var requestArguments = {
-            User: 'something so that arguments are not null'
-        }
-        appModel.makeAjaxCall(requestArguments,
-            '../src/php/controllers/category/CategoryGetController.php',
+        appModel.makeAjaxCall({}, '../src/php/controllers/category/CategoryGetController.php',
             function (data) {
                 if (data != null) {
                     self.categories.removeAll();
@@ -109,5 +105,4 @@ var categoryModel = new function () {
                     self.refreshCategories()
             })
     }
-
 }

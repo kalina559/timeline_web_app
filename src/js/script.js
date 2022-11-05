@@ -30,8 +30,7 @@ var appModel = new function () {
 
 
     self.checkIfUserLoggedIn = function () {
-        this.makeAjaxCall({ User: 'something so that arguments are not null' },
-            '../src/php/controllers/account/LoginStateController.php',
+        this.makeAjaxCall({}, '../src/php/controllers/account/LoginStateController.php',
             function (data) {
                 if (data != null) {
                     self.userLoggedIn(true)
@@ -73,8 +72,7 @@ var appModel = new function () {
     }
 
     self.tryLogout = function () {
-        this.makeAjaxCall({ User: 'something so that arguments are not null' },
-            '../src/php/controllers/account/LogoutController.php',
+        this.makeAjaxCall({}, '../src/php/controllers/account/LogoutController.php',
             function (data) {
                 self.userLoggedIn(false)
                 self.currentUserName(null)
@@ -149,9 +147,11 @@ var appModel = new function () {
 
         self.apiCallsInProcess(self.apiCallsInProcess() + 1)
 
+        var params = args != null ? { arguments: args } : {}
+
         jQuery.ajax({
             type: 'POST',
-            data: { arguments: args },
+            data: params,
             url: url,
             success: concatCallback,
             error: function (data) {
