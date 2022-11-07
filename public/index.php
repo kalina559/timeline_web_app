@@ -2,7 +2,7 @@
 <!-- (A) CSS & JS -->
 <link rel="stylesheet" href="../src/libs/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="../src/libs/bootstrap/css/bootstrap.min.css" media="print">
-<link  href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
   rel="stylesheet"  type='text/css'><link href="../src/css/styles.css" rel="stylesheet" media="all">
 <script type="text/javascript" src="../src/libs/jquery.min.js"></script>
 <script type="text/javascript" src="../src/libs/moment/moment.min.js"></script>
