@@ -12,9 +12,8 @@
 <script src="../src/js/components/category.js"></script>
 <script src="../src/js/components/events.js"></script>
 
-<html>
+<html lang="en">
   <body>
-    <title>Timeline web app</title>
     <div class="overlay" data-bind="css: {'overlay-visible': isBusy}">
       <span class="fa fa-spin fa-4x fa-cog"></span>
     </div>
