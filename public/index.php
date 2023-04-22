@@ -13,7 +13,8 @@
 <script src="../src/js/components/events.js"></script>
 
 <html>
-  <body title="Timeline web app">
+  <body>
+    <title>Timeline web app</title>
     <div class="overlay" data-bind="css: {'overlay-visible': isBusy}">
       <span class="fa fa-spin fa-4x fa-cog"></span>
     </div>
@@ -196,7 +197,7 @@
                     </div>
                   </div>
                   <div class="form-group modal-field">
-                    <label for="image" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
+                    <label for="image-file-input" class="col-sm-offset-1 col-sm-4 control-label">Image:</label>
                     <div class="col-sm-8">
                       <input id="image-file-input" type="file" accept="image/*" onchange="eventModel.updateEventImageFile(event)">
                       <img class="col-sm-12" id="addEventImage" data-bind="attr:{src: eventImageFile}, visible: eventImageFile() != null" alt="Image representing the event.">
