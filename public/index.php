@@ -13,7 +13,7 @@
 
 <html>
 
-<body>
+<body title="Timeline web app">
   <div class="overlay" data-bind="css: {'overlay-visible': isBusy}">
     <span class="fa fa-spin fa-4x fa-cog"></span>
   </div>
@@ -50,11 +50,11 @@
           <form class="login-form col-sm-12" data-bind="visible: appModel.showLogin(), submit: appModel.tryLogin">
             <div class="col-sm-12">
               <label class="col-sm-4" for="login-field">Login:</label>
-              <input id="login-field" class="input-field col-sm-6" required type="text" data-bind="value: appModel.login" placeholder="Type your login" />
+              <input id="login-field" class="input-field col-sm-6" required type="text" data-bind="value: appModel.login" placeholder="Type your login" >
             </div>
             <div class="col-sm-12">
               <label class="col-sm-4" for="password-field">Password:</label>
-              <input id="password-field" class="input-field col-sm-6" type="password" required type="text" data-bind="value: appModel.password" placeholder="Type your password" />
+              <input id="password-field" class="input-field col-sm-6" type="password" required data-bind="value: appModel.password" placeholder="Type your password" >
             </div>
             <div class="col-sm-12">
               <button class="btn btn-primary" id="submit-button" type="submit" data-bind="disable: appModel.isBusy">Submit</button>
@@ -102,7 +102,7 @@
           <div class="content" data-bind="style:{ 'background-color': categoryModel.categories().length > 0 ? categoryColor() : '#FFFFFF' }">
             <h2 class="centered-div" data-bind="text: name"></h2>
             <div class="image-container">
-              <img class="event-image" data-bind="attr:{src: image}, visible: image != null" />
+              <img class="event-image" data-bind="attr:{src: image}, visible: image != null" alt="Image representing the event">
             </div>
             <h4 class="centered-div" data-bind="text: formattedEventPeriod()"></h4>
           </div>
@@ -118,11 +118,10 @@
                 <h4 class="modal-name" data-bind="text: eventName"></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
-              <form class="form-horizontal">
                 <div class="modal-body" data-bind="style:{ 'background-color': eventModel.categoryLighterColor }">
                   <div class="form-group modal-field centered-div">
                     <div class="image-container">
-                      <img class="event-image" data-bind="attr:{src: imagePreviewFile}, visible: imagePreviewFile != null" />
+                      <img class="event-image" data-bind="attr:{src: imagePreviewFile}, visible: imagePreviewFile != null" alt="Image representing the event.">
                     </div>
                   </div>
                   <div class="form-group modal-field centered-div">
@@ -143,7 +142,6 @@
                   <button class="btn btn-danger ui-element" data-bind="visible: appModel.userLoggedIn(), click: showDeleteEventModal, disable: appModel.isBusy">Delete</button>
                   <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Close</button>
                 </div>
-              </form>
             </div>
           </div>
         </div>
@@ -158,7 +156,6 @@
                 <h4 class="modal-title" data-bind="text: eventModalMode() + ' event'"></h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
-              <form class="form-horizontal">
                 <div class="modal-body">
                   <div class="form-group modal-field">
                     <label for="title" class="col-sm-offset-1 col-sm-4 control-label">Name:</label>
@@ -211,7 +208,6 @@
                   <button type="button" class="btn btn-default" data-bind="disable: appModel.isBusy" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
                   <button data-bind="disable: appModel.isBusy, text: eventModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
                 </div>
-              </form>
             </div>
           </div>
         </div>
@@ -226,7 +222,6 @@
                 <h4 class="modal-title">Delete event</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
-              <form class="form-horizontal">
                 <div class="modal-body">
                   <p>Are you sure you want to remove this event?</p>
                 </div>
@@ -234,7 +229,6 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Cancel</button>
                   <button data-bind="disable: appModel.isBusy" type="submit" class="btn btn-danger"><span class="fa fa-pencil"></span> Delete</button>
                 </div>
-              </form>
             </div>
           </div>
         </div>
@@ -250,7 +244,6 @@
           <h4 class="modal-title" data-bind="text: categoryModalMode() + ' category'"></h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <form class="form-horizontal">
           <div class="modal-body">
             <div class="form-group modal-field">
               <label for="category-name" class="col-sm-offset-1 col-sm-4 control-label">Name:</label>
@@ -269,7 +262,6 @@
             <button type="button" class="btn btn-default" data-bind="disable: appModel.isBusy" data-dismiss="modal"><span class="fa fa-times"></span> Cancel</button>
             <button data-bind="disable: appModel.isBusy, text: categoryModalMode" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span></button>
           </div>
-        </form>
       </div>
     </div>
   </div>
@@ -284,7 +276,6 @@
           <h4 class="modal-title">Delete category</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <form class="form-horizontal">
           <div class="modal-body">
             <p>Are you sure you want to remove this category?</p>
           </div>
@@ -292,7 +283,6 @@
             <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Cancel</button>
             <button data-bind="disable: appModel.isBusy" type="submit" class="btn btn-danger"><span class="fa fa-pencil"></span> Delete</button>
           </div>
-        </form>
       </div>
     </div>
   </div>
@@ -307,7 +297,6 @@
           <h4 class="modal-title">Update password</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <form class="form-horizontal">
           <div class="form-group modal-field">
             <label for="current-password" class="col-sm-offset-1 col-sm-4 control-label">Current password</label>
             <div class="col-sm-8">
@@ -330,7 +319,6 @@
             <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Cancel</button>
             <button data-bind="disable: appModel.isBusy" type="submit" class="btn btn-primary"><span class="fa fa-pencil"></span> Update</button>
           </div>
-        </form>
       </div>
     </div>
   </div>
@@ -345,7 +333,6 @@
           <h2 class="error-modal-title">Server error</h2>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <form class="form-horizontal">
           <div class="modal-body">
             <h3 data-bind="text: serverErrorMessage"></h3>
             <textarea class="error-message-content" rows="25" data-bind="text: serverErrorStackTrace"></textarea>
@@ -353,7 +340,6 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="disable: appModel.isBusy"><span class="fa fa-times"></span> Close</button>
           </div>
-        </form>
       </div>
     </div>
   </div>
