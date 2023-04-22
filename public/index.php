@@ -4,14 +4,14 @@
 <link rel="stylesheet" href="../src/libs/bootstrap/css/bootstrap.min.css" media="print">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet" type='text/css'>
 <link href="../src/css/styles.css" rel="stylesheet" media="all">
-<script type="text/javascript" src="../src/libs/jquery.min.js"></script>
-<script type="text/javascript" src="../src/libs/moment/moment.min.js"></script>
-<script type="text/javascript" src="../src/libs/knockout-3.5.1.min.js"></script>
+<script src="../src/libs/jquery.min.js"></script>
+<script src="../src/libs/moment/moment.min.js"></script>
+<script src="../src/libs/knockout-3.5.1.min.js"></script>
 <script src="../src/js/script.js"></script>
 <script src="../src/js/components/category.js"></script>
 <script src="../src/js/components/events.js"></script>
 
-<html data-bind="with: appModel, visible: true">
+<html>
 
 <body>
   <div class="overlay" data-bind="css: {'overlay-visible': isBusy}">
@@ -32,7 +32,7 @@
           </li>
         </ul>
       </nav>
-      
+
 
     </header>
 
@@ -240,9 +240,8 @@
         </div>
       </form>
       <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
-</body>
 
-<!-- Category input modal -->
+      <!-- Category input modal -->
 <form class="form-horizontal add-update-modal" data-bind="with: categoryModel, submit: categoryModel.submitCategory">
   <div class="modal fade" id="category-modal" data-backdrop="static" tabindex="-1">
     <div class="modal-dialog">
@@ -364,19 +363,20 @@
 <!-- Page: Timeline -->
 <div class="about" data-bind="visible: currentPage() == 'about'">
 
-<h2>Create and Share Events on a Timeline</h2>
-<p>Our application allows users to create and share events on a timeline. Only logged in users can add events, which can include a name, description, image, and category. Categories can also be added by logged in users and have a name and color.</p>
+  <h2>Create and Share Events on a Timeline</h2>
+  <p>Our application allows users to create and share events on a timeline. Only logged in users can add events, which can include a name, description, image, and category. Categories can also be added by logged in users and have a name and color.</p>
 
-<h2>Backend and Frontend Technologies</h2>
-<p>Our backend is powered by PHP and hosted on Heroku, utilizing ClearDB MySQL as our database. For the frontend, we use HTML, Javascript - jQuery and the Knockout.js frameworks.</p>
+  <h2>Backend and Frontend Technologies</h2>
+  <p>Our backend is powered by PHP and hosted on Heroku, utilizing ClearDB MySQL as our database. For the frontend, we use HTML, Javascript - jQuery and the Knockout.js frameworks.</p>
 
-<h2>User Account Information</h2>
-<p>Logged in users can change their passwords at any time. The current working test user login/password is user/aitsi2023.</p>
+  <h2>User Account Information</h2>
+  <p>Logged in users can change their passwords at any time. The current working test user login/password is user/aitsi2023.</p>
 
-<h2>We Hope You Enjoy Using Our Application!</h2>
-<p>We hope you enjoy using our application to share your events and experiences with others on our shared timeline.</p>
+  <h2>We Hope You Enjoy Using Our Application!</h2>
+  <p>We hope you enjoy using our application to share your events and experiences with others on our shared timeline.</p>
 
 </div>
+</body>
 
 <script type="text/javascript" src="../src/libs/bootstrap/js/bootstrap.min.js"></script>
 </div>
